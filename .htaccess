@@ -1,0 +1,19 @@
+Options All -Indexes MultiViews
+
+#Turn On RewriteEngine
+RewriteEngine On
+
+# -- Force HTTPS
+#If the HTTPS is off
+#RewriteCond %{HTTPS} off
+#Redirect to HTTPS
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#%{HTTP_HOST} is equal to the host domain 
+
+# -- Redirect any url to index.php
+#if the request url is a file ignore it
+RewriteCond %{REQUEST_FILENAME} !-d
+#if the request url is a dir, ignore it
+RewriteCond %{REQUEST_FILENAME} !-f
+#whatever was typed from start to end, move to index.php and send whatever the user has typed. and dont apply any RewriteRule after this
+RewriteRule ^(.*)$ index.php [END]
