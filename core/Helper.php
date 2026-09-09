@@ -1,5 +1,9 @@
 <?php
 
+namespace App;
+
+use App\Models\User;
+
 function tryLogin(array $input) {
     $user = User::where('username', $input["username"])->first();
     if(!$user) return false;

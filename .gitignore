@@ -1,1 +1,3 @@
 core/.env
+composer.lock
+/vendor/

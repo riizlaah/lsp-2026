@@ -1,4 +1,5 @@
 <?php
+use function App\view;
 
 class contact {
     public function index() {

@@ -1,5 +1,12 @@
 <?php
 
+namespace App;
+
+use PDO;
+use PDOStatement;
+use Throwable;
+use Exception;
+
 class Model
 {
     public const HAS_ONE = "hasOne";

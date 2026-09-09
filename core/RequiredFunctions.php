@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/viewRenderer.php";
+namespace App;
 
 function view(string $viewName, array $vars = []) {
     ViewRenderer::loadView($viewName, $vars);
@@ -37,7 +37,27 @@ function redirectWithAlert(string $route, string $message) {
     exit;
 }
 
+function session_flash(string $name, mixed $value = null) {
+    if(!isset($_SESSION["_flash"][$name]) && !is_null($value)) {
+        $_SESSION["_flash"][$name] = $value;
+        return;
+    }
+    if(isset($_SESSION["_flash"][$name])) {
+        $val = $_SESSION["_flash"][$name];
+        unset($_SESSION["_flash"][$name]);
+        return $val;
+    }
+}
+
+function session_destroy() {
+        $_SESSION = [];
+        session_destroy();
+        session_regenerate_id();
+    }
+
 function old(string $inputName) {
     if(!isset($_SESSION["_flash"]["oldInput"][$inputName])) return null;
-    return Session::flash('oldInput')[$inputName];
+    return session_flash('oldInput')[$inputName];
 }
+
+

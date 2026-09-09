@@ -1,4 +1,5 @@
 <?php
+use function App\view;
 
 class student_affairs {
     public function index() {

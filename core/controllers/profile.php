@@ -1,7 +1,9 @@
 <?php
+use function App\view;
+
 
 class profile {
     public function index() {
-        view('about', ['title' => 'About']);
+        view('profile', ['title' => 'Profil']);
     }
 }

@@ -1,6 +1,5 @@
 <?php
-
-require_once dirname(__DIR__) . "/models/user.php";
+use function App\view;
 
 class index {
     public function index() {

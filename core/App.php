@@ -1,8 +1,10 @@
 <?php
-require_once __DIR__."/requiredFunctions.php";
-require_once __DIR__."/config.php";
-require_once __DIR__."/helper.php";
-require_once __DIR__."/model.php";
+namespace App;
+
+require __DIR__ . "/RequiredFunctions.php";
+require __DIR__ . "/Helper.php";
+
+
 
 class App {
     public function __construct() {
@@ -46,7 +48,8 @@ class App {
         }
         $args = [];
         if(count($parts) > 2) $args = array_slice($parts, 2);
-
+        // $clippedRoute = $route;
+        $GLOBALS['clippedRoute'] = $route;
         call_user_func_array([$controller, $methodName], $args);
     }
 }

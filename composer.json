@@ -1,0 +1,20 @@
+{
+    "name": "nafan/lsp-2026",
+    "description": "Proyek web sekolah untuk sertifikasi LSP 2026",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "riizlaah",
+            "email": "100104632+riizlaah@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "nesbot/carbon": "^3.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "core/"
+        }
+    }
+}

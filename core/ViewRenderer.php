@@ -1,5 +1,10 @@
 <?php
 
+namespace App;
+
+use Throwable;
+use Exception;
+
 class ViewRenderer {
     private static string $cachePath = __DIR__ . "/cache/";
     private static string $viewPath = __DIR__ . "/views/";

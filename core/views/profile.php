@@ -5,7 +5,7 @@
     - Visi dan Misi
     - Struktur Organisasi
     - Data Guru dan Tenaga Kependidikan
-    - Fasilitas Sekolah
+    - Fasilitas Sekolahc
     - Akreditasi dan Prestasi 
     -->
 </x-main>

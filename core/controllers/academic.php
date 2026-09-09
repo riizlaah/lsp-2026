@@ -1,5 +1,5 @@
 <?php
-
+use function App\view;
 
 class academic {
     public function index() {
