@@ -37,7 +37,7 @@
     </div>
     <div class="container-lg my-3">
         <h1>Artikel Terbaru</h1>
-        <div class="row row-cols-3 g-3">
+        <div class="row row-cols-1 row-cols-md-3 g-3">
             <?php for($i = 1; $i <= 6; $i++): ?>
             <div class="col">
                 <div class="card">
@@ -53,23 +53,33 @@
         <a href="/information/articles" class="my-3 d-block">Lihat lainnya...</a>
     </div>
     <div class="container-lg">
-        <div>
-            <h2>50+ Rekanan Industri</h2>
-            <p>Meningkatkan kompetensi Peserta didik dengan menghadirkan pembelajaran berstandar industri. Lebih dari 50 perusahaan telah bekerja sama dengan SMK Negeri 1 Kandeman dalam berbagai macam program termasuk rekrutmen tenaga kerja</p>
+        <div class="mx-auto w-75 my-5">
+            <h2 class="text-center">50+ Rekanan Industri</h2>
+            <p class="text-center">Meningkatkan kompetensi Peserta didik dengan menghadirkan pembelajaran berstandar industri. Lebih dari 50 perusahaan telah bekerja sama dengan SMK Negeri 1 Kandeman dalam berbagai macam program termasuk rekrutmen tenaga kerja</p>
         </div>
-        <div class="row row-cols-5 g-2">
-            <img src="/assets/images/iconplus.png" alt="PLN Icon Plus" class="col object-fit-contain">
-            <img src="/assets/images/techarea.png" alt="Techarea" class="col object-fit-contain">
-            <img src="/assets/images/aski.png" alt="aski" class="col object-fit-contain">
-            <img src="/assets/images/honda.png" alt="Honda" class="col object-fit-contain">
-            <img src="/assets/images/astra.png" alt="Astra Otoparts" class="col object-fit-contain">
-            <img src="/assets/images/barito-pacific.png" alt="Barito Pacific" class="col object-fit-contain">
+        <?php
+        $partners = [
+            "iconplus" => "PLN Icon Plus",
+            "techarea" => "Techarea",
+            "aski" => "Astra Komponen Indonesia",
+            "honda" => "Honda",
+            "astra" => "Astra Otoparts",
+            "barito-pacific" => "Barito Pacific",
+            "bumitama-gunajaya" => "Bumitama Gunajaya Agro",
+            "djarum-foundation" => "Djarum Foundation",
+            "mitsuboshi" => "Mitsuboshi",
+            "panasonic" => "Panasonic",
+            "gs-battery" => "GS Battery",
+            "hino" => "Hino",
+            "sis" => "SIS",
+            "sinarmas" => "Sinarmas",
+            "kpp" => "KPP"
+        ];
+        ?>
+        <div class="row row-cols-2 row-cols-md-5 g-4">
+            <?php foreach($partners as $key => $value): ?>
+                <img src="/assets/images/<?= $key ?>.webp" alt="<?= $value ?>" class="col object-fit-contain" style="height: 150px;">
+            <?php endforeach; ?>
         </div>
     </div>
-    <!-- 
-    - Sambutan Kepala Sekolah
-    - Banner / Slider kegiatan terbaru
-    - Pengumuman dan berita terkini
-    - Keunggulan atau profil singkat sekolah
-     -->
 </x-main>
