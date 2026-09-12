@@ -84,7 +84,7 @@ $clippedRoute = $GLOBALS["clippedRoute"];
                 </ul>
             </div>
             <div class="col">
-                <div class="row row-cols-2 g-6">
+                <div class="row row-cols-2 g-4">
                     <?php
                     $images = [
                         "smk-pk" => "SMK Pusat Keunggulan",
@@ -94,7 +94,7 @@ $clippedRoute = $GLOBALS["clippedRoute"];
                     ];
                     ?>
                     <?php foreach ($images as $key => $val): ?>
-                        <img src="/assets/images/<?= $key ?>.webp" alt="<?= $val ?>" class="col object-fit-contain" height="100">
+                        <img src="/assets/images/footers/<?= $key ?>.webp" alt="<?= $val ?>" class="col object-fit-contain d-block" height="90">
                     <?php endforeach; ?>
                 </div>
             </div>

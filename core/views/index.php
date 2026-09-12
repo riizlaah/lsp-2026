@@ -1,10 +1,10 @@
 <x-main>
-    <div class="container p-4 my-3 mx-auto bg-primary rounded-4 row align-items-center text-white">
+    <div class="container p-4 my-3 mx-auto bg-primary bg-gradient rounded-4 row align-items-center text-white">
+        <img src="/assets/images/kepala-sekolah.webp" alt="Kepala Sekolah" class="col-auto w-25">
         <div class="col me-6">
             <span class="fs-4 fw-bold d-block mb-2">Sambutan Kepala Sekolah</span>
             <p class="">Berkat rahmat dan karunia Tuhan Yang Maha Esa, website SMK Negeri 1 Kandeman Kabupaten Batang akhirnya dapat dibangun. Tujuan pembangunan website sekolah ini adalah untuk memperkenalkan, memberikan kemudahan, dan memberikan wawasan kepada masyarakat tentang SMK Negeri 1 Kandeman.</p>
         </div>
-        <img src="https://placehold.co/200x300?text=Kepala+Sekolah" alt="Kepala Sekolah" class="col-auto">
     </div>
     <div class="container-lg my-3">
         <div id="activities" class="carousel slide" data-bs-ride="carousel">
@@ -78,7 +78,7 @@
         ?>
         <div class="row row-cols-2 row-cols-md-5 g-4">
             <?php foreach($partners as $key => $value): ?>
-                <img src="/assets/images/<?= $key ?>.webp" alt="<?= $value ?>" class="col object-fit-contain" style="height: 150px;">
+                <img src="/assets/images/partners/<?= $key ?>.webp" alt="<?= $value ?>" class="col object-fit-contain" style="height: 150px;">
             <?php endforeach; ?>
         </div>
     </div>

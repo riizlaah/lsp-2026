@@ -17,8 +17,14 @@ function tryLogin(array $input) {
 
 function validateRememberToken($token) {}
 
-function ensureAuthenticated() {
+function isLoggedIn() {
     return isset($_SESSION["auth"]);
+}
+
+function ensureAuthenticated() {
+    if(!isLoggedIn()) {
+        errCode(401, "Pengguna Belum Terautentikasi");
+    }
 }
 
 function ensureIsRole(string $role) {

@@ -1,71 +1,70 @@
 <x-main>
-    <div class="container-xl bg-primary-subtle bg-gradient p-4 my-3">
-        <h1>Sejarah Singkat</h1>
-        <p>
-            Secara umur SMK Negeri 1 Kandeman merupakan sekolah yang telah berumur menengah bukan sekolah lama dan tidak terlalu baru.
-            SMK Negeri 1 Kandeman berdiri pada Tahun 2003 dan pada tahun 2024 ini berarti telah berumur 21 tahun. Pada awalnya SMK Negeri 1 Kandeman dibuka dengan 3 (tiga) program keahlian yaitu
-            Teknik Mekanik Otomotif (sekarang TKR), Teknik Mesin (sekarang Teknik Pemesinan), dan Teknik Audio Video. Kini SMK Negeri 1 Kandeman telah memiliki 7 (tujuh) paket keahlian yaitu,
-            Teknik Kendaraan Ringan Otomotif (TKR), Teknik Pemesinan (TP), Teknik Audio Video (TAV), Teknik Bisnis Sepeda Motor (TBSM), Teknik Elektronika Industri (TEI), Teknik Instalasi Tenaga Listrik (TITL), dan
-            Rekayasa Perangkat Lunak (RPL)
-        </p>
-    </div>
-    <div class="container-xl bg-primary-subtle bg-gradient p-4 my-3">
-        <div class="col">
-            <h1>Visi</h1>
-            <p>Terwujudnya tamatan yang berakhlak mulia, kompeten, kompetitif, dan berwawasan lingkungan</p>
-        </div>
-        <div class="col">
-            <h1>Misi</h1>
-            <ol>
-                <li>
-                    Meningkatkan kualitas peserta didik yang agamis dan berbudaya dalam setiap aktivitas
-                    <ol type="a">
-                        <li>Terlaksananya kegiatan sholat wajib berjamaah</li>
-                        <li>Terciptanya sikap saling menghormati antar warga sekolah</li>
-                    </ol>
-                </li>
-                <li>
-                    Melaksanakan proses pembelajaran secara optimal yang kondusif berdasarkan kurikulum yang berlaku
-                    <ol type="a">
-                        <li>Tingkat kelulusan siswa 100%</li>
-                        <li>Siswa mengikuti Uji Sertifikasi LSP</li>
-                    </ol>
-                </li>
-                <li>
-                    Meningkatkan hubungan kerjasama antara sekolah dengan dunia usaha (DU) dan dunia industri secara berkeseimbangan
-                    <ol type="a">
-                        <li>Adanya magang guru di industri (2 orang guru tiap tahun)</li>
-                        <li>Keterserapan lulusan di dunia usaha dan industri sebanyak 90% dalam satu tahun</li>
-                    </ol>
-                </li>
-                <li>
-                    Membudayakan peserta didik peduli dalam pelestarian lingkungan
-                    <ol type="a">
-                        <li>Terpeliharanya kebersihan dan kerindangan taman-taman sekolah</li>
-                        <li>Kondisi ruang kelas yang selalu bersih dan rapi.</li>
-                    </ol>
-                </li>
-            </ol>
+    <div class="container-xl mx-auto bg-primary-subtle bg-gradient p-4 mt-4">
+        <h1>Struktur Organisasi</h1>
+        <div class="w-100">
+            <object style="height: auto; width: 100%;" data="/assets/images/struktur-organisasi.svg" type="image/svg+xml" id="struktur-organisasi"></object>
         </div>
     </div>
-    <div class="container-xl bg-primary-subtle bg-gradient p-4 my-3">
-        <h1>Tujuan</h1>
-        <ol>
-            <li>Terciptanya SMK yang memenuhi 8 Standar Nasional Pendidikan yang prima dalam pelayanan dan unggul dalam prestasi.</li>
-            <li>Peningkatan kompetensi semua personil sekolah dan siswa dibidang akademis.</li>
-            <li>Mengimplementasikan Kurikulum Merdeka.</li>
-            <li>Peningkatan proses pembelajaran berbasis ICT.</li>
-            <li>Keterlaksanaan pendidikan karakter di sekolah.</li>
-            <li>Partisipasi sekolah pada kegiatan daerah, provinsi dan nasional.</li>
-            <li>Meningkatnya kualitas tamatan, sertifikasi kompetensi siswa dan terserapnya lulusan di DU/DI maupun di perguruan tinggi.</li>
-            <li>erjalinnya institusi pasangan secara periodik dan sinergi dalam mewujudkan SMK yang kompeten dan kompetitif.</li>
-        </ol>
+    <div class="container-xl mx-auto mt-4">
+        <h1 class="text-center">Jumlah Pengajar dan Tenaga Kependidikan</h1>
+        <div class="row row-cols-3 g-4 my-3">
+            <?php
+            $pengajar = [
+                "primary" => ["Jumlah Pengajar Kejuruan", "38"],
+                "success" => ["Jumlah Pengajar Mapel Umum & Pilihan", "56"],
+                "info" => ["Jumlah Tenaga Kependidikan", "19"],
+            ];
+            ?>
+            <?php foreach ($pengajar as $style => $data): ?>
+                <div class="col">
+                    <div class="d-flex flex-column justify-content-evenly align-items-center border border-<?= $style ?> text-center p-2 h-100 rounded-top-3">
+                        <p class="fs-6 text-<?= $style ?>"><?= $data[0] ?></p>
+                        <p class="fw-bold fs-2 my-3 text-<?= $style ?>"><?= $data[1] ?></p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
-    
-    <!--
-    - Struktur Organisasi
-    - Data Guru dan Tenaga Kependidikan
-    - Fasilitas Sekolah
-    - Akreditasi dan Prestasi 
-    -->
+    <div class="container-xl mx-auto row">
+        <div class="col">
+            <?php 
+            $facilities = [
+                "Aula" => ["Aula Graha Wastutama", "aula.webp"],
+                "Bengkel TP" => ["Bengkel Teknik Pemesinan", "bengkel-tp.webp"],
+                "Bengkel TBSM" => ["Bengkel Teknik Bisnis Sepeda Motor", "bengkel-tbsm.webp"],
+                "Bengkel TKR" => ["Bengkel Teknik Kendaraan Ringan", "bengkel-tkr.webp"],
+                "Bengkel TAV" => ["Bengkel Teknik Audio Video", "bengkel-tav.webp"],
+                "Bengkel TEI" => ["Bengkel Teknik Elektronika Industri", "bengkel-tei.webp"],
+                "Bengkel TITL" => ["Bengkel Teknik Instalasi Ketenegalistrikan", "bengkel-titl.webp"],
+                "Bengkel RPL" => ["Bengkel Rekayasa Perangkat Lunak", "bengkel-rpl.webp"],
+                "Masjid" => ["Masjid Baitul Mujahiddin", "masjid.webp"],
+                "Perpustakaan" => ["Perpustakaan ...", "perpus.webp"],
+                "Kantin" => ["Kantin", "kantin.webp"],
+                "Lapangan" => ["Lapangan", "lapangan.webp"],
+            ];
+            ?>
+            <!-- list fasilitas -->
+        </div>
+        <div class="col">
+            <!-- foto fasilitas yg dipilih -->
+        </div>
+    </div>
+    <div class="container-xl mx-auto row">
+        <div class="col">
+            <!-- Akreditasi -->
+        </div>
+        <div class="col">
+            <a href="/student-affairs/achievements" role="button">Prestasi</a>
+        </div>
+    </div>
+    <script src="/assets/svg-pan-zoom.min.js"></script>
+    <script>
+        window.onload = () => {
+            svgPanZoom("#struktur-organisasi", {
+                controlIconsEnabled: true,
+                fit: true,
+                center: true
+            });
+        };
+    </script>
 </x-main>
