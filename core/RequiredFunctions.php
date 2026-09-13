@@ -32,9 +32,25 @@ function redirect(string $route) {
     exit;
 }
 
+
 function redirectWithAlert(string $route, string $message) {
     echo "<script>alert('$message'); document.location.href = '$route';</script>";
     exit;
+}
+
+function redirectBack() {
+    $ref = empty($_SERVER["HTTP_REFERER"]) ? "/" : $_SERVER["HTTP_REFERER"];
+    redirect($ref);
+}
+
+function redirectBackWithErrors(array $errors) {
+    $_SESSION["_errors"] = $errors;
+    redirectBack();
+}
+
+function redirectBackWithAlert(string $message) {
+    $ref = empty($_SERVER["HTTP_REFERER"]) ? "/" : $_SERVER["HTTP_REFERER"];
+    redirectWithAlert($ref, $message);
 }
 
 function session_flash(string $name, mixed $value = null) {
@@ -58,6 +74,23 @@ function session_destroy() {
 function old(string $inputName) {
     if(!isset($_SESSION["_flash"]["oldInput"][$inputName])) return null;
     return session_flash('oldInput')[$inputName];
+}
+
+function pushErr(string $inputName, array $messages) {
+    $_SESSION["_errors"][$inputName] = array_merge( $_SESSION["_errors"][$inputName] ?? [], $messages);
+}
+
+function err(string $inputName = "") {
+    if(empty($inputName)) return $_SESSION["_errors"] ?? [];
+    return $_SESSION["_errors"][$inputName] ?? null;
+}
+
+function ensureInputFilled(array $input, array $requiredKeys) {
+    foreach($requiredKeys as $key) {
+        if(!empty($input[$key])) continue;
+        pushErr($key, ["'$key' harus diisi"]);
+    }
+    if(!empty($_SESSION["_errors"])) redirectBack();
 }
 
 

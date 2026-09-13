@@ -1,4 +1,6 @@
 <?php
+namespace App\Controllers;
+
 use function App\view;
 
 class student_affairs {

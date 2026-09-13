@@ -15,7 +15,7 @@ $clippedRoute = $GLOBALS["clippedRoute"];
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top px-2 px-md-5" style="background-color: #00b7ffb2; backdrop-filter: blur(6px); -webikt-backdrop-filter: blur(6px);">
+    <nav class="navbar navbar-expand-lg sticky-top px-2 px-md-5 shadow-lg" style="background-color: #00b7ffb2; backdrop-filter: blur(6px); -webikt-backdrop-filter: blur(6px);">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">SMKN 1 Kandeman</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,9 +51,9 @@ $clippedRoute = $GLOBALS["clippedRoute"];
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
+    <main class="container-fluid">
         <!-- SLOT_PLACEHOLDER -->
-    </div>
+    </main>
     <footer class="container-fluid mt-5 bg-black text-secondary p-5">
         <div class="row row-cols-1 row-cols-lg-4 g-4">
             <div class="col">

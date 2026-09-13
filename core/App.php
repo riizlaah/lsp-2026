@@ -20,18 +20,18 @@ class App {
             $parts[0] = 'index';
         }
         $parts[0] = str_replace("-", "_", $parts[0]);
-        $controllerPath = __DIR__."/controllers/".$parts[0].".php";
+        $controllerPath = __DIR__."/Controllers/".$parts[0].".php";
         if(!file_exists($controllerPath)) {
             errCode(404, "Tidak ditemukan");
         }
-        require $controllerPath;
-        $controller = new $parts[0]();
+        $className = "\App\\Controllers\\".$parts[0];
+        $controller = new $className();
         if(empty($parts[1])) $parts[1] = 'index';
         $methodName = str_replace("-", "_", $parts[1]);
         $reqMethod = strtolower($_POST["_method"] ?? $_SERVER["REQUEST_METHOD"]);
         if($reqMethod != "get") {
-            if(strtolower($methodName) != $reqMethod) $methodName .= "_$reqMethod";
-            else $methodName = $reqMethod . "_";
+            if(strtolower($methodName) === $reqMethod || $methodName === 'index') $methodName = "_" . $reqMethod;
+            else $methodName .= "_$reqMethod";
         }
         if(!method_exists($controller, $methodName)) {
             errCode(404, "Tidak ditemukan");

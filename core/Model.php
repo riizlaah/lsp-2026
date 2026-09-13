@@ -303,4 +303,11 @@ class Model
         }
         return [];
     }
+
+    public function asAssocArray() {
+        $attr = $this->attributes;
+        $relRecords = [];
+        foreach($this->relationshipRecords as $rec) $relRecords[] = $rec->asAssocArray();
+        return array_merge($attr, $relRecords);
+    }
 }
