@@ -1,13 +1,20 @@
 <x-dashb>
-    <?php use Carbon\Carbon; ?>
+    <?php
+
+    use Carbon\Carbon; ?>
     <!-- search, filter -->
     <!-- create/edit with modals -->
     <h1 class="mb-4">Kelola Pencapaian</h1>
+    <?php if (flash_exists("message")): ?>
+        <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <?= session_flash("message") ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
     <div class="row">
         <div class="col-auto">
             <div class="input-group mb-3">
                 <form action="">
-                    <!-- <label class="input-group-text"><i data-feather="search"></i></label> -->
                     <input type="text" name="search" class="form-control" placeholder="Cari..." aria-label="Search">
                 </form>
             </div>
@@ -46,22 +53,4 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </x-dashb>

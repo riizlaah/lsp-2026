@@ -63,6 +63,7 @@ class manage_achievements {
     }
 
     public function create_post() {
+        ensureIsAdmin();
         ensureInputFilled($_POST, ["nama", "rank", "tingkat", "berjenjang", "konten", "tahun", "bulan"]);
         $name = sanitizeInput("nama");
         $rank = sanitizeInput("rank");
@@ -93,6 +94,7 @@ class manage_achievements {
     }
 
     public function _delete($id = "") {
+        ensureIsAdmin();
         $actualId = intval($id);
         if($actualId <= 0) redirect("/manage-achievements");
         if(!Achievement::where('id', $actualId)->any()) redirect('/manage-achievements');

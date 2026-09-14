@@ -67,6 +67,10 @@ function session_flash(string $name, mixed $value = null) {
     }
 }
 
+function flash_exists(string $name) {
+    return isset($_SESSION["_flash"][$name]);
+}
+
 function session_invalidate() {
         $_SESSION = [];
         session_destroy();
