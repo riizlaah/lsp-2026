@@ -2,11 +2,11 @@
 Proyek LSP 2026, sebuah web untuk profil sekolah.
 
 ## Features
-- [ ] Login admin
+- [x] Login admin
 - [ ] CRUD galeri
 - [ ] CRUD pengumuman
 - [ ] CRUD artikel/berita
-- [ ] CRUD prestasi
+- [x] CRUD prestasi
 
 
 ## Entities

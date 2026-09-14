@@ -1,8 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use function App\view;
-
 class student_affairs {
     public function index() {
         view('student-affairs', ["title" => "Kesiswaan"]);

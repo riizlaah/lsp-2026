@@ -213,6 +213,9 @@ class Model
         $count = $res->fetchColumn();
         return $count;
     }
+    public static function any(): bool {
+        return static::count() > 0;
+    }
     public static function first()
     {
         $query = static::constructQuery();

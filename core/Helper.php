@@ -1,19 +1,18 @@
 <?php
 
-namespace App;
 
 use App\Models\User;
 
-function tryLogin(array $input) {
-    $user = User::where('username', $input["username"])->first();
-    if(!$user) return false;
-    if(!password_verify($input["password"], $user->password)) return false;
-    $_SESSION["auth"] = $user;
-    if(isset($input["rememberMe"]) && $input["rememberMe"]) {
+// function tryLogin(array $input) {
+//     $user = User::where('username', $input["username"])->first();
+//     if(!$user) return false;
+//     if(!password_verify($input["password"], $user->password)) return false;
+//     $_SESSION["auth"] = serialize($user);
+//     if(isset($input["rememberMe"]) && $input["rememberMe"]) {
 
-    }
-    return true;
-}
+//     }
+//     return true;
+// }
 
 function validateRememberToken($token) {}
 
@@ -28,8 +27,16 @@ function ensureAuthenticated() {
 }
 
 function ensureIsRole(string $role) {
-    return getAuthData()?->role === $role;
+    ensureAuthenticated();
+    if(getAuthData()["role"] !== $role) {
+        errCode(403, "Perlu akun admin");
+    }
 }
+
+function ensureIsAdmin() {
+    ensureIsRole("admin");
+}
+
 
 function getAuthData() {
     return $_SESSION["auth"] ?? null;

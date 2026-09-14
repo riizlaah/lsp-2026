@@ -40,6 +40,9 @@
                     <label class="form-check-label" for="rememberMe">Check me out</label>
                 </div> -->
                 <button type="submit" class="btn btn-primary w-100">Login</button>
+                <span class="w-100 d-block text-center mt-3">
+                    <a href="/" class="text-decoration-none">Kembali</a>
+                </span>
             </form>
         </div>
     </main>

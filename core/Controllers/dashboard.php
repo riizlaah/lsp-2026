@@ -1,14 +1,9 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Achievement;
 use App\Models\User;
 
-use function App\ensureInputFilled;
-use function App\isLoggedIn;
-use function App\redirect;
-use function App\redirectBackWithAlert;
-use function App\redirectBackWithErrors;
-use function App\view;
 
 class dashboard
 {
@@ -18,7 +13,7 @@ class dashboard
             view("dashboard.login", ["title" => "Login to Dashboard"]);
             return;
         }
-        view("dashboard.index");
+        view("dashboard.index", ["title" => "Dashboard"]);
     }
 
     public function _post()
@@ -29,7 +24,12 @@ class dashboard
         $user = User::where('email', $email)->first();
         if(!$user) redirectBackWithErrors(["email" => ["Email atau password salah"]]);
         if(!password_verify($password, $user->password)) redirectBackWithErrors(["" => ["Email atau password salah"]]);
-        $_SESSION["auth"] = $user;
+        $_SESSION["auth"] = $user->asAssocArray();
         redirect("/dashboard");
+    }
+
+    public function logout() {
+        session_invalidate();
+        redirect('/dashboard');
     }
 }

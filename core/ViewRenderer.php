@@ -13,10 +13,11 @@ class ViewRenderer
     private static string $placeholder = "<!-- SLOT_PLACEHOLDER -->";
     private const array OTHER_ELEMENTS = [
         "/<xm-([a-z]+)\s*\/>/" => ["<input type=\"hidden\" name=\"_method\" value=\"$1\">"],
-        "/<xcsrf\s*\/>/" => ["<input type=\"hidden\" name=\"_csrf_token\" value=\"<?= generateCSRFToken() ?>\">", ["use function App\\generateCSRFToken;"]],
-        "/@old\('(.*?)'\)/" => ["<?= old('$1') ?>", ["use function App\\old;"]],
-        "/@err\('(.*?)'\)\s*(.*?)\s*@enderr/s" => ["<?php \$$1 = err('$1'); if(!empty(\$$1)): ?>$2<?php endif; ?>", ["use function App\\err;"], ["unset(\$_SESSION['_errors'])"]],
-        "/@err\s*(.*?)\s*@enderr/s" => ["<?php \$errors = err(); if(!empty(\$errors)): ?>$1<?php endif; ?>", ["use function App\\err;"], ["unset(\$_SESSION['_errors'])"]],
+        "/<xcsrf\s*\/>/" => ["<input type=\"hidden\" name=\"_csrf_token\" value=\"<?= generateCSRFToken() ?>\">"],
+        "/@old\('(.*?)'\s*,\s*(.*?)\)/" => ["<?= old('$1') ?? $2 ?>", ["\$_SESSION['_flash']['oldInput'] = [];"]],
+        "/@old\('(.*?)'\)/" => ["<?= old('$1') ?>", ["\$_SESSION['_flash']['oldInput'] = [];"]],
+        "/@err\('(.*?)'\)\s*(.*?)\s*@enderr/s" => ["<?php \$$1 = err('$1'); if(!empty(\$$1)): ?>$2<?php endif; ?>", ["unset(\$_SESSION['_errors']);"]],
+        "/@err\s*(.*?)\s*@enderr/s" => ["<?php \$errors = err(); if(!empty(\$errors)): ?>$1<?php endif; ?>", ["unset(\$_SESSION['_errors']);"]],
     ];
 
     public static function loadView(string $name, array $data)
@@ -79,8 +80,8 @@ class ViewRenderer
         $pattern2 = "/<x-([a-zA-Z0-9._]+)\s*\/>/";
         $maxIteration = 32;
         $placeholder = self::$placeholder;
-        $beforeContent = [];
-        $afterContent = [];
+        $prefixContent = [];
+        $suffixContent = [];
         for ($i = 0; $i < $maxIteration; $i++) {
             $newContent = preg_replace_callback($pattern, function ($matches) use ($placeholder) {
                 $componentContent = self::getComponentContent($matches[1]);
@@ -90,25 +91,27 @@ class ViewRenderer
                 return self::getComponentContent($matches[1]);
             }, $newContent);
             foreach (self::OTHER_ELEMENTS as $pattern3 => $data) {
-                [$replace, $befores, $afters] = $data;
-                if (!empty($befores)) $beforeContent = array_merge($beforeContent, $befores);
-                if (!empty($afters)) $afterContent = array_merge($afterContent, $afters);
+                $replace = $data[0];
+                $suffixes = $data[1] ?? [];
+                $prefixes = $data[2] ?? [];
+                if (!empty($suffixes)) $suffixContent = array_merge($suffixContent, $suffixes);
+                if (!empty($prefixes)) $prefixContent = array_merge($prefixContent, $prefixes);
                 $newContent = preg_replace($pattern3, $replace, $newContent);
             }
             if ($newContent === $content) break;
             $content = $newContent;
         }
-        if (!empty($beforeContent)) {
+        if (!empty($prefixContent)) {
             $actions = "<?php";
-            $beforeContent = array_unique($beforeContent);
-            foreach ($beforeContent as $action) $actions .= "\n$action";
+            $prefixContent = array_unique($prefixContent);
+            foreach ($prefixContent as $action) $actions .= "\n$action";
             $actions .= "\n?>";
             $content = $actions . $content;
         }
-        if (!empty($afterContent)) {
+        if (!empty($suffixContent)) {
             $actions = "<?php";
-            $afterContent = array_unique($afterContent);
-            foreach ($afterContent as $action) $actions .= "\n$action";
+            $suffixContent = array_unique($suffixContent);
+            foreach ($suffixContent as $action) $actions .= "\n$action";
             $actions .= "\n?>";
             $content = $content . $actions;
         }
