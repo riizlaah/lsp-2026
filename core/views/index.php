@@ -9,7 +9,7 @@
     <div class="container-lg my-3">
         <div id="activities" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <?php for($i = 1; $i <= 3; $i++): ?>
+                <?php for ($i = 1; $i <= 3; $i++): ?>
                     <div class="carousel-item <?= $i === 1 ? "active" : "" ?>">
                         <img src="https://placehold.co/400x200?text=Kegiatan+<?= $i ?>" class="d-block w-100" alt="Kegiatan <?= $i ?>">
                         <div class="carousel-caption d-none d-md-block">
@@ -38,16 +38,16 @@
     <div class="container-lg my-3">
         <h1>Artikel Terbaru</h1>
         <div class="row row-cols-1 row-cols-md-3 g-3">
-            <?php for($i = 1; $i <= 6; $i++): ?>
-            <div class="col">
-                <div class="card">
-                    <img src="https://placehold.co/400x200?text=Berita+<?= $i ?>" class="card-img-top" alt="Berita <?= $i ?>">
-                    <div class="card-body">
-                        <h5 class="card-title">Berita <?= $i ?></h5>
-                        <p class="card-text">Sedikit konten dari berita <?= $i ?></p>
+            <?php for ($i = 1; $i <= 6; $i++): ?>
+                <div class="col">
+                    <div class="card">
+                        <img src="https://placehold.co/400x200?text=Berita+<?= $i ?>" class="card-img-top" alt="Berita <?= $i ?>">
+                        <div class="card-body">
+                            <h5 class="card-title">Berita <?= $i ?></h5>
+                            <p class="card-text">Sedikit konten dari berita <?= $i ?></p>
+                        </div>
                     </div>
                 </div>
-            </div>
             <?php endfor; ?>
         </div>
         <a href="/information/articles" class="my-3 d-block">Lihat lainnya...</a>
@@ -77,7 +77,7 @@
         ];
         ?>
         <div class="row row-cols-2 row-cols-md-5 g-4">
-            <?php foreach($partners as $key => $value): ?>
+            <?php foreach ($partners as $key => $value): ?>
                 <img src="/assets/images/partners/<?= $key ?>.webp" alt="<?= $value ?>" class="col object-fit-contain" style="height: 150px;">
             <?php endforeach; ?>
         </div>

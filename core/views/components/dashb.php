@@ -1,6 +1,6 @@
 <?php
 $clippedRoute = $GLOBALS["clippedRoute"];
-
+$useTrix = $useTrix ?? false;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +12,10 @@ $clippedRoute = $GLOBALS["clippedRoute"];
     <link rel="stylesheet" href="/assets/bootstrap5/css/bootstrap.min.css">
     <title><?= $title ?? "Document Title" ?></title>
     <script src="/assets/feather.min.js"></script>
+    <?php if ($useTrix): ?>
+        <link rel="stylesheet" type="text/css" href="/assets/trix/dist/trix.css">
+        <script type="text/javascript" src="/assets/trix/dist/trix.umd.min.js"></script>
+    <?php endif; ?>
 </head>
 
 <body>
@@ -30,7 +34,9 @@ $clippedRoute = $GLOBALS["clippedRoute"];
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-galeries") ? "active" : "" ?>" href="/manage-galeries"><i data-feather="image"></i> Galeri</a></li>
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-achievements") ? "active" : "" ?>" href="/manage-achievements"><i data-feather="award"></i> Pencapaian</a></li>
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/dashboard/others") ? "active" : "" ?>" href="/dashboard/others"><i data-feather="info"></i> Lainnya</a></li>
-                    <li class="nav-item"><hr></li>
+                    <li class="nav-item">
+                        <hr>
+                    </li>
                     <li class="nav-item"><a href="/dashboard/logout" class="btn btn-primary">Log out</a></li>
                 </ul>
             </div>

@@ -19,4 +19,8 @@ class Config {
         if(!isset(self::$properties[$name])) return $default;
         return self::$properties[$name];
     }
+
+    public static function getUploadDirPath() {
+        return dirname(__DIR__) . "/assets/uploads/";
+    }
 }

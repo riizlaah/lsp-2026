@@ -1,5 +1,5 @@
 <x-dashb>
-    <h1 class="mb-4">Kelola Pencapaian</h1>
+    <h1 class="mb-4">Kelola Artikel</h1>
     <?php if (flash_exists("message")): ?>
         <div class="alert alert-secondary alert-dismissible fade show" role="alert">
             <?= session_flash("message") ?>
@@ -16,7 +16,7 @@
         </div>
         <div class="col"></div>
         <div class="col-auto">
-            <a tole="button" href="/manage-achievements/create" class="btn btn-primary">Tambahkan</a>
+            <a tole="button" href="/manage-articles/create" class="btn btn-primary">Tambahkan</a>
         </div>
     </div>
     <table class="table table-bordered">
@@ -24,8 +24,8 @@
             <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Nama</th>
-                <th scope="col">Rank/Tingkat</th>
-                <th scope="col">Bulan/Tahun</th>
+                <th scope="col">Cuplikan Konten</th>
+                <th scope="col">Gambar Kepala</th>
                 <th scope="col">Aksi</th>
             </tr>
         </thead>
@@ -37,9 +37,8 @@
                     <td><?= "#" . (string)$row->rank . "/" . $row->level ?></td>
                     <td><?= getIDNMonthName($row->month) . " " . (string)$row->year  ?></td>
                     <td class="d-flex gap-2">
-                        <a href="/student-affairs/achievements/<?= $row->id ?>" class="btn btn-primary"><i data-feather="eye"></i></a>
-                        <a href="/manage-achievements/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>
-                        <form action="/manage-achievements/delete/<?= $row->id ?>" method="post">
+                        <a href="/manage-articles/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>
+                        <form action="/manage-articles/delete/<?= $row->id ?>" method="post">
                             <xm-delete />
                             <xcsrf />
                             <button type="submit" class="btn btn-danger" onclick="confirm('Anda yakin ingin menghapus \'<?= $row->title ?>\'')"><i data-feather="trash-2"></i></button>

@@ -50,6 +50,11 @@ function redirectBackWithErrors(array $errors) {
     redirectBack();
 }
 
+function redirectBackWithError(string $inputName, array $messages) {
+    $_SESSION["_errors"][$inputName] = array_merge($_SESSION["_errors"][$inputName] ?? [], $messages);
+    redirectBack();
+}
+
 function redirectBackWithAlert(string $message) {
     $ref = empty($_SERVER["HTTP_REFERER"]) ? "/" : $_SERVER["HTTP_REFERER"];
     redirectWithAlert($ref, $message);
@@ -109,13 +114,62 @@ function sanitizeInput(string $inputName, $escHTML = true) {
     return $escHTML ? htmlspecialchars(trim($_POST[$inputName])) : trim($_POST[$inputName]);
 }
 
-function ensureImageValid(string $inputName) {
-    if(!isset($_FILES[$inputName])) redirectBackWithErrors([$inputName => ["'$inputName' harus diisi"]]);
-    
+function ensureImageValid(string $inputName, int $maxSize = 4096000, $mimetypes = ["image/png", "image/jpeg", "image/webp"]) {
+    if(!isset($_FILES[$inputName])) redirectBackWithError($inputName, ["'$inputName' harus diisi"]);
+    $fileErr = $_FILES[$inputName]["error"];
+    if($fileErr != UPLOAD_ERR_OK) redirectBackWithError($inputName, ["'$inputName' gagal diupload (kode: " . (string)$fileErr . ")"]);
+    $fileSize = $_FILES[$inputName]["size"];
+    $filename = $_FILES[$inputName]["tmp_name"];
+    if($fileSize > $maxSize) redirectBackWithError($inputName, ["ukuran '$inputName' terlalu besar (maksimal: " . (string)round((float)$maxSize / 1000000, 2) . "MB"]);
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mimetype = $finfo->file($filename);
+    if(!$mimetype) redirectBackWithError($inputName, ["Gagal membaca MIMETYPE dari '$inputName'"]);
+    if(!in_array($mimetype, $mimetypes)) redirectBackWithError($inputName, ["Gambar harus berupa format: " . implode(", ", $mimetypes)]);
+
 }
 
-function moveUploadedFile($inputName, $directory, $target = "") {
-    
+function ensureImageValidJSON(string $inputName, int $maxSize = 4096000, $mimetypes = ["image/png", "image/jpeg", "image/webp"]) {
+    header("Content-Type: application/json");
+    if(!isset($_FILES[$inputName])) {
+        http_response_code(400);
+        echo json_encode(["message" => "'$inputName' harus diisi"]);
+        die;
+    }
+    $fileErr = $_FILES[$inputName]["error"];
+    if($fileErr != UPLOAD_ERR_OK) {
+        http_response_code(400);
+        echo json_encode(["message" => "'$inputName' gagal diupload (kode: " . (string)$fileErr . ")"]);
+        die;
+    }
+    $fileSize = $_FILES[$inputName]["size"];
+    $filename = $_FILES[$inputName]["tmp_name"];
+    if($fileSize > $maxSize) {
+        http_response_code(400);
+        echo json_encode(["message" => "ukuran '$inputName' terlalu besar (maksimal: " . (string)round((float)$maxSize / 1000000, 2) . "MB"]);
+        die;
+    }
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mimetype = $finfo->file($filename);
+    if(!$mimetype) {
+        http_response_code(400);
+        echo json_encode(["message" => "Gagal membaca MIMETYPE dari '$inputName'"]);
+        die;
+    }
+    if(!in_array($mimetype, $mimetypes)) {
+        http_response_code(400);
+        echo json_encode(["message" => "Gambar harus berupa format: " . implode(", ", $mimetypes)]);
+        die;
+    }
+}
+
+function moveUploadedFile(string $inputName, string $directory, $target = "") {
+    $fileTmpPath = $_FILES[$inputName]["tmp_name"];
+    $ext = pathinfo($_FILES[$inputName]["name"], PATHINFO_EXTENSION);
+    $actualTarget = empty($target) ? bin2hex(random_bytes(16)) . ".$ext" : $target;
+    $targetFilePath = $directory . $actualTarget;
+    $result = move_uploaded_file($fileTmpPath, $targetFilePath);
+    if(!$result) throw new Exception("Gagal memindahkan file yang telah diupload");
+    return $actualTarget;
 }
 
 function dd(mixed ...$vars) {

@@ -16,29 +16,52 @@ use App\Models\User;
 
 function validateRememberToken($token) {}
 
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION["auth"]);
 }
 
-function ensureAuthenticated() {
-    if(!isLoggedIn()) {
+function ensureAuthenticated()
+{
+    if (!isLoggedIn()) {
         errCode(401, "Pengguna Belum Terautentikasi");
     }
 }
 
-function ensureIsRole(string $role) {
+function ensureIsRole(string $role)
+{
     ensureAuthenticated();
-    if(getAuthData()["role"] !== $role) {
+    if (getAuthData()["role"] !== $role) {
         errCode(403, "Perlu akun admin");
     }
 }
 
-function ensureIsAdmin() {
+function ensureIsAdmin()
+{
     ensureIsRole("admin");
 }
 
 
-function getAuthData() {
+function getAuthData()
+{
     return $_SESSION["auth"] ?? null;
 }
 
+function getIDNMonthName(int $n)
+{
+    $opts = [
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember"
+    ];
+    return $opts[$n - 1] ?? "?";
+}

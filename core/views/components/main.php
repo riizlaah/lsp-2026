@@ -12,10 +12,37 @@ $clippedRoute = $GLOBALS["clippedRoute"];
     <link rel="stylesheet" href="/assets/bootstrap5/css/bootstrap.min.css">
     <title><?= $title ?? "Document Title" ?></title>
     <script src="/assets/feather.min.js"></script>
+    <style>
+        .hover-blur {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .hover-blur > img {
+            width: 100%;
+            height: 100%;
+        }
+        .hover-blur > a:last-child {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff48;
+            backdrop-filter: blur(20px);
+        }
+        .hover-blur:hover > a:last-child, .hover-blur:focus > a:last-child {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 10px #0000008e;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top px-2 px-md-5 shadow-lg" style="background-color: #00b7ffb2; backdrop-filter: blur(6px); -webikt-backdrop-filter: blur(6px);">
+    <nav class="navbar navbar-expand-lg sticky-top px-2 px-md-5 shadow" style="background-color: #00b7ffb2; backdrop-filter: blur(6px); -webikt-backdrop-filter: blur(6px);">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">SMKN 1 Kandeman</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
