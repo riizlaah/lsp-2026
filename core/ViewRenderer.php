@@ -13,7 +13,7 @@ class ViewRenderer
     private static string $placeholder = "<!-- SLOT_PLACEHOLDER -->";
     private const array OTHER_ELEMENTS = [
         "/<xm-([a-z]+)\s*\/>/" => ["<input type=\"hidden\" name=\"_method\" value=\"$1\">"],
-        "/<xcsrf\s*\/>/" => ["<input type=\"hidden\" name=\"_csrf_token\" value=\"<?= generateCSRFToken() ?>\">"],
+        "/<xcsrf\s*\/>/" => ["<input type=\"hidden\" name=\"_csrf_token\" id=\"_csrf_token\" value=\"<?= generateCSRFToken() ?>\">"],
         "/@old\('(.*?)'\s*,\s*(.*?)\)/" => ["<?= old('$1') ?? $2 ?>", ["\$_SESSION['_flash']['oldInput'] = [];"]],
         "/@old\('(.*?)'\)/" => ["<?= old('$1') ?>", ["\$_SESSION['_flash']['oldInput'] = [];"]],
         "/@err\('(.*?)'\)\s*(.*?)\s*@enderr/s" => ["<?php \$$1 = err('$1'); if(!empty(\$$1)): ?>$2<?php endif; ?>", ["unset(\$_SESSION['_errors']);"]],

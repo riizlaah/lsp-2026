@@ -35,7 +35,7 @@ class Model
         $dsn = "mysql:host=$dbHost;port=$dbPort;dbname=$dbName;";
         try {
             self::$db = new PDO($dsn, $dbUsername, $dbPassword, [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-        } catch(Throwable $e) {
+        } catch (Throwable $e) {
             echo "DB Init failed: " . $e->getMessage();
             die;
         }
@@ -53,7 +53,7 @@ class Model
 
     public function __set(string $name, mixed $value)
     {
-        if(isset(static::$relationships[$name])) {
+        if (isset(static::$relationships[$name])) {
             $this->relationshipRecords[$name] = $value;
         } else {
             $this->attributes[$name] = $value;
@@ -70,7 +70,7 @@ class Model
             foreach (static::$whereConditions as $cond) {
                 if (!$first) $where .= " " . $cond[3];
                 $where .= " `" . $cond[0] . "` " . $cond[1] . " " . $cond[2];
-                if($first) $first = false;
+                if ($first) $first = false;
             }
         }
         switch ($mode) {
@@ -213,7 +213,8 @@ class Model
         $count = $res->fetchColumn();
         return $count;
     }
-    public static function any(): bool {
+    public static function any(): bool
+    {
         return static::count() > 0;
     }
     public static function first()
@@ -276,7 +277,7 @@ class Model
     public static function add(array $data)
     {
         $args = [];
-        foreach(static::$fillable as $key) {
+        foreach (static::$fillable as $key) {
             $args[] = $data[$key] ?? null;
         }
         static::$params = $args;
@@ -306,11 +307,23 @@ class Model
         }
         return [];
     }
+    public static function beginTransaction() {
+        return self::$db->beginTransaction();
+    }
 
-    public function asAssocArray() {
+    public static function commit() {
+        return self::$db->commit();
+    }
+
+    public static function rollback() {
+        return self::$db->rollBack();
+    }
+
+    public function asAssocArray()
+    {
         $attr = $this->attributes;
         $relRecords = [];
-        foreach($this->relationshipRecords as $rec) $relRecords[] = $rec->asAssocArray();
+        foreach ($this->relationshipRecords as $rec) $relRecords[] = $rec->asAssocArray();
         return array_merge($attr, $relRecords);
     }
 }

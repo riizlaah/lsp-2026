@@ -21,12 +21,16 @@
             <label for="judul">Judul</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" name="slug" class="form-control @err('slug') is-invalid @enderr" id="slug" value="@old('slug')" placeholder="Nama" required>
+            <input type="text" name="slug" class="form-control @err('slug') is-invalid @enderr" id="slug" value="@old('slug')" placeholder="Slug" aria-describedby="slugHelper" required>
             <label for="slug">Slug</label>
+            <div class="form-text" id="slugHelper">
+                Bagian teks yang akan ditampilkan di URL
+            </div>
         </div>
         <div class="mb-3">
-            <label for="formFile" class="form-label">Gambar Tajuk</label>
-            <input class="form-control" type="file" name="gambarTajuk" id="formFile" aria-describedby="gambarTajukHelper">
+            <label for="headerImgInput" class="form-label">Gambar Tajuk</label>
+            <img src="" alt="Gambar Tajuk" id="imgPreview" class="w-75 object-fit-contain mb-1 mx-auto" style="display: none;">
+            <input class="form-control" type="file" name="gambarTajuk" id="headerImgInput" accept="image/*" aria-describedby="gambarTajukHelper" required>
             <div class="form-text" id="gambarTajukHelper">
                 Gambar utama yang akan ditampilkan
             </div>
@@ -43,9 +47,10 @@
         </div>
         <div class="mb-3">
             <label for="editor" class="form-label">Konten</label>
-            <input type="hidden" name="konten" value="<?= old('konten', false) ?>">
+            <input type="hidden" name="konten" value="<?= old('konten', false) ?>" required>
             <trix-editor input="konten" id="editor" placeholder="Isi konten..."></trix-editor>
         </div>
+        <span>Status</span>
         <div class="form-check">
             <input class="form-check-input @err('status') is-invalid @enderr" type="radio" name="status" id="status1" value="d" <?= (old('status') == "d") ? 'checked' : '' ?>>
             <label class="form-check-label" for="status1">
@@ -64,6 +69,9 @@
         let timeoutId = 0;
         let titleInp = document.querySelector("#judul");
         let slugInp = document.querySelector("#slug");
+        let imgInp = document.querySelector("#headerImgInput");
+        let imgPreview = document.querySelector("#imgPreview");
+        let csrfToken = document.querySelector("#_csrf_token");
         titleInp.oninput = () => {
             if(timeoutId) clearTimeout(timeoutId);
             if(titleInp.value.trim() == "") {
@@ -78,6 +86,20 @@
                 });
             }, 500);
         };
+        imgInp.onchange = () => {
+            const file = imgInp.files[0];
+            if(file) {
+                const objURL = URL.createObjectURL(file);
+                imgPreview.src = objURL;
+                imgPreview.style.display = "block";
+                imgPreview.onload = () => {
+                    URL.revokeObjectURL(objURL);
+                };
+            } else {
+                imgPreview.src = "";
+                imgPreview.style.display = "none";
+            }
+        };
         document.addEventListener("trix-attachment-add", (e) => {
             if(e.attachment.file) {
                 uploadAttachment(e.attachment);
@@ -87,17 +109,17 @@
         function uploadAttachment(attachment) {
             const form = new FormData();
             form.append("file", attachment.file);
-            form.append("_csrf_token", "<?= generateCSRFToken() ?>");
+            form.append("_csrf_token", csrfToken.value);
             fetch("/upload-images", {
                 method: "POST",
                 body: form
             }).then(res => res.json())
             .then(json => {
-                console.log(json);
                 attachment.setAttributes({
                     url: json.url,
                     href: json.url
                 });
+                csrfToken.value = json.newToken;
             }).catch(e => {
                 console.error("Upload failed: ", e);
                 attachment.remove();

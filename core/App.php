@@ -1,6 +1,9 @@
 <?php
 namespace App;
 
+use App\Models\TmpFile;
+use Carbon\Carbon;
+
 require __DIR__ . "/RequiredFunctions.php";
 require __DIR__ . "/Helper.php";
 
@@ -50,6 +53,28 @@ class App {
         if(count($parts) > 2) $args = array_slice($parts, 2);
         // $clippedRoute = $route;
         $GLOBALS['clippedRoute'] = $route;
+        $this->beforeAction();
         call_user_func_array([$controller, $methodName], $args);
+        $this->afterAction();
     }
+
+    public function beforeAction() {
+        $now = Carbon::now();
+        if(!isset($_SESSION['lastAction'])) $_SESSION['lastAction'] = $now->toDateTimeString();
+        $lastAction = Carbon::parse($_SESSION['lastAction']);
+        if($lastAction->diffInMinutes($now) > 59) {
+            $files = TmpFile::where('createdAt', $now->toDateTimeString(), '<')->getAll();;
+            if(!empty($files)) {
+                $ids = [];
+                foreach($files as $file) {
+                    unlink(Config::getUploadDirPath() . $file->filename);
+                    $ids[] = $file->id;
+                }
+                TmpFile::whereIn('id', $ids)->delete();
+            }
+            $_SESSION['lastAction'] = $now->toDateTimeString();
+        }
+    }
+
+    public function afterAction() {}
 }

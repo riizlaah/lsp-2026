@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Config;
+use App\Models\TmpFile;
 use Exception;
 
 class upload_images {
@@ -14,7 +15,10 @@ class upload_images {
         ensureImageValidJSON('file');
         try {
             $filename = moveUploadedFile('file', Config::getUploadDirPath());
-            echo json_encode(["url" => "/assets/uploads/".$filename]);
+            TmpFile::add([
+                "filename" => $filename
+            ]);
+            echo json_encode(["url" => "/assets/uploads/".$filename, "newToken" => generateCSRFToken()]);
         } catch(Exception $e) {
             http_response_code(500);
             echo json_encode(["message" => "Failed to upload file"]);
