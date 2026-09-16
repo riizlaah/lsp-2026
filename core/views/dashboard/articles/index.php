@@ -24,7 +24,7 @@
             <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Nama</th>
-                <th scope="col">Cuplikan Konten</th>
+                <th scope="col">Cuplikan Teks</th>
                 <th scope="col">Gambar Kepala</th>
                 <th scope="col">Aksi</th>
             </tr>
@@ -34,8 +34,8 @@
                 <tr>
                     <td><?= $idx + 1 ?></td>
                     <td><?= $row->title ?></td>
-                    <td><?= "#" . (string)$row->rank . "/" . $row->level ?></td>
-                    <td><?= getIDNMonthName($row->month) . " " . (string)$row->year  ?></td>
+                    <td><?= getTextFromElement($row->content) ?></td>
+                    <td><img class="d-block mx-auto w-50" src="/assets/uploads/<?= $row->headerImage ?>" alt="<?= $row->title ?>"></td>
                     <td class="d-flex gap-2">
                         <a href="/manage-articles/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>
                         <form action="/manage-articles/delete/<?= $row->id ?>" method="post">

@@ -1,5 +1,5 @@
 <x-dashb>
-    <form action="/manage-articles/create" method="post" class="mx-auto shadow rounded my-4 p-4" style="width: min(100%, 44rem);">
+    <form action="/manage-articles/create" method="post" class="mx-auto shadow rounded my-4 p-4" style="width: min(100%, 44rem);" enctype="multipart/form-data">
         <xcsrf />
         <div class="mb-4 d-flex gap-2 align-items-center">
             <a href="/manage-achievements"><i data-feather="arrow-left"></i></a>
@@ -47,7 +47,7 @@
         </div>
         <div class="mb-3">
             <label for="editor" class="form-label">Konten</label>
-            <input type="hidden" name="konten" value="<?= old('konten', false) ?>" required>
+            <input type="hidden" name="konten" id="konten" value="<?= old('konten') ?>" required>
             <trix-editor input="konten" id="editor" placeholder="Isi konten..."></trix-editor>
         </div>
         <span>Status</span>
@@ -73,22 +73,22 @@
         let imgPreview = document.querySelector("#imgPreview");
         let csrfToken = document.querySelector("#_csrf_token");
         titleInp.oninput = () => {
-            if(timeoutId) clearTimeout(timeoutId);
-            if(titleInp.value.trim() == "") {
+            if (timeoutId) clearTimeout(timeoutId);
+            if (titleInp.value.trim() == "") {
                 slugInp.value = "";
                 return;
             }
             timeoutId = setTimeout(() => {
                 let encStr = encodeURI(titleInp.value.trim());
                 fetch("/manage-articles/generate-slug?title=" + encStr)
-                .then(res => res.json()).then(data => {
-                    slugInp.value = data.slug;
-                });
+                    .then(res => res.json()).then(data => {
+                        slugInp.value = data.slug;
+                    });
             }, 500);
         };
         imgInp.onchange = () => {
             const file = imgInp.files[0];
-            if(file) {
+            if (file) {
                 const objURL = URL.createObjectURL(file);
                 imgPreview.src = objURL;
                 imgPreview.style.display = "block";
@@ -100,8 +100,13 @@
                 imgPreview.style.display = "none";
             }
         };
+        addEventListener("before-trix-initialize", (event) => {
+            const trixEditor = event.target
+
+            trixEditor.willCreateInput = false
+        })
         document.addEventListener("trix-attachment-add", (e) => {
-            if(e.attachment.file) {
+            if (e.attachment.file) {
                 uploadAttachment(e.attachment);
             }
         });
@@ -111,19 +116,19 @@
             form.append("file", attachment.file);
             form.append("_csrf_token", csrfToken.value);
             fetch("/upload-images", {
-                method: "POST",
-                body: form
-            }).then(res => res.json())
-            .then(json => {
-                attachment.setAttributes({
-                    url: json.url,
-                    href: json.url
-                });
-                csrfToken.value = json.newToken;
-            }).catch(e => {
-                console.error("Upload failed: ", e);
-                attachment.remove();
-            })
+                    method: "POST",
+                    body: form
+                }).then(res => res.json())
+                .then(json => {
+                    attachment.setAttributes({
+                        url: json.url,
+                        href: json.url
+                    });
+                    csrfToken.value = json.newToken;
+                }).catch(e => {
+                    console.error("Upload failed: ", e);
+                    attachment.remove();
+                })
         }
     </script>
 </x-dashb>

@@ -65,3 +65,14 @@ function getIDNMonthName(int $n)
     ];
     return $opts[$n - 1] ?? "?";
 }
+
+
+function getTextFromElement(string $str, $len = 100) {
+    $str = strip_tags($str);
+    $str = html_entity_decode($str, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    return mb_substr($str, 0, $len, 'UTF-8') . (strlen($str) > $len ? "..." : "");
+}
+
+function safeUnlink(string $filename) {
+    if(file_exists($filename)) unlink($filename);
+}

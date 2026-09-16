@@ -12,8 +12,8 @@ Proyek LSP 2026, sebuah web untuk profil sekolah.
 ## Entities
 
 - User(id, username, password, email, phoneNumber, role)
-- Galery(id, name, description)
-- GaleryItem(id, galeryId, shortDescription, imagePath, isMain)
+- Gallery(id, name, description)
+- GalleryItem(id, GalleryId, shortDescription, imagePath, isMain)
 - Announcement(id, userId, title, imagePath, content, createdAt, updatedAt)
 - AnnouncementAttachment(id, announcementId, name, type, url)
 - Article(id, userId, title, imagePath, content, createdAt, updatedAt)

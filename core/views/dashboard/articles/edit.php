@@ -1,11 +1,11 @@
 <x-dashb>
-    <?php $record = $record ?? new \App\Models\Achievement() ?>
-    <form action="/manage-achievements/edit/<?= $record->id ?>" method="post" class="mx-auto shadow rounded my-4 p-4" style="width: min(100%, 40rem);">
+    <?php $record = $record ?? new \App\Models\Article; ?>
+    <form action="/manage-articles/edit/<?= $record->id ?>" method="post" class="mx-auto shadow rounded my-4 p-4" style="width: min(100%, 44rem);" enctype="multipart/form-data">
         <xm-put />
         <xcsrf />
         <div class="mb-4 d-flex gap-2 align-items-center">
             <a href="/manage-achievements"><i data-feather="arrow-left"></i></a>
-            <h1>Edit Pencapaian</h1>
+            <h1>Edit Artikel</h1>
         </div>
         @err
         <div class="text-danger">
@@ -19,84 +19,121 @@
         </div>
         @enderr
         <div class="form-floating mb-3">
-            <input type="text" name="nama" class="form-control @err('nama') is-invalid @enderr" id="nama" value="@old('nama', $record->title)" placeholder="Nama" required>
-            <label for="nama">Nama</label>
+            <input type="text" name="judul" class="form-control @err('judul') is-invalid @enderr" id="judul" value="@old('judul', $record->title)" placeholder="Nama" required>
+            <label for="judul">Judul</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" name="rank" class="form-control @err('rank') is-invalid @enderr" id="rank" value="@old('rank', $record->rank)" placeholder="Rank" required>
-            <label for="rank">Rank</label>
+            <input type="text" name="slug" class="form-control @err('slug') is-invalid @enderr" id="slug" value="@old('slug', $record->slug)" placeholder="Slug" aria-describedby="slugHelper" required>
+            <label for="slug">Slug</label>
+            <div class="form-text" id="slugHelper">
+                Bagian teks yang akan ditampilkan di URL
+            </div>
         </div>
         <div class="mb-3">
-            <label for="tingkat">Tingkat</label>
-            <select class="form-select @err('tingkat') is-invalid @enderr" id="tingkat" name="tingkat" required>
+            <label for="headerImgInput" class="form-label">Gambar Tajuk</label>
+            <img src="/assets/uploads<?= $record->headerImage ?>" alt="Gambar Tajuk" id="imgPreview" class="w-75 object-fit-contain mb-1 mx-auto" style="display: none;">
+            <input class="form-control" type="file" name="gambarTajuk" id="headerImgInput" accept="image/*" aria-describedby="gambarTajukHelper" required>
+            <div class="form-text" id="gambarTajukHelper">
+                Gambar utama yang akan ditampilkan
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="kategori">Kategori</label>
+            <select class="form-select @err('kategori') is-invalid @enderr" id="kategori" name="kategori" required>
                 <?php
-                $opts = [
-                    "Tidak diketahui",
-                    "Kecamatan",
-                    "Kabupaten",
-                    "Provinsi",
-                    "Nasional",
-                    "Internasional"
-                ];
-                $tingkat = old('tingkat');
-                foreach ($opts as $i => $opt): ?>
-                    <option value="<?= $opt ?>" <?= (($opt == $record->level && !$tingkat) xor $tingkat == $opt) ? 'selected' : '' ?>><?= $opt ?></option>
+                $kategori = old('kategori') ?? $record->categoryId;
+                foreach ($categories ?? [] as $i => $opt): ?>
+                    <option value="<?= $opt->id ?>" <?= (($i == 0 && !$kategori) xor $kategori == $opt->id) ? 'selected' : '' ?>><?= $opt->name ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
+        <div class="mb-3">
+            <label for="editor" class="form-label">Konten</label>
+            <input type="hidden" name="konten" id="konten" value="<?= old('konten') ?? $record->content ?>" required>
+            <trix-editor input="konten" id="editor" placeholder="Isi konten..."></trix-editor>
+        </div>
+        <span>Status</span>
         <div class="form-check">
-            <input class="form-check-input @err('berjenjang') is-invalid @enderr" type="radio" name="berjenjang" id="berjenjang1" value="t" <?= old('berjenjang') == "t" || ($record->isTiered && !old('berjenjang')) ? 'checked' : '' ?>>
-            <label class="form-check-label" for="berjenjang1">
-                Berjenjang
+            <input class="form-check-input @err('status') is-invalid @enderr" type="radio" name="status" id="status1" value="d" <?= (old('status') == "d" || (!old('status') && !$record->isReleased)) ? 'checked' : '' ?>>
+            <label class="form-check-label" for="status1">
+                Draft
             </label>
         </div>
         <div class="form-check mb-3">
-            <input class="form-check-input @err('berjenjang') is-invalid @enderr" type="radio" name="berjenjang" id="berjenjang2" value="f" <?= old('berjenjang') == "f" || (!$record->isTiered && !old('berjenjang')) ? 'checked' : '' ?>>
-            <label class="form-check-label" for="berjenjang2">
-                Tidak Berjenjang
+            <input class="form-check-input @err('status') is-invalid @enderr" type="radio" name="status" id="status2" value="r" <?= (old('status') == "r" || (!old('status') && $record->isReleased)) ? 'checked' : '' ?>>
+            <label class="form-check-label" for="status2">
+                Rilis
             </label>
-        </div>
-        <div class="form-floating mb-3">
-            <textarea type="text" name="konten" class="form-control @err('konten') is-invalid @enderr" id="konten" placeholder="Konten..." required style="height: 100px;"><?= old('konten') ?? $record->content ?></textarea>
-            <label for="konten">Konten</label>
-        </div>
-        <div class="row gap-2 mb-3">
-            <div class="col">
-                <div class="form-floating">
-                    <input type="text" name="tahun" class="form-control @err('tahun') is-invalid @enderr" id="tahun" value="<?= old('tahun') ?? $record->year ?>" placeholder="tahun" required>
-                    <label for="tahun">Tahun</label>
-                </div>
-            </div>
-            <div class="col">
-                <div>
-                    <label for="bulan">Bulan</label>
-                    <select class="form-select @err('bulan') is-invalid @enderr" name="bulan" id="bulan" required>
-                        <?php
-                        $opts = [
-                            "Januari",
-                            "Februari",
-                            "Maret",
-                            "April",
-                            "Mei",
-                            "Juni",
-                            "Juli",
-                            "Agustus",
-                            "September",
-                            "Oktober",
-                            "November",
-                            "Desember"
-                        ];
-                        $bulan = old('bulan');
-                        foreach ($opts as $idx => $opt): ?>
-                            <option value="<?= $idx + 1 ?>" <?= ((!$bulan && ($idx+1) == $record->month) xor $bulan == (string)($idx + 1)) ? 'selected' : '' ?>><?= $opt ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
         </div>
         <div class="d-flex gap-2">
             <a href="/manage-achievements" class="btn btn-secondary flex-fill">Batal</a>
             <button type="submit" class="btn btn-primary flex-fill">Simpan</button>
         </div>
     </form>
+    <script>
+        let timeoutId = 0;
+        let titleInp = document.querySelector("#judul");
+        let slugInp = document.querySelector("#slug");
+        let imgInp = document.querySelector("#headerImgInput");
+        let imgPreview = document.querySelector("#imgPreview");
+        let csrfToken = document.querySelector("#_csrf_token");
+        titleInp.oninput = () => {
+            if (timeoutId) clearTimeout(timeoutId);
+            if (titleInp.value.trim() == "") {
+                slugInp.value = "";
+                return;
+            }
+            timeoutId = setTimeout(() => {
+                let encStr = encodeURI(titleInp.value.trim());
+                fetch("/manage-articles/generate-slug?title=" + encStr)
+                    .then(res => res.json()).then(data => {
+                        slugInp.value = data.slug;
+                    });
+            }, 500);
+        };
+        imgInp.onchange = () => {
+            const file = imgInp.files[0];
+            if (file) {
+                const objURL = URL.createObjectURL(file);
+                imgPreview.src = objURL;
+                imgPreview.style.display = "block";
+                imgPreview.onload = () => {
+                    URL.revokeObjectURL(objURL);
+                };
+            } else {
+                imgPreview.src = "";
+                imgPreview.style.display = "none";
+            }
+        };
+        addEventListener("before-trix-initialize", (event) => {
+            const trixEditor = event.target
+
+            trixEditor.willCreateInput = false
+        })
+        document.addEventListener("trix-attachment-add", (e) => {
+            if (e.attachment.file) {
+                uploadAttachment(e.attachment);
+            }
+        });
+
+        function uploadAttachment(attachment) {
+            const form = new FormData();
+            form.append("file", attachment.file);
+            form.append("_csrf_token", csrfToken.value);
+            fetch("/upload-images", {
+                    method: "POST",
+                    body: form
+                }).then(res => res.json())
+                .then(json => {
+                    attachment.setAttributes({
+                        url: json.url,
+                        href: json.url
+                    });
+                    csrfToken.value = json.newToken;
+                }).catch(e => {
+                    console.error("Upload failed: ", e);
+                    attachment.remove();
+                })
+        }
+    </script>
 </x-dashb>

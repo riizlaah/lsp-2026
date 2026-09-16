@@ -2,10 +2,13 @@
 namespace App\Controllers;
 
 use App\Config;
+use App\Model;
 use App\Models\Article;
 use App\Models\ArticleAttachment;
 use App\Models\Category;
+use App\Models\Gallery;
 use App\Models\TmpFile;
+use Exception;
 use HTMLPurifier;
 
 class manage_articles {
@@ -38,34 +41,45 @@ class manage_articles {
 
     public function edit_put($id = "") {
         ensureIsAdmin();
+        ensureInputFilled($_POST, ["judul", "slug", "kategori", "konten", "status"]);
+        ensureImageValid("gambarTajuk");
+        $title = sanitizeInput("judul");
+        $slug = sanitizeInput("slug");
+        $categoryId = intval(sanitizeInput("kategori"));
+        $status = sanitizeInput("status");
         $actualId = intval($id);
         if($actualId <= 0) redirect("/manage-articles");
-        ensureInputFilled($_POST, ["nama", "rank", "tingkat", "berjenjang", "konten", "tahun", "bulan"]);
-        $name = sanitizeInput("nama");
-        $rank = sanitizeInput("rank");
-        $level = sanitizeInput("tingkat");
-        $isTiered = sanitizeInput("berjenjang");
-        $content = sanitizeInput("konten");
-        $year = sanitizeInput("tahun");
-        $month = sanitizeInput("bulan");
-        if(!ctype_digit($rank) || intval($rank) < 0) redirectBackWithErrors(["rank" => ["Rank tidak valid"]]);
-        if(!in_array($level, ["Tidak diketahui","Kecamatan","Kabupaten","Provinsi","Nasional","Internasional"]))
-            redirectBackWithErrors(["tingkat" => ["Tingkat tidak valid"]]);
-        if(!in_array($isTiered, ["t", "f"])) redirectBackWithErrors(["berjenjang" => ["Opsi berjenjang tidak valid"]]);
-        if(!ctype_digit($year) || intval($year) <= 0) redirectBackWithErrors(["tahun" => ["Tahun tidak valid"]]);
-        if(!ctype_digit($month) || intval($month) <= 0) redirectBackWithErrors(["bulan" => ["Bulan tidak valid"]]);
         if(!Article::where('id', $actualId)->any()) errCode(404, "Artikel tidak ditemukan");
-        Article::where('id', $actualId)->update([
-            "title" => $name,
-            "rank" => intval($rank),
-            "level" => $level,
-            "isTiered" => $isTiered == "t" ? true : false,
-            "content" => $content,
-            "year" => intval($year),
-            "month" => intval($month)
-        ]);
-        session_flash('message', "Berhasil mengubah Artikel!");
-        redirect('/manage-articles');
+        if(Article::where('slug', $slug)->where('id', $actualId, "!=")->any()) redirectBackWithError("slug", ["Slug sudah terpakai"]);
+        if(!Category::where('id', $categoryId)->any()) redirectBackWithError("kategori", ["Kategori invalid"]);
+        if(!in_array($status, ["d", "r"])) redirectBackWithError("status", ["Opsi status invalid"]);
+        $purifier = new HTMLPurifier(Config::getHTMLPurifierConf());
+        $content = $purifier->purify(trim($_POST["konten"]));
+        try {
+            Model::beginTransaction();
+            $imgPath = moveUploadedFile("gambarTajuk", Config::getUploadDirPath());
+            $images = $this->removeTmpFileRecords($content);
+            array_unshift($images, $imgPath);
+            $userId = getAuthData()["id"];
+            $articleId = Article::add([
+                "userId" => $userId,
+                "categoryId" => $categoryId,
+                "title" => $title,
+                "slug" => $slug,
+                "headerImage" => $imgPath,
+                "content" => $content,
+                "isReleased" => $status == "r"
+            ]);
+            if($articleId == 0) throw new Exception("Gagal mendapatkan ID dari artikel yang dibuat");
+            Gallery::generateGaleries("articles", $articleId, $images);
+            Model::commit();
+            session_flash("message", "Artikel ditambahkan!");
+            redirect('/manage-articles');
+        } catch (Exception $e) {
+            redirectBackWithError("", ["Gagal membuat artikel: ".$e->getMessage()]);
+            Model::rollback();
+            foreach($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
+        }
     }
 
     public function create_post() {
@@ -81,27 +95,44 @@ class manage_articles {
         if(!in_array($status, ["d", "r"])) redirectBackWithError("status", ["Opsi status invalid"]);
         $purifier = new HTMLPurifier(Config::getHTMLPurifierConf());
         $content = $purifier->purify(trim($_POST["konten"]));
-        $this->removeTmpFileRecords($content);
-        $imgPath = moveUploadedFile("gambarTajuk", Config::getUploadDirPath());
-        $userId = getAuthData()["id"];
-        Article::add([
-            "userId" => $userId,
-            "categoryId" => $categoryId,
-            "title" => $title,
-            "slug" => $slug,
-            "headerImage" => $imgPath,
-            "content" => $content,
-            "isReleased" => $status == "r"
-        ]);
-        session_flash("message", "Artikel ditambahkan!");
-        redirect('/manage-articles');
+        try {
+            Model::beginTransaction();
+            $imgPath = moveUploadedFile("gambarTajuk", Config::getUploadDirPath());
+            $images = $this->removeTmpFileRecords($content);
+            array_unshift($images, $imgPath);
+            $userId = getAuthData()["id"];
+            $articleId = Article::add([
+                "userId" => $userId,
+                "categoryId" => $categoryId,
+                "title" => $title,
+                "slug" => $slug,
+                "headerImage" => $imgPath,
+                "content" => $content,
+                "isReleased" => $status == "r"
+            ]);
+            if($articleId == 0) throw new Exception("Gagal mendapatkan ID dari artikel yang dibuat");
+            Gallery::generateGaleries("articles", $articleId, $images);
+            Model::commit();
+            session_flash("message", "Artikel ditambahkan!");
+            redirect('/manage-articles');
+        } catch (Exception $e) {
+            redirectBackWithError("", ["Gagal membuat artikel: ".$e->getMessage()]);
+            Model::rollback();
+            foreach($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
+        }
     }
 
     private function removeTmpFileRecords(string $content) {
         preg_match_all("/<img\s*.*src=\"(.*?)\".*?>/", $content, $matches);
         $files = [];
-        foreach($matches as $match) $files[] = $match[1];
-        TmpFile::whereIn('id', $files)->delete();
+        if(isset($matches[1])) {
+            foreach($matches[1] as $match) {
+                $parts = explode("/", trim($match, "/ "));
+                $files[] = $parts[count($parts) - 1];
+            }
+            TmpFile::whereIn('filename', $files)->delete();
+        }
+        return $files;
     }
 
     public function _delete($id = "") {

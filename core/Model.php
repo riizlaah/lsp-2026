@@ -282,6 +282,19 @@ class Model
         }
         static::$params = $args;
         $query = static::constructQuery("c");
+        static::execQueryWithParams($query);
+        return self::$db->lastInsertId();
+    }
+    public static function addMany(array $data)
+    {
+        $args = [];
+        foreach($data as $datum) {
+            foreach (static::$fillable as $key) {
+                $args[] = $datum[$key] ?? null;
+            }
+        }
+        static::$params = $args;
+        $query = static::constructQuery("c");
         $res = static::execQueryWithParams($query);
         return $res->rowCount();
     }

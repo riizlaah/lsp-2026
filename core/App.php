@@ -67,7 +67,8 @@ class App {
             if(!empty($files)) {
                 $ids = [];
                 foreach($files as $file) {
-                    unlink(Config::getUploadDirPath() . $file->filename);
+                    $filepath = Config::getUploadDirPath() . $file->filename;
+                    if(file_exists($filepath)) unlink($filepath);
                     $ids[] = $file->id;
                 }
                 TmpFile::whereIn('id', $ids)->delete();
