@@ -5,7 +5,7 @@
     </div>
     <div class="input-group mb-3">
         <form action="">
-            <input type="text" name="search" class="form-control" placeholder="Cari..." aria-label="Search">
+            <input type="text" name="search" class="form-control" value="<?= htmlspecialchars($_GET["search"] ?? "") ?>" placeholder="Cari..." aria-label="Search">
         </form>
     </div>
     <div class="row row-cols-2 row-cols-lg-4">

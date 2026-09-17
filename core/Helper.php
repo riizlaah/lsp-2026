@@ -36,6 +36,10 @@ function ensureIsRole(string $role)
     }
 }
 
+function isAdmin() {
+    return isLoggedIn() && getAuthData()["role"] === "admin";
+}
+
 function ensureIsAdmin()
 {
     ensureIsRole("admin");

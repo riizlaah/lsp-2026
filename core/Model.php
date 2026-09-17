@@ -145,15 +145,15 @@ class Model
         switch ($type) {
             case 'hasOne':
                 $record = empty($childRels)
-                    ? call_user_func_array([$class, 'where'], [$fk, static::$attributes[$pk]])->first()
-                    : call_user_func_array([$class, 'with'], [$childRels])->where($fk, static::$attributes[$pk])->first();
-                static::$relationshipRecords[$relName] = $record;
+                    ? call_user_func_array([$class, 'where'], [$fk, $this->attributes[$pk]])->first()
+                    : call_user_func_array([$class, 'with'], [$childRels])->where($fk, $this->attributes[$pk])->first();
+                $this->relationshipRecords[$relName] = $record;
                 break;
             case 'hasMany':
                 $records = empty($childRels)
-                    ? call_user_func_array([$class, 'where'], [$fk, static::$attributes[$pk]])->getAll()
-                    : call_user_func_array([$class, 'with'], [$childRels])->where($fk, static::$attributes[$pk])->getAll();
-                static::$relationshipRecords[$relName] = $records;
+                    ? call_user_func_array([$class, 'where'], [$fk, $this->attributes[$pk]])->getAll()
+                    : call_user_func_array([$class, 'with'], [$childRels])->where($fk, $this->attributes[$pk])->getAll();
+                $this->relationshipRecords[$relName] = $records;
                 break;
             default:
         }
@@ -217,7 +217,7 @@ class Model
     {
         return static::count() > 0;
     }
-    public static function first()
+    public function first()
     {
         $query = static::constructQuery();
         $res = self::execQueryWithParams($query);
@@ -228,9 +228,9 @@ class Model
             static::$eagerLoads = [];
             foreach ($eagerLoads as $idx => $val) {
                 if (is_string($idx)) {
-                    static::loadRelation($idx, $val);
+                    $this->loadRelation($idx, $val);
                 } else {
-                    static::loadRelation($val);
+                    $this->loadRelation($val);
                 }
             }
         }

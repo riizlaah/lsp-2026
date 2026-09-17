@@ -38,7 +38,7 @@ class Config
     public static function getHTMLPurifierConf()
     {
         $config = HTMLPurifier_Config::createDefault();
-        $config->set("HTML.Allowed", "'p,b,i,u,strong,del,pre,em,ul,ol,li,br,a[href|title],img[src|alt|width|height],figure,figcaption,div,blockquote'");
+        $config->set('HTML.Allowed', 'p,b,i,u,strong,del,pre,em,ul,ol,li,br,a[href|title],img[src|alt|width|height],figure[data-trix-attributes|data-trix-attachment],figcaption,div,blockquote');
         $config->set('HTML.TargetBlank', true); // Membuka tautan di tab baru
         $config->set('HTML.Nofollow', true);    // Menambahkan rel="nofollow"
         $config->set('HTML.TargetNoreferrer', true);

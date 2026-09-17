@@ -17,26 +17,36 @@ $clippedRoute = $GLOBALS["clippedRoute"];
             width: 100%;
             height: 100%;
             position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
         }
         .hover-blur > img {
             width: 100%;
             height: 100%;
         }
         .hover-blur > a:last-child {
-            display: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 10px #0000008e;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff48;
-            backdrop-filter: blur(20px);
+            background-color: #ffffff6e;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
         }
         .hover-blur:hover > a:last-child, .hover-blur:focus > a:last-child {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-shadow: 0 0 10px #0000008e;
+            background-color: #ffffff38;
+            backdrop-filter: blur(20px);
+        }
+        .anchor-down a > * {
+            display: block;
+        }
+        a:has(> img) {
+            display: block;
         }
     </style>
 </head>

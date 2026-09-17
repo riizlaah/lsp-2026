@@ -1,5 +1,5 @@
 <x-dashb>
-    <h1 class="mb-4">Kelola Artikel</h1>
+    <h1 class="mb-4">Kelola Pengumuman</h1>
     <?php if (flash_exists("message")): ?>
         <div class="alert alert-secondary alert-dismissible fade show" role="alert">
             <?= session_flash("message") ?>
@@ -25,7 +25,7 @@
                 <th scope="col">No.</th>
                 <th scope="col">Nama</th>
                 <th scope="col">Cuplikan Teks</th>
-                <th scope="col">Gambar Kepala</th>
+                <th scope="col">Durasi</th>
                 <th scope="col">Aksi</th>
             </tr>
         </thead>

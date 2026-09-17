@@ -26,6 +26,7 @@ function validateCSRFToken() {
 function errCode(int $code, string $message = "") {
     http_response_code($code);
     echo "<h1>$code | $message</h1>";
+    echo "<script>setTimeout(() => {document.location.href = \"/\"}, 2000)</script>";
     exit;
 }
 

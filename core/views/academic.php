@@ -35,7 +35,12 @@
     </div>
     <div class="container-xl bg-primary-subtle bg-gradient p-4 my-3">
         <h1>Ekstrakurikuler</h1>
-
+        <ul>
+            <li>Pramuka</li>
+            <li>OSIS</li>
+            <li>PMR</li>
+            <li></li>
+        </ul>
     </div>
     <!-- 
     - Kurikulum yang Digunakan
