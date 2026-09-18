@@ -37,7 +37,7 @@
                     <td><?= getTextFromElement($row->content) ?></td>
                     <td><img class="d-block mx-auto w-50" src="/assets/uploads/<?= $row->headerImage ?>" alt="<?= $row->title ?>"></td>
                     <td class="d-flex gap-2">
-                        <a href="/information/articles/<?= $row->id ?>" class="btn btn-primary"><i data-feather="eye"></i></a>
+                        <a href="/information/articles/<?= $row->slug ?>" class="btn btn-primary"><i data-feather="eye"></i></a>
                         <a href="/manage-articles/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>
                         <form action="/manage-articles/delete/<?= $row->id ?>" method="post">
                             <xm-delete />

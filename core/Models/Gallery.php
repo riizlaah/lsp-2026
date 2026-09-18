@@ -31,13 +31,16 @@ class Gallery extends Model
 
     public static function syncGaleries(string $refTable, int $refId, array $images)
     {
+        $existingGalleries = static::byRef($refTable, $refId)->getAll();
+        $existingFiles = [];
+        foreach ($existingGalleries as $galleryItem) $existingFiles[] = $galleryItem->mediaPath;
         if (empty($images)) {
-            static::where('refTable', $refTable)->where('refId', $refId)->delete();
+            static::byRef($refTable, $refId)->delete();
+            foreach ($existingFiles as $file) {
+                safeUnlink(Config::getUploadDirPath() . $file);
+            }
             return;
         }
-        $existingGalleries = static::where('refTable', $refTable)->where('refId', $refId)->getAll();
-        $existingFiles = [];
-        foreach ($existingGalleries as $file) $existingFiles[] = $file;
         $data = [];
         $toRemove = [];
         foreach ($existingFiles as $file) {
@@ -45,7 +48,7 @@ class Gallery extends Model
             $toRemove[] = $file;
         }
         if (!empty($toRemove)) {
-            static::where('refTable', $refTable)->where('refId', $refId)->whereIn('mediaPath', $toRemove)->delete();
+            static::byRef($refTable, $refId)->whereIn('mediaPath', $toRemove)->delete();
             foreach ($toRemove as $file) {
                 safeUnlink(Config::getUploadDirPath() . $file);
             }
@@ -60,10 +63,14 @@ class Gallery extends Model
             ];
         }
         if (!empty($data)) static::addMany($data);
-        if($existingFiles[0] !== $images[0]) {
-            $first = static::where('refTable', $refTable)->where('refId', $refId)->first();
-            static::where('id', $first->id)->delete();
+        if(!static::byRef($refTable, $refId)->where('isCover', true)->any()) {
+            $first = static::byRef($refTable, $refId)->where('mediaPath', $images[0]);
+            static::where('id', $first->id)->update(["isCover" => true]);
             safeUnlink(Config::getUploadDirPath() . $first->mediaPath);
         }
+    }
+
+    public static function byRef(string $refTable, int $refId) {
+        return static::where('refTable', $refTable)->where('refId', $refId);
     }
 }

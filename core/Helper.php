@@ -2,17 +2,28 @@
 
 
 use App\Models\User;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 
-// function tryLogin(array $input) {
-//     $user = User::where('username', $input["username"])->first();
-//     if(!$user) return false;
-//     if(!password_verify($input["password"], $user->password)) return false;
-//     $_SESSION["auth"] = serialize($user);
-//     if(isset($input["rememberMe"]) && $input["rememberMe"]) {
-
-//     }
-//     return true;
-// }
+function sanitizeHTML(string $str)
+{
+    $config = (new HtmlSanitizerConfig())
+        ->allowSafeElements()
+        ->allowElement('figure')
+        ->allowElement('figcaption')
+        ->allowElement('img', ['src', 'alt', 'width', 'height'])
+        ->allowElement('a', ['href', 'target', 'rel'])
+        ->allowLinkSchemes(['http', 'https', 'mailto'])
+        ->allowAttribute('data-trix-attributes', ['figure'])
+        ->allowAttribute('data-trix-attachment', ['figure'])
+        ->allowAttribute('data-trix-content-type', ['figure'])
+        ->allowRelativeLinks()
+        ->allowRelativeMedias()
+        ->allowMediaSchemes(['http', 'https'])
+        ->forceAttribute('a', 'rel', 'noopener noreferrer')
+        ->withMaxInputLength(65556);
+    return (new HtmlSanitizer($config))->sanitize($str);
+}
 
 function validateRememberToken($token) {}
 
@@ -36,7 +47,8 @@ function ensureIsRole(string $role)
     }
 }
 
-function isAdmin() {
+function isAdmin()
+{
     return isLoggedIn() && getAuthData()["role"] === "admin";
 }
 
@@ -71,12 +83,14 @@ function getIDNMonthName(int $n)
 }
 
 
-function getTextFromElement(string $str, $len = 100) {
+function getTextFromElement(string $str, $len = 100)
+{
     $str = strip_tags($str);
     $str = html_entity_decode($str, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     return mb_substr($str, 0, $len, 'UTF-8') . (strlen($str) > $len ? "..." : "");
 }
 
-function safeUnlink(string $filename) {
-    if(file_exists($filename)) unlink($filename);
+function safeUnlink(string $filename)
+{
+    if (file_exists($filename)) unlink($filename);
 }

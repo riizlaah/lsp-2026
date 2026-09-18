@@ -42,11 +42,10 @@ $clippedRoute = $GLOBALS["clippedRoute"];
             background-color: #ffffff38;
             backdrop-filter: blur(20px);
         }
-        .anchor-down a > * {
-            display: block;
-        }
-        a:has(> img) {
-            display: block;
+        .wrap-imgs img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
         }
     </style>
 </head>

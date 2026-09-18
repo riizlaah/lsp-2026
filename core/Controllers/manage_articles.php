@@ -9,7 +9,6 @@ use App\Models\Category;
 use App\Models\Gallery;
 use App\Models\TmpFile;
 use Exception;
-use HTMLPurifier;
 
 class manage_articles
 {
@@ -46,12 +45,11 @@ class manage_articles
 
     public function edit_put($id = "")
     {
-        $purifier = new HTMLPurifier(Config::getHTMLPurifierConf());
-        $content = $purifier->purify(trim($_POST["konten"] ?? ""));
+        $content = sanitizeHTML(trim($_POST["konten"] ?? ""));
         $_SESSION["_flash"]["oldInput"]["konten"] = $content;
         ensureIsAdmin();
         ensureInputFilled($_POST, ["judul", "slug", "kategori", "konten", "status"]);
-        if (isset($_FILES["gambarTajuk"])) ensureImageValid("gambarTajuk");
+        if (isFileUploaded("gambarTajuk")) ensureImageValid("gambarTajuk");
         $title = sanitizeInput("judul");
         $slug = sanitizeInput("slug");
         $categoryId = intval(sanitizeInput("kategori"));
@@ -65,8 +63,8 @@ class manage_articles
         if (!in_array($status, ["d", "r"])) redirectBackWithError("status", ["Opsi status invalid"]);
         try {
             Model::beginTransaction();
-            $imgPath = (isset($_FILES["gambarTajuk"])) ? moveUploadedFile("gambarTajuk", Config::getUploadDirPath()) : $record->headerImage;
-            $images = $this->removeTmpFileRecords($content);
+            $imgPath = (isFileUploaded("gambarTajuk")) ? moveUploadedFile("gambarTajuk", Config::getUploadDirPath()) : $record->headerImage;
+            $images = $this->updateTmpFilesIfExists($content);
             array_unshift($images, $imgPath);
             Article::where('id', $actualId)->update([
                 "categoryId" => $categoryId,
@@ -90,8 +88,7 @@ class manage_articles
 
     public function create_post()
     {
-        $purifier = new HTMLPurifier(Config::getHTMLPurifierConf());
-        $content = $purifier->purify(trim($_POST["konten"] ?? ""));
+        $content = sanitizeHTML(trim($_POST["konten"] ?? ""));
         $_SESSION["_flash"]["oldInput"]["konten"] = $content;
         ensureIsAdmin();
         ensureInputFilled($_POST, ["judul", "slug", "kategori", "konten", "status"]);
@@ -100,13 +97,14 @@ class manage_articles
         $slug = sanitizeInput("slug");
         $categoryId = intval(sanitizeInput("kategori"));
         $status = sanitizeInput("status");
+        if(empty($content)) redirectBackWithError("konten", ["Konten wajib diisi"]);
         if (Article::where('slug', $slug)->any()) redirectBackWithError("slug", ["Slug sudah terpakai"]);
         if (!Category::where('id', $categoryId)->any()) redirectBackWithError("kategori", ["Kategori invalid"]);
         if (!in_array($status, ["d", "r"])) redirectBackWithError("status", ["Opsi status invalid"]);
         try {
             Model::beginTransaction();
             $imgPath = moveUploadedFile("gambarTajuk", Config::getUploadDirPath());
-            $images = $this->removeTmpFileRecords($content);
+            $images = $this->updateTmpFilesIfExists($content);
             array_unshift($images, $imgPath);
             $userId = getAuthData()["id"];
             $articleId = Article::add([
@@ -124,17 +122,17 @@ class manage_articles
             session_flash("message", "Artikel ditambahkan!");
             redirect('/manage-articles');
         } catch (Exception $e) {
-            redirectBackWithError("", ["Gagal membuat artikel: " . $e->getMessage()]);
+            redirectBackWithError("", ["Gagal membuat artikel: " . $e->getTraceAsString()]);
             Model::rollback();
             foreach ($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
         }
     }
 
-    private function removeTmpFileRecords(string $content)
+    private function updateTmpFilesIfExists(string $content)
     {
         preg_match_all("/<img\s*.*src=\"(.*?)\".*?>/", $content, $matches);
         $files = [];
-        if (isset($matches[1])) {
+        if (isset($matches[1]) && !empty($matches[1])) {
             foreach ($matches[1] as $match) {
                 $parts = explode("/", trim($match, "/ "));
                 $files[] = $parts[count($parts) - 1];

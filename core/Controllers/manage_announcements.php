@@ -11,7 +11,6 @@ use App\Models\Gallery;
 use App\Models\TmpFile;
 use Carbon\Carbon;
 use Exception;
-use HTMLPurifier;
 
 class manage_announcements
 {
@@ -48,8 +47,7 @@ class manage_announcements
 
     public function edit_put($id = "")
     {
-        $purifier = new HTMLPurifier(Config::getHTMLPurifierConf());
-        $content = $purifier->purify(trim($_POST["konten"] ?? ""));
+        $content = sanitizeHTML(trim($_POST["konten"] ?? ""));
         $_SESSION["_flash"]["oldInput"]["konten"] = $content;
         ensureIsAdmin();
         ensureInputFilled($_POST, ["judul", "slug", "konten",  "batasWaktu"]);
@@ -85,8 +83,7 @@ class manage_announcements
 
     public function create_post()
     {
-        $purifier = new HTMLPurifier(Config::getHTMLPurifierConf());
-        $content = $purifier->purify(trim($_POST["konten"] ?? ""));
+        $content = sanitizeHTML(trim($_POST["konten"] ?? ""));
         $_SESSION["_flash"]["oldInput"]["konten"] = $content;
         ensureIsAdmin();
         ensureInputFilled($_POST, ["judul", "slug", "kategori", "konten", "status"]);

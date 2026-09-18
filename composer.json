@@ -11,7 +11,7 @@
     ],
     "require": {
         "nesbot/carbon": "^3.13",
-        "ezyang/htmlpurifier": "^4.19"
+        "symfony/html-sanitizer": "^8.1"
     },
     "autoload": {
         "psr-4": {

@@ -49,7 +49,7 @@
         </div>
         <div class="mb-3">
             <label for="editor" class="form-label">Konten</label>
-            <input type="hidden" name="konten" id="konten" value="<?= htmlspecialchars(old('konten') ?? $record->content, ENT_COMPAT | ENT_HTML5) ?>" required>
+            <input type="hidden" name="konten" id="konten" value="<?= old('konten') ?? htmlspecialchars($record->content, ENT_COMPAT | ENT_SUBSTITUTE) ?>" required>
             <trix-editor input="konten" id="editor" placeholder="Isi konten..."></trix-editor>
         </div>
         <span>Status</span>

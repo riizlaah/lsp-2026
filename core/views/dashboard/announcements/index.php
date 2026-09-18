@@ -10,13 +10,13 @@
         <div class="col-auto">
             <div class="input-group mb-3">
                 <form action="">
-                    <input type="text" name="search" class="form-control" placeholder="Cari..." aria-label="Search">
+                    <input type="text" name="search" class="form-control" value="@old('search')" placeholder="Cari..." aria-label="Search">
                 </form>
             </div>
         </div>
         <div class="col"></div>
         <div class="col-auto">
-            <a tole="button" href="/manage-articles/create" class="btn btn-primary">Tambahkan</a>
+            <a tole="button" href="/manage-announcements/create" class="btn btn-primary">Tambahkan</a>
         </div>
     </div>
     <table class="table table-bordered">
@@ -37,9 +37,9 @@
                     <td><?= getTextFromElement($row->content) ?></td>
                     <td><img class="d-block mx-auto w-50" src="/assets/uploads/<?= $row->headerImage ?>" alt="<?= $row->title ?>"></td>
                     <td class="d-flex gap-2">
-                        <a href="/information/articles/<?= $row->id ?>" class="btn btn-primary"><i data-feather="eye"></i></a>
-                        <a href="/manage-articles/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>
-                        <form action="/manage-articles/delete/<?= $row->id ?>" method="post">
+                        <a href="/information/announcements/<?= $row->slug ?>" class="btn btn-primary"><i data-feather="eye"></i></a>
+                        <a href="/manage-announcements/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>
+                        <form action="/manage-announcements/delete/<?= $row->id ?>" method="post">
                             <xm-delete />
                             <xcsrf />
                             <button type="submit" class="btn btn-danger" onclick="confirm('Anda yakin ingin menghapus \'<?= $row->title ?>\'')"><i data-feather="trash-2"></i></button>

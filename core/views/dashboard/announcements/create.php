@@ -44,8 +44,21 @@
             <input class="form-check-input @err('status') is-invalid @enderr" type="radio" name="status" id="status2" value="r" <?= (old('status') == "r") ? 'checked' : '' ?>>
             <label class="form-check-label" for="status2">
                 Terjadwal
-                <div class="mb-3">
-                    <input type="datetime" name="tanggalPublikasi" class="form-control @err('tanggalPublikasi') is-invalid @enderr" id="tanggalPublikasi" value="@old('tanggalPublikasi')">
+                <div class="mb-3 d-flex gap-2">
+                    <input type="date" name="tanggalPublikasi" class="form-control @err('tanggalPublikasi') is-invalid @enderr" id="tanggalPublikasi" value="@old('tanggalPublikasi')">
+                    <div class="d-flex gap-1 align-items-center">
+                        <select name="jam" id="jam" class="form-select">
+                            <?php for ($i = 0; $i <= 23; $i++): $val = str_pad((string)$i, 2, "0", STR_PAD_LEFT); ?>
+                                <option value="<?= $val ?>"><?= $val ?></option>
+                            <?php endfor; ?>
+                        </select>
+                        :
+                        <select name="menit" id="menit" class="form-select">
+                            <?php for ($i = 0; $i <= 59; $i++): $val = str_pad((string)$i, 2, "0", STR_PAD_LEFT); ?>
+                                <option value="<?= $val ?>"><?= $val ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
                 </div>
             </label>
         </div>

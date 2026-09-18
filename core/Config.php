@@ -2,8 +2,6 @@
 
 namespace App;
 
-use HTMLPurifier_Config;
-
 class Config
 {
     public static $properties = [];
@@ -20,7 +18,8 @@ class Config
         static::postLoadEnv();
     }
 
-    private static function postLoadEnv() {
+    private static function postLoadEnv()
+    {
         date_default_timezone_set('Asia/Jakarta');
     }
 
@@ -35,14 +34,5 @@ class Config
         return dirname(__DIR__) . "/assets/uploads/";
     }
 
-    public static function getHTMLPurifierConf()
-    {
-        $config = HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Allowed', 'p,b,i,u,strong,del,pre,em,ul,ol,li,br,a[href|title],img[src|alt|width|height],figure[data-trix-attributes|data-trix-attachment],figcaption,div,blockquote');
-        $config->set('HTML.TargetBlank', true); // Membuka tautan di tab baru
-        $config->set('HTML.Nofollow', true);    // Menambahkan rel="nofollow"
-        $config->set('HTML.TargetNoreferrer', true);
-        $config->set('HTML.TargetNoopener', true);
-        return $config;
-    }
+    
 }

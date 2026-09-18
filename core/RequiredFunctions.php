@@ -163,6 +163,14 @@ function ensureImageValidJSON(string $inputName, int $maxSize = 4096000, $mimety
     }
 }
 
+function isFileUploaded(string $inputName) {
+    if(empty($_FILES)) return false;
+    $tmpName = $_FILES[$inputName]["tmp_name"];
+    if($_FILES[$inputName]["error"] === UPLOAD_ERR_NO_FILE) return false;
+    if(!file_exists($tmpName) || !is_uploaded_file($tmpName)) return false;
+    return true;
+}
+
 function moveUploadedFile(string $inputName, string $directory, $target = "") {
     $fileTmpPath = $_FILES[$inputName]["tmp_name"];
     $ext = pathinfo($_FILES[$inputName]["name"], PATHINFO_EXTENSION);
