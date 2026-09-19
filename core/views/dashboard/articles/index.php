@@ -6,9 +6,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-auto">
-            <div class="input-group mb-3">
+            <div class="input-group">
                 <form action="">
                     <input type="text" name="search" class="form-control" placeholder="Cari..." aria-label="Search">
                 </form>
@@ -23,7 +23,7 @@
         <thead>
             <tr>
                 <th scope="col">No.</th>
-                <th scope="col">Nama</th>
+                <th scope="col">Judul</th>
                 <th scope="col">Cuplikan Teks</th>
                 <th scope="col">Gambar Kepala</th>
                 <th scope="col">Aksi</th>

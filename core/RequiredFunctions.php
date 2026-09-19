@@ -16,8 +16,8 @@ function generateCSRFToken() {
 }
 
 function validateCSRFToken() {
-    $input = trim($_POST["_csrf_token"]);
     if(!isset($_SESSION["_csrf_token"])) return false;
+    $input = trim($_POST["_csrf_token"]);
     $valid = hash_equals($_SESSION["_csrf_token"], $input);
     if($valid) unset($_SESSION["_csrf_token"]);
     return $valid;
@@ -115,7 +115,7 @@ function sanitizeInput(string $inputName, $escHTML = true) {
     return $escHTML ? htmlspecialchars(trim($_POST[$inputName])) : trim($_POST[$inputName]);
 }
 
-function ensureImageValid(string $inputName, int $maxSize = 4096000, $mimetypes = ["image/png", "image/jpeg", "image/webp"]) {
+function ensureAttachmentValid(string $inputName, int $maxSize = 10000000, $mimetypes = ["image/png", "image/jpeg", "image/webp"]) {
     if(!isset($_FILES[$inputName])) redirectBackWithError($inputName, ["'$inputName' harus diisi"]);
     $fileErr = $_FILES[$inputName]["error"];
     if($fileErr != UPLOAD_ERR_OK) redirectBackWithError($inputName, ["'$inputName' gagal diupload (kode: " . (string)$fileErr . ")"]);
@@ -125,11 +125,11 @@ function ensureImageValid(string $inputName, int $maxSize = 4096000, $mimetypes 
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mimetype = $finfo->file($filename);
     if(!$mimetype) redirectBackWithError($inputName, ["Gagal membaca MIMETYPE dari '$inputName'"]);
-    if(!in_array($mimetype, $mimetypes)) redirectBackWithError($inputName, ["Gambar harus berupa format: " . implode(", ", $mimetypes)]);
+    if(!in_array($mimetype, $mimetypes)) redirectBackWithError($inputName, ["File harus berupa format: " . implode(", ", $mimetypes)]);
 
 }
 
-function ensureImageValidJSON(string $inputName, int $maxSize = 4096000, $mimetypes = ["image/png", "image/jpeg", "image/webp"]) {
+function ensureAttachmentValidJSON(string $inputName, int $maxSize = 10000000, $mimetypes = ["image/png", "image/jpeg", "image/webp"]) {
     header("Content-Type: application/json");
     if(!isset($_FILES[$inputName])) {
         http_response_code(400);
@@ -158,7 +158,7 @@ function ensureImageValidJSON(string $inputName, int $maxSize = 4096000, $mimety
     }
     if(!in_array($mimetype, $mimetypes)) {
         http_response_code(400);
-        echo json_encode(["message" => "Gambar harus berupa format: " . implode(", ", $mimetypes)]);
+        echo json_encode(["message" => "File harus berupa format: " . implode(", ", $mimetypes)]);
         die;
     }
 }

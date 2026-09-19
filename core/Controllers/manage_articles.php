@@ -49,7 +49,7 @@ class manage_articles
         $_SESSION["_flash"]["oldInput"]["konten"] = $content;
         ensureIsAdmin();
         ensureInputFilled($_POST, ["judul", "slug", "kategori", "konten", "status"]);
-        if (isFileUploaded("gambarTajuk")) ensureImageValid("gambarTajuk");
+        if (isFileUploaded("gambarTajuk")) ensureAttachmentValid("gambarTajuk");
         $title = sanitizeInput("judul");
         $slug = sanitizeInput("slug");
         $categoryId = intval(sanitizeInput("kategori"));
@@ -92,7 +92,7 @@ class manage_articles
         $_SESSION["_flash"]["oldInput"]["konten"] = $content;
         ensureIsAdmin();
         ensureInputFilled($_POST, ["judul", "slug", "kategori", "konten", "status"]);
-        ensureImageValid("gambarTajuk");
+        ensureAttachmentValid("gambarTajuk");
         $title = sanitizeInput("judul");
         $slug = sanitizeInput("slug");
         $categoryId = intval(sanitizeInput("kategori"));

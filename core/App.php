@@ -41,7 +41,11 @@ class App {
         }
         if(in_array($reqMethod, ["post", "put", "patch", "delete"])) {
             if(!validateCSRFToken()) {
-                var_dump("csrf failed");
+                if($_SERVER["HTTP_ACCEPT"] == "application/json") {
+                    header("Content-Type: application/json");
+                    echo json_encode(["message" => "CSRF Token mismatch"]);
+                    die;
+                }
                 errCode(419, "Halaman sudah basi");
             }
             foreach(array_merge($_GET, $_POST) as $key => $value) {

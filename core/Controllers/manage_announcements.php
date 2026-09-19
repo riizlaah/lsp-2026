@@ -50,34 +50,40 @@ class manage_announcements
         $content = sanitizeHTML(trim($_POST["konten"] ?? ""));
         $_SESSION["_flash"]["oldInput"]["konten"] = $content;
         ensureIsAdmin();
-        ensureInputFilled($_POST, ["judul", "slug", "konten",  "batasWaktu"]);
-        if (isset($_FILES["gambarTajuk"])) ensureImageValid("gambarTajuk");
+        ensureInputFilled($_POST, ["judul", "slug", "konten",  "jadwalKadaluarsa", "jadwalPengumuman"]);
+        if (isset($_FILES["gambarTajuk"])) ensureAttachmentValid("gambarTajuk");
         $title = sanitizeInput("judul");
         $slug = sanitizeInput("slug");
-        $publishNow = isset($_POST["umumkanSekarang"]);
-        $publishedAt = (isset($_POST["tanggalPublikasi"]) && !empty(trim($_POST["tanggalPublikasi"]))) ? sanitizeInput("tanggalPublikasi") : null;
-        $expiredAt = sanitizeInput("batasWaktu");
+        $publishedAt = sanitizeInput("jadwalPengumuman");
+        $expiredAt = sanitizeInput("jadwalKadaluarsa");
         $actualId = intval($id);
         if ($actualId <= 0) redirect("/manage-announcements");
         $record = Announcement::where('id', $actualId)->first();
         if (!$record) errCode(404, "Pengumuman tidak ditemukan");
+        if(!Carbon::canBeCreatedFromFormat($expiredAt, "Y-m-d\TH:i")) redirectBackWithError("jadwalKadaluarsa", ["Jadwal kadaluarsa tidak sesuai format"]);
+        if(!Carbon::canBeCreatedFromFormat($publishedAt, "Y-m-d\TH:i")) redirectBackWithError("jadwalPengumuman", ["Jadwal pengumuman tidak sesuai format"]);
+        $publishedAt2 = Carbon::parse($publishedAt);
+        if(!$publishedAt2->eq(substr($record->publishedAt, 0, -3))) {
+            if($publishedAt2->lt(Carbon::now())) redirectBackWithError("jadwalPengumuman", ["Jadwal pengumuman tidak valid"]);
+        }
+        if(Carbon::parse($publishedAt)->diffInHours($expiredAt) < 3) redirectBackWithError("jadwalKadaluarsa", ["Jadwal kadaluarsa harus berjarak minimal 3 jam dari jadwal kadaluarsa"]);
         if (Announcement::where('slug', $slug)->where('id', $actualId, "!=")->any()) redirectBackWithError("slug", ["Slug sudah terpakai"]);
         try {
             Model::beginTransaction();
+            $this->updateTmpFilesIfExists($content);
             Announcement::where('id', $actualId)->update([
                 "title" => $title,
                 "slug" => $slug,
                 "content" => $content,
-                "publishedAt" => !$publishNow ? Carbon::parse($publishedAt)->toDateTimeString() : Carbon::now()->toDateTimeString(),
+                "publishedAt" => Carbon::parse($publishedAt)->toDateTimeString(),
                 "expiredAt" => Carbon::parse($expiredAt)->toDateTimeString(),
             ]);
             Model::commit();
-            session_flash("message", "Pengumuman berhasil diupdate!");
+            session_flash("message", "Pengumuman berhasil diperbarui!");
             redirect('/manage-announcements');
         } catch (Exception $e) {
             redirectBackWithError("", ["Gagal mengupdate pengumuman: " . $e->getMessage()]);
             Model::rollback();
-            foreach ($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
         }
     }
 
@@ -86,16 +92,25 @@ class manage_announcements
         $content = sanitizeHTML(trim($_POST["konten"] ?? ""));
         $_SESSION["_flash"]["oldInput"]["konten"] = $content;
         ensureIsAdmin();
-        ensureInputFilled($_POST, ["judul", "slug", "kategori", "konten", "status"]);
-        ensureImageValid("gambarTajuk");
+        ensureInputFilled($_POST, ["judul", "slug", "konten", "jadwalKadaluarsa", "waktuPengumuman"]);
         $title = sanitizeInput("judul");
         $slug = sanitizeInput("slug");
-        $publishNow = isset($_POST["umumkanSekarang"]);
-        $publishedAt = (isset($_POST["tanggalPublikasi"]) && !empty(trim($_POST["tanggalPublikasi"]))) ? sanitizeInput("tanggalPublikasi") : null;
-        $expiredAt = sanitizeInput("batasWaktu");
+        $publishNow = sanitizeInput("waktuPengumuman") == "s";
+        $publishedAt = ($publishNow && !empty(trim($_POST["jadwalPengumuman"]))) ? sanitizeInput("jadwalPengumuman") : null;
+        $expiredAt = sanitizeInput("jadwalKadaluarsa");
+        if(!Carbon::canBeCreatedFromFormat($expiredAt, "Y-m-d\TH:i")) redirectBackWithError("jadwalKadaluarsa", ["Jadwal kadaluarsa tidak valid"]);
+        if(!$publishNow) {
+            if(!Carbon::canBeCreatedFromFormat($publishedAt, "Y-m-d\TH:i")) redirectBackWithError("jadwalPengumuman", ["Jadwal pengumuman tidak sesuai format"]);
+            $publishedAt2 = Carbon::parse($publishedAt);
+            if($publishedAt2->lt(Carbon::now())) redirectBackWithError("jadwalPengumuman", ["Jadwal pengumuman tidak valid"]);
+            if(Carbon::parse($publishedAt)->diffInHours($expiredAt) < 3) redirectBackWithError("jadwalKadaluarsa", ["Jadwal kadaluarsa harus berjarak minimal 3 jam dari jadwal kadaluarsa"]);
+        } else {
+            if(Carbon::now()->diffInHours($expiredAt) < 3) redirectBackWithError("jadwalKadaluarsa", ["Jadwal pengumuman harus berjarak minimal 3 jam dari jadwal kadaluarsa"]);
+        }
         if (Announcement::where('slug', $slug)->any()) redirectBackWithError("slug", ["Slug sudah terpakai"]);
         try {
             Model::beginTransaction();
+            $this->updateTmpFilesIfExists($content);
             $userId = getAuthData()["id"];
             Announcement::add([
                 "userId" => $userId,
@@ -111,7 +126,6 @@ class manage_announcements
         } catch (Exception $e) {
             redirectBackWithError("", ["Gagal membuat pengumuman: " . $e->getMessage()]);
             Model::rollback();
-            foreach ($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
         }
     }
 
@@ -123,6 +137,20 @@ class manage_announcements
         if (!Announcement::where('id', $actualId)->any()) redirect('/manage-announcements');
         Announcement::where('id', $actualId)->delete();
         redirect('/manage-announcements');
+    }
+
+    private function updateTmpFilesIfExists(string $content)
+    {
+        preg_match_all("/<img\s*.*src=\"(.*?)\".*?>/", $content, $matches);
+        $files = [];
+        if (isset($matches[1]) && !empty($matches[1])) {
+            foreach ($matches[1] as $match) {
+                $parts = explode("/", trim($match, "/ "));
+                $files[] = $parts[count($parts) - 1];
+            }
+            TmpFile::whereIn('filename', $files)->delete();
+        }
+        return $files;
     }
 
     public function generate_slug()

@@ -70,13 +70,14 @@
             <button type="submit" class="btn btn-primary flex-fill">Simpan</button>
         </div>
     </form>
+    <script src="/assets/script.js"></script>
     <script>
         let timeoutId = 0;
-        let titleInp = document.querySelector("#judul");
-        let slugInp = document.querySelector("#slug");
-        let imgInp = document.querySelector("#headerImgInput");
-        let imgPreview = document.querySelector("#imgPreview");
-        let csrfToken = document.querySelector("#_csrf_token");
+        let titleInp = query("#judul");
+        let slugInp = query("#slug");
+        let imgInp = query("#headerImgInput");
+        let imgPreview = query("#imgPreview");
+        let csrfToken = query("#_csrf_token");
         titleInp.oninput = () => {
             if (timeoutId) clearTimeout(timeoutId);
             if (titleInp.value.trim() == "") {
@@ -112,28 +113,8 @@
         })
         document.addEventListener("trix-attachment-add", (e) => {
             if (e.attachment.file) {
-                uploadAttachment(e.attachment);
+                uploadAttachment(e.attachment, csrfToken);
             }
         });
-
-        function uploadAttachment(attachment) {
-            const form = new FormData();
-            form.append("file", attachment.file);
-            form.append("_csrf_token", csrfToken.value);
-            fetch("/upload-images", {
-                    method: "POST",
-                    body: form
-                }).then(res => res.json())
-                .then(json => {
-                    attachment.setAttributes({
-                        url: json.url,
-                        href: json.url
-                    });
-                    csrfToken.value = json.newToken;
-                }).catch(e => {
-                    console.error("Upload failed: ", e);
-                    attachment.remove();
-                })
-        }
     </script>
 </x-dashb>

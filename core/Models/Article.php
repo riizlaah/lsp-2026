@@ -11,6 +11,5 @@ class Article extends Model {
     protected static $relationships = [
         'user' => [Model::HAS_ONE, User::class, 'id', 'userId'],
         'category' => [Model::HAS_ONE, Category::class, 'id', 'categoryId'],
-        'articleAttachments' => [Model::HAS_MANY, ArticleAttachment::class, 'articleId', 'id']
     ];
 }

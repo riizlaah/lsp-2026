@@ -35,40 +35,32 @@
         </div>
         <span>Waktu Pengumuman</span>
         <div class="form-check">
-            <input class="form-check-input @err('status') is-invalid @enderr" type="radio" name="status" id="status1" value="d" <?= (old('status') == "d") ? 'checked' : '' ?>>
-            <label class="form-check-label" for="status1">
+            <input class="form-check-input @err('waktuPengumuman') is-invalid @enderr" type="radio" name="waktuPengumuman" id="waktuPengumuman1" value="s" <?= (old('waktuPengumuman') == "s") ? 'checked' : '' ?>>
+            <label class="form-check-label" for="waktuPengumuman1">
                 Umumkan Setelah Dibuat
             </label>
         </div>
         <div class="form-check mb-3">
-            <input class="form-check-input @err('status') is-invalid @enderr" type="radio" name="status" id="status2" value="r" <?= (old('status') == "r") ? 'checked' : '' ?>>
-            <label class="form-check-label" for="status2">
+            <input class="form-check-input @err('waktuPengumuman') is-invalid @enderr" type="radio" name="waktuPengumuman" id="waktuPengumuman2" value="t" <?= (old('waktuPengumuman') == "t") ? 'checked' : '' ?>>
+            <label class="form-check-label" for="waktuPengumuman2">
                 Terjadwal
                 <div class="mb-3 d-flex gap-2">
-                    <input type="date" name="tanggalPublikasi" class="form-control @err('tanggalPublikasi') is-invalid @enderr" id="tanggalPublikasi" value="@old('tanggalPublikasi')">
-                    <div class="d-flex gap-1 align-items-center">
-                        <select name="jam" id="jam" class="form-select">
-                            <?php for ($i = 0; $i <= 23; $i++): $val = str_pad((string)$i, 2, "0", STR_PAD_LEFT); ?>
-                                <option value="<?= $val ?>"><?= $val ?></option>
-                            <?php endfor; ?>
-                        </select>
-                        :
-                        <select name="menit" id="menit" class="form-select">
-                            <?php for ($i = 0; $i <= 59; $i++): $val = str_pad((string)$i, 2, "0", STR_PAD_LEFT); ?>
-                                <option value="<?= $val ?>"><?= $val ?></option>
-                            <?php endfor; ?>
-                        </select>
-                    </div>
+                    <input type="datetime-local" name="jadwalPengumuman" class="form-control @err('jadwalPengumuman') is-invalid @enderr" id="jadwalPengumuman" value="@old('jadwalPengumuman')">
                 </div>
             </label>
         </div>
+        <div class="mb-3">
+            <label for="jadwalKadaluarsa" class="form-label">Tanggal Kadaluarsa</label>
+            <input type="datetime-local" name="jadwalKadaluarsa" class="form-control @err('jadwalKadaluarsa') is-invalid @enderr" id="jadwalKadaluarsa" value="@old('jadwalKadaluarsa')" required>
+        </div>
         <button type="submit" class="btn btn-primary w-100">Simpan</button>
     </form>
+    <script src="/assets/script.js"></script>
     <script>
         let timeoutId = 0;
-        let titleInp = document.querySelector("#judul");
-        let slugInp = document.querySelector("#slug");
-        let csrfToken = document.querySelector("#_csrf_token");
+        let titleInp = query("#judul");
+        let slugInp = query("#slug");
+        let csrfToken = query("#_csrf_token");
         titleInp.oninput = () => {
             if (timeoutId) clearTimeout(timeoutId);
             if (titleInp.value.trim() == "") {
@@ -90,8 +82,10 @@
         })
         document.addEventListener("trix-attachment-add", (e) => {
             if (e.attachment.file) {
-                e.attachment.remove();
+                uploadAttachment(e.attachment, csrfToken);
             }
         });
+
+        
     </script>
 </x-dashb>

@@ -9,52 +9,56 @@
     <div class="container-lg my-3">
         <div id="activities" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <?php for ($i = 1; $i <= 3; $i++): ?>
-                    <div class="carousel-item <?= $i === 1 ? "active" : "" ?>">
-                        <img src="https://placehold.co/400x200?text=Kegiatan+<?= $i ?>" class="d-block w-100" alt="Kegiatan <?= $i ?>">
+                <?php foreach ($activities ?? [] as $i => $activity): ?>
+                    <a class="carousel-item <?= $i === 0 ? "active" : "" ?> text-decoration-none" href="/information/articles/<?= $activity->slug ?>">
+                        <img src="<?= $activity->headerImage ? "/assets/uploads/" . $activity->headerImage : "/assets/images/no-img.webp" ?>" class="d-block w-100" alt="<?= $activity->title ?>">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>Kegiatan <?= $i ?></h5>
-                            <p>Deskripsi singkat kegiatan <?= $i ?></p>
+                            <h5><?= $activity->title ?></h5>
+                            <p><?= getTextFromElement($activity->content) ?></p>
                         </div>
-                    </div>
-                <?php endfor; ?>
+                    </a>
+                <?php endforeach; ?>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#activities" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">Sebelumnya</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#activities" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Selanjutnya</span>
             </button>
         </div>
     </div>
-    <div class="container-lg my-4">
-        <div class="alert alert-info" role="alert">
-            <h4 class="alert-heading">Pengumuman Terbaru</h4>
-            <p>Deskripsi Pengumuman terbaru.</p>
+    <?php if (isset($announcement)): ?>
+        <div class="container-lg my-4">
+            <a href="" class="text-decoration-none">
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading"><?= $announcement->title ?></h4>
+                    <p><?= getTextFromElement($announcement->content) ?></p>
+                </div>
+            </a>
         </div>
-    </div>
+    <?php endif; ?>
     <div class="container-lg my-3">
         <h1>Artikel Terbaru</h1>
         <div class="row row-cols-1 row-cols-md-3 g-3">
-            <?php for ($i = 1; $i <= 6; $i++): ?>
+            <?php foreach ($articles ?? [] as $article): ?>
                 <div class="col">
-                    <div class="card">
-                        <img src="https://placehold.co/400x200?text=Berita+<?= $i ?>" class="card-img-top" alt="Berita <?= $i ?>">
+                    <a class="card text-decoration-none" href="/information/articles/<?= $article->slug ?>">
+                        <img src="<?= $article->headerImage ? "/assets/uploads/" . $article->headerImage : "/assets/images/no-img.webp" ?>" class="card-img-top" alt="<?= $article->title ?>">
                         <div class="card-body">
-                            <h5 class="card-title">Berita <?= $i ?></h5>
-                            <p class="card-text">Sedikit konten dari berita <?= $i ?></p>
+                            <h5 class="card-title"><?= $article->title ?></h5>
+                            <p class="card-text"><?= getTextFromElement($article->content) ?></p>
                         </div>
-                    </div>
+                    </a>
                 </div>
-            <?php endfor; ?>
+            <?php endforeach; ?>
         </div>
         <a href="/information/articles" class="my-3 d-block">Lihat lainnya...</a>
     </div>
     <div class="container-lg">
         <div class="mx-auto w-75 my-5">
-            <h2 class="text-center">50+ Rekanan Industri</h2>
+            <h2 class="text-center">Belasan Rekanan Industri</h2>
             <p class="text-center">Meningkatkan kompetensi Peserta didik dengan menghadirkan pembelajaran berstandar industri. Lebih dari 50 perusahaan telah bekerja sama dengan SMK Negeri 1 Kandeman dalam berbagai macam program termasuk rekrutmen tenaga kerja</p>
         </div>
         <?php

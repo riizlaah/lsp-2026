@@ -1,14 +1,18 @@
 <x-dashb>
     <h1 class="mb-4">Kelola Pengumuman</h1>
-    <?php if (flash_exists("message")): ?>
+    <?php
+
+use Carbon\Carbon;
+
+ if (flash_exists("message")): ?>
         <div class="alert alert-secondary alert-dismissible fade show" role="alert">
             <?= session_flash("message") ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-auto">
-            <div class="input-group mb-3">
+            <div class="input-group">
                 <form action="">
                     <input type="text" name="search" class="form-control" value="@old('search')" placeholder="Cari..." aria-label="Search">
                 </form>
@@ -23,7 +27,7 @@
         <thead>
             <tr>
                 <th scope="col">No.</th>
-                <th scope="col">Nama</th>
+                <th scope="col">Judul</th>
                 <th scope="col">Cuplikan Teks</th>
                 <th scope="col">Durasi</th>
                 <th scope="col">Aksi</th>
@@ -35,7 +39,7 @@
                     <td><?= $idx + 1 ?></td>
                     <td><?= $row->title ?></td>
                     <td><?= getTextFromElement($row->content) ?></td>
-                    <td><img class="d-block mx-auto w-50" src="/assets/uploads/<?= $row->headerImage ?>" alt="<?= $row->title ?>"></td>
+                    <td><?= Carbon::parse($row->publishedAt)->locale('id')->format("j M Y, H:i") ?> - <?= Carbon::parse($row->expiredAt)->locale('id')->format("j M Y, H:i") ?></td>
                     <td class="d-flex gap-2">
                         <a href="/information/announcements/<?= $row->slug ?>" class="btn btn-primary"><i data-feather="eye"></i></a>
                         <a href="/manage-announcements/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>

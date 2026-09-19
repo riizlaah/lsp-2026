@@ -13,7 +13,7 @@
 <body>
     <main class="container-fluid d-flex align-items-center" style="height: 100vh;">
         <div class="container-sm mx-auto mt-4">
-            <form action="/dashboard" method="post" class="mx-auto shadow rounded my-4 p-3" style="width: 24rem;">
+            <form action="/dashboard" method="post" class="mx-auto shadow rounded my-4 p-3" style="width: min(100%, 24rem);">
                 <xcsrf />
                 <h1 class="text-center mb-4">Login</h1>
                 @err

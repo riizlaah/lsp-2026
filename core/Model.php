@@ -23,6 +23,7 @@ class Model
     private static $orderByStates = [];
     private static $params = [];
     private static $updateArgs = [];
+    private static $limit = [];
     private static PDO $db;
 
     public static function initDB()
@@ -97,6 +98,10 @@ class Model
                     $orderBy = trim($orderBy, ',');
                 }
                 $query .= "SELECT * FROM `" . static::$tableName . "`" . $where . $orderBy;
+                if(!empty(static::$limit)) {
+                    if(static::$limit[0] > 0) $query .= " LIMIT " . (string)static::$limit[0];
+                    if(static::$limit[1] > 0) $query .= " OFFSET " . (string)static::$limit[1];
+                }
                 break;
             case "u":
                 $query = "UPDATE `" . static::$tableName . "` SET ";
@@ -192,6 +197,12 @@ class Model
         static::$params = array_merge($value, static::$params);
         return new static();
     }
+    public static function whereNotIn(string $column, array $value, $prefix = 'AND')
+    {
+        static::$whereConditions[] = [$column, 'NOT IN', "(" . trim(str_repeat("?,", count($value)), ',') . ")", $prefix];
+        static::$params = array_merge($value, static::$params);
+        return new static();
+    }
     public static function orWhere(string $column, mixed $value, $operator = '=')
     {
         return static::where($column, $value, $operator, 'OR');
@@ -200,9 +211,18 @@ class Model
     {
         return static::whereIn($column, $value, 'OR');
     }
+    public static function orWhereNotIn(string $column, array $value)
+    {
+        return static::whereNotIn($column, $value, 'OR');
+    }
     public static function orderBy(string $column, $descending = true)
     {
         static::$orderByStates[] = [$column, $descending];
+        return new static();
+    }
+    public static function limit(int $n, int $offset = 0)
+    {
+        static::$limit = [$n, $offset];
         return new static();
     }
     public static function count(): int
