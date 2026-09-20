@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Gallery;
 use App\Models\TmpFile;
 use Carbon\Carbon;
+use DOMDocument;
 use Exception;
 
 class manage_announcements
@@ -70,7 +71,7 @@ class manage_announcements
         if (Announcement::where('slug', $slug)->where('id', $actualId, "!=")->any()) redirectBackWithError("slug", ["Slug sudah terpakai"]);
         try {
             Model::beginTransaction();
-            $this->updateTmpFilesIfExists($content);
+            TmpFile::freeTmpFilesFromContent($content);
             Announcement::where('id', $actualId)->update([
                 "title" => $title,
                 "slug" => $slug,
@@ -110,7 +111,7 @@ class manage_announcements
         if (Announcement::where('slug', $slug)->any()) redirectBackWithError("slug", ["Slug sudah terpakai"]);
         try {
             Model::beginTransaction();
-            $this->updateTmpFilesIfExists($content);
+            TmpFile::freeTmpFilesFromContent($content);
             $userId = getAuthData()["id"];
             Announcement::add([
                 "userId" => $userId,
@@ -126,6 +127,7 @@ class manage_announcements
         } catch (Exception $e) {
             redirectBackWithError("", ["Gagal membuat pengumuman: " . $e->getMessage()]);
             Model::rollback();
+            foreach ($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
         }
     }
 
@@ -134,24 +136,15 @@ class manage_announcements
         ensureIsAdmin();
         $actualId = intval($id);
         if ($actualId <= 0) redirect("/manage-announcements");
-        if (!Announcement::where('id', $actualId)->any()) redirect('/manage-announcements');
+        $record = Announcement::where('id', $actualId)->first();
+        if (!$record) redirect('/manage-announcements');
         Announcement::where('id', $actualId)->delete();
+        $files = getFilenamesFromHTMLContent($record->content);
+        foreach($files as $file) safeUnlink(Config::getUploadDirPath() . $file);
         redirect('/manage-announcements');
     }
 
-    private function updateTmpFilesIfExists(string $content)
-    {
-        preg_match_all("/<img\s*.*src=\"(.*?)\".*?>/", $content, $matches);
-        $files = [];
-        if (isset($matches[1]) && !empty($matches[1])) {
-            foreach ($matches[1] as $match) {
-                $parts = explode("/", trim($match, "/ "));
-                $files[] = $parts[count($parts) - 1];
-            }
-            TmpFile::whereIn('filename', $files)->delete();
-        }
-        return $files;
-    }
+    
 
     public function generate_slug()
     {

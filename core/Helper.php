@@ -85,7 +85,7 @@ function getIDNMonthName(int $n)
 
 function getTextFromElement(string $str, $len = 100)
 {
-    $str = html_entity_decode(strip_tags($str), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $str = html_entity_decode(strip_tags($str), ENT_QUOTES | ENT_HTML5);
     $str = trim(preg_replace("/(([A-Z])[a-zA-Z0-9]+)/", " $1", $str));
     return mb_substr($str, 0, $len, 'UTF-8') . (strlen($str) > $len ? "..." : "");
 }
@@ -93,4 +93,22 @@ function getTextFromElement(string $str, $len = 100)
 function safeUnlink(string $filename)
 {
     if (file_exists($filename)) unlink($filename);
+}
+
+function getFilenamesFromHTMLContent(string $content)
+{
+    $files = [];
+    if (!empty($content)) {
+        if (preg_match_all("#(?:src|href)\s*=\s*[\"']/assets/uploads/([^\"']+)[\"']#i", $content, $matches)) {
+            foreach ($matches[1] as $path) {
+                $path = strtok($path, '?#');
+                $filename = trim(basename($path));
+                if ($filename !== '') {
+                    $files[] = $filename;
+                }
+            }
+        }
+    }
+
+    return array_values(array_unique($files));
 }

@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Gallery;
 use App\Models\TmpFile;
+use DOMDocument;
 use Exception;
 
 class manage_articles
@@ -64,7 +65,7 @@ class manage_articles
         try {
             Model::beginTransaction();
             $imgPath = (isFileUploaded("gambarTajuk")) ? moveUploadedFile("gambarTajuk", Config::getUploadDirPath()) : $record->headerImage;
-            $images = $this->updateTmpFilesIfExists($content);
+            $images = TmpFile::freeTmpFilesFromContent($content);
             array_unshift($images, $imgPath);
             Article::where('id', $actualId)->update([
                 "categoryId" => $categoryId,
@@ -104,7 +105,7 @@ class manage_articles
         try {
             Model::beginTransaction();
             $imgPath = moveUploadedFile("gambarTajuk", Config::getUploadDirPath());
-            $images = $this->updateTmpFilesIfExists($content);
+            $images = TmpFile::freeTmpFilesFromContent($content);
             array_unshift($images, $imgPath);
             $userId = getAuthData()["id"];
             $articleId = Article::add([
@@ -128,30 +129,19 @@ class manage_articles
         }
     }
 
-    private function updateTmpFilesIfExists(string $content)
-    {
-        preg_match_all("/<img\s*.*src=\"(.*?)\".*?>/", $content, $matches);
-        $files = [];
-        if (isset($matches[1]) && !empty($matches[1])) {
-            foreach ($matches[1] as $match) {
-                $parts = explode("/", trim($match, "/ "));
-                $files[] = $parts[count($parts) - 1];
-            }
-            TmpFile::whereIn('filename', $files)->delete();
-        }
-        return $files;
-    }
-
     public function _delete($id = "")
     {
         ensureIsAdmin();
         $actualId = intval($id);
         if ($actualId <= 0) redirect("/manage-articles");
-        if (!Article::where('id', $actualId)->any()) redirect('/manage-articles');
+        $record = Article::where('id', $actualId)->first();
+        if (!$record) redirect('/manage-articles');
         try {
             Model::beginTransaction();
+            $files = getFilenamesFromHTMLContent($record->content);
             Gallery::where('refTable', 'articles')->where('refId', $actualId)->delete();
             Article::where('id', $actualId)->delete();
+            foreach($files as $file) safeUnlink(Config::getUploadDirPath() . $file);
             Model::commit();
             session_flash('message', "Berhasil menghapus Artikel!");
         } catch (Exception $e) {

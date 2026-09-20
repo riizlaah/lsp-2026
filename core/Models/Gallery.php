@@ -31,9 +31,7 @@ class Gallery extends Model
 
     public static function syncGaleries(string $refTable, int $refId, array $images)
     {
-        $existingGalleries = static::byRef($refTable, $refId)->getAll();
-        $existingFiles = [];
-        foreach ($existingGalleries as $galleryItem) $existingFiles[] = $galleryItem->mediaPath;
+        $existingFiles = static::byRef($refTable, $refId)->pluck("mediaPath");
         if (empty($images)) {
             static::byRef($refTable, $refId)->delete();
             foreach ($existingFiles as $file) {
@@ -64,7 +62,7 @@ class Gallery extends Model
         }
         if (!empty($data)) static::addMany($data);
         if(!static::byRef($refTable, $refId)->where('isCover', true)->any()) {
-            $first = static::byRef($refTable, $refId)->where('mediaPath', $images[0]);
+            $first = static::byRef($refTable, $refId)->where('mediaPath', $images[0])->orderBy('id', false)->first();
             static::where('id', $first->id)->update(["isCover" => true]);
             safeUnlink(Config::getUploadDirPath() . $first->mediaPath);
         }
@@ -72,5 +70,15 @@ class Gallery extends Model
 
     public static function byRef(string $refTable, int $refId) {
         return static::where('refTable', $refTable)->where('refId', $refId);
+    }
+
+    public function getReference() {
+        $rec = null;
+        if($this->refTable === "articles") {
+            $rec = Article::where('id', $this->refId)->first();
+        } elseif($this->refTable === "announcements") {
+            $rec = Announcement::where('id', $this->refId)->first();
+        }
+        return $rec;
     }
 }

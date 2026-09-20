@@ -2,14 +2,25 @@
 namespace App\Controllers;
 
 use App\Models\Achievement;
+use App\Models\Gallery;
 
 class student_affairs {
     public function index() {
         view('student-affairs', ["title" => "Kesiswaan"]);
     }
 
-    public function galeries($id = "") {
-        view('galeries', ["title" => "Galeri"]);
+    public function galeries($refTable = "", $refId = "") {
+        if(empty($refTable) && empty($refId)) {
+            $galleries = Gallery::where('isCover', true)->orderBy('createdAt')->getAll();
+            view('galeries', ["title" => "Galeri", "galleries" => $galleries]);
+        } else {
+            if(!ctype_alpha($refTable)) redirectBack();
+            if(!ctype_digit($refId) || intval($refId) <= 0) redirectBack();
+            $record = Gallery::where('refId', intval($refId))->where('refTable', $refTable)->where('isCover', true)->first();
+            if(!$record) redirectBack();
+            $records = Gallery::where('refId', intval($refId))->where('refTable', $refTable)->where('isCover', false)->getAll();
+            view("gallery-detail", ["title" => "Detail Galeri", "cover" => $record, "extras" => $records]);
+        }
     }
 
     public function achievements($id = "") {

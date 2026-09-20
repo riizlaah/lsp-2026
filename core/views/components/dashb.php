@@ -31,9 +31,7 @@ $useTrix = $useTrix ?? false;
                     <li class="nav-item"><a class="nav-link <?= $clippedRoute == "/" ? "active" : "" ?>" aria-current="page" href="/dashboard"><i data-feather="monitor"></i> Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-articles") ? "active" : "" ?>" href="/manage-articles"><i data-feather="file-text"></i> Artikel</a></li>
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-announcements") ? "active" : "" ?>" href="/manage-announcements"><i data-feather="bell"></i> Pengumuman</a></li>
-                    <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-galeries") ? "active" : "" ?>" href="/manage-galeries"><i data-feather="image"></i> Galeri</a></li>
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-achievements") ? "active" : "" ?>" href="/manage-achievements"><i data-feather="award"></i> Pencapaian</a></li>
-                    <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/dashboard/others") ? "active" : "" ?>" href="/dashboard/others"><i data-feather="info"></i> Lainnya</a></li>
                     <li class="nav-item">
                         <hr>
                     </li>

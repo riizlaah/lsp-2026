@@ -287,6 +287,35 @@ class Model
         }
         return $rows;
     }
+    public static function pluck(string $columnName): array
+    {
+        $query = static::constructQuery();
+        $res = self::execQueryWithParams($query);
+        $records = $res->fetchAll(PDO::FETCH_ASSOC);
+        $rows = [];
+        foreach ($records as $rec) {
+            $row = new static();
+            foreach ($rec as $key => $val) {
+                $row->$key = $val;
+            }
+            $rows[] = $row;
+        }
+        if (empty($rows)) return $rows;
+        if (!empty(static::$eagerLoads) && !empty(static::$relationships)) {
+            $eagerLoads = static::$eagerLoads;
+            static::$eagerLoads = [];
+            foreach ($eagerLoads as $idx => $val) {
+                if (is_string($idx)) {
+                    static::eagerLoadRelation($rows, $idx, $val);
+                } else {
+                    static::eagerLoadRelation($rows, $val);
+                }
+            }
+        }
+        $data = [];
+        foreach($rows as $row) $data[] = $row->$columnName;
+        return $data;
+    }
     public static function with(array $relations)
     {
         foreach ($relations as $key => $val) {
