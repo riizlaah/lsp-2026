@@ -90,10 +90,10 @@ class Model
                 break;
             case "r":
                 $orderBy = "";
-                if (!empty($orderByStates)) {
+                if (!empty(static::$orderByStates)) {
                     $orderBy = " ORDER BY";
-                    foreach ($orderByStates as $state) {
-                        $orderBy .= " `" . $state[0] . " " . ($state[1] ? 'DESC' : 'ASC') . ",";
+                    foreach (static::$orderByStates as $state) {
+                        $orderBy .= " `" . $state[0] . "` " . ($state[1] ? 'DESC' : 'ASC') . ",";
                     }
                     $orderBy = trim($orderBy, ',');
                 }

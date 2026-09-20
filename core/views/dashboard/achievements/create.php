@@ -1,5 +1,5 @@
 <x-dashb>
-    <form action="/manage-achievements/create" method="post" class="mx-auto shadow rounded my-4 p-4" style="width: min(100%, 40rem);">
+    <form action="/manage-achievements/create" method="post" class="mx-auto shadow rounded my-4 p-4" style="width: min(100%, 40rem);" enctype="multipart/form-data">
         <xcsrf />
         <div class="mb-4 d-flex gap-2 align-items-center">
             <a href="/manage-achievements"><i data-feather="arrow-left"></i></a>
@@ -17,8 +17,13 @@
         </div>
         @enderr
         <div class="form-floating mb-3">
-            <input type="text" name="nama" class="form-control @err('nama') is-invalid @enderr" id="nama" value="@old('nama')" placeholder="Nama" required>
-            <label for="nama">Nama</label>
+            <input type="text" name="judul" class="form-control @err('judul') is-invalid @enderr" id="judul" value="@old('judul')" placeholder="Nama" required>
+            <label for="judul">Judul</label>
+        </div>
+        <div class="mb-3">
+            <label for="headerImgInput" class="form-label">Gambar Tajuk</label>
+            <img src="" alt="Gambar Tajuk" id="imgPreview" class="w-75 object-fit-contain mb-1 mx-auto" style="display: none;">
+            <input class="form-control" type="file" name="gambarTajuk" id="headerImgInput" accept="image/*">
         </div>
         <div class="form-floating mb-3">
             <input type="text" name="rank" class="form-control @err('rank') is-invalid @enderr" id="rank" value="@old('rank')" placeholder="Rank" required>
@@ -94,4 +99,23 @@
         </div>
         <button type="submit" class="btn btn-primary w-100">Simpan</button>
     </form>
+    <script src="/assets/script.js"></script>
+    <script>
+        let imgInp = query("#headerImgInput");
+        let imgPreview = query("#imgPreview");
+        imgInp.onchange = () => {
+            const file = imgInp.files[0];
+            if (file) {
+                const objURL = URL.createObjectURL(file);
+                imgPreview.src = objURL;
+                imgPreview.style.display = "block";
+                imgPreview.onload = () => {
+                    URL.revokeObjectURL(objURL);
+                };
+            } else {
+                imgPreview.src = "";
+                imgPreview.style.display = "none";
+            }
+        };
+    </script>
 </x-dashb>

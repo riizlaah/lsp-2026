@@ -1,6 +1,6 @@
 <x-dashb>
     <?php $record = $record ?? new \App\Models\Achievement() ?>
-    <form action="/manage-achievements/edit/<?= $record->id ?>" method="post" class="mx-auto shadow rounded my-4 p-4" style="width: min(100%, 40rem);">
+    <form action="/manage-achievements/edit/<?= $record->id ?>" method="post" class="mx-auto shadow rounded my-4 p-4" style="width: min(100%, 40rem);" enctype="multipart/form-data">
         <xm-put />
         <xcsrf />
         <div class="mb-4 d-flex gap-2 align-items-center">
@@ -19,8 +19,13 @@
         </div>
         @enderr
         <div class="form-floating mb-3">
-            <input type="text" name="nama" class="form-control @err('nama') is-invalid @enderr" id="nama" value="@old('nama', $record->title)" placeholder="Nama" required>
-            <label for="nama">Nama</label>
+            <input type="text" name="judul" class="form-control @err('judul') is-invalid @enderr" id="judul" value="@old('judul', $record->title)" placeholder="Nama" required>
+            <label for="judul">Judul</label>
+        </div>
+        <div class="mb-3">
+            <label for="headerImgInput" class="form-label">Gambar Tajuk</label>
+            <img src="<?= $record->headerImage ? "/assets/uploads/".$record->headerImage : "" ?>" alt="Gambar Tajuk" id="imgPreview" class="w-75 object-fit-contain mb-1 mx-auto" style="display: <?= $record->headerImage ? "block" : "none" ?>;">
+            <input class="form-control" type="file" name="gambarTajuk" id="headerImgInput" accept="image/*">
         </div>
         <div class="form-floating mb-3">
             <input type="text" name="rank" class="form-control @err('rank') is-invalid @enderr" id="rank" value="@old('rank', $record->rank)" placeholder="Rank" required>
@@ -99,4 +104,23 @@
             <button type="submit" class="btn btn-primary flex-fill">Simpan</button>
         </div>
     </form>
+    <script src="/assets/script.js"></script>
+    <script>
+        let imgInp = query("#headerImgInput");
+        let imgPreview = query("#imgPreview");
+        imgInp.onchange = () => {
+            const file = imgInp.files[0];
+            if (file) {
+                const objURL = URL.createObjectURL(file);
+                imgPreview.src = objURL;
+                imgPreview.style.display = "block";
+                imgPreview.onload = () => {
+                    URL.revokeObjectURL(objURL);
+                };
+            } else {
+                imgPreview.src = "";
+                imgPreview.style.display = "none";
+            }
+        };
+    </script>
 </x-dashb>

@@ -32,17 +32,17 @@ class information {
             $search = trim($_GET["search"] ?? "");
             $records = [];
             $now = Carbon::now()->toDateTimeString();
-            $query = Announcement::where('publishedAt', $now, ">=")->where('expiredAt', $now, "<=");
+            $query = Announcement::where('publishedAt', $now, "<=")->where('expiredAt', $now, ">=");
             if(!empty($search)) $records = $query->where('title', "%$search%", "LIKE")->getAll();
             else $records = $query->getAll();
-            view('articles', ["title" => "Pengumuman", "records" => $records]);
+            view('announcements', ["title" => "Pengumuman", "records" => $records]);
         } else {
             $now = Carbon::now()->toDateTimeString();
             $query = Announcement::where('slug', $slug);
-            if(!isLoggedIn()) $query = $query->where('publishedAt', $now, ">=")->where('expiredAt', $now, "<=");
+            if(!isLoggedIn()) $query = $query->where('publishedAt', $now, "<=")->where('expiredAt', $now, ">=");
             $record = $query->first();
             if(!$record) redirectBack();
-            view("article-detail", ["title" => "Detail Pengumuman", "record" => $record]);
+            view("announcement-detail", ["title" => "Detail Pengumuman", "record" => $record]);
         }
     }
 }

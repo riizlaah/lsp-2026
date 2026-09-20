@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Config;
 use App\Models\Achievement;
 
 class manage_achievements {
@@ -34,8 +35,9 @@ class manage_achievements {
         ensureIsAdmin();
         $actualId = intval($id);
         if($actualId <= 0) redirect("/manage-achievements");
-        ensureInputFilled($_POST, ["nama", "rank", "tingkat", "berjenjang", "konten", "tahun", "bulan"]);
-        $name = sanitizeInput("nama");
+        ensureInputFilled($_POST, ["judul", "rank", "tingkat", "berjenjang", "konten", "tahun", "bulan"]);
+        if(isFileUploaded("gambarTajuk")) ensureAttachmentValid("gambarTajuk");
+        $name = sanitizeInput("judul");
         $rank = sanitizeInput("rank");
         $level = sanitizeInput("tingkat");
         $isTiered = sanitizeInput("berjenjang");
@@ -48,7 +50,9 @@ class manage_achievements {
         if(!in_array($isTiered, ["t", "f"])) redirectBackWithErrors(["berjenjang" => ["Opsi berjenjang tidak valid"]]);
         if(!ctype_digit($year) || intval($year) <= 0) redirectBackWithErrors(["tahun" => ["Tahun tidak valid"]]);
         if(!ctype_digit($month) || intval($month) <= 0) redirectBackWithErrors(["bulan" => ["Bulan tidak valid"]]);
-        if(!Achievement::where('id', $actualId)->any()) errCode(404, "Pencapaian tidak ditemukan");
+        $record = Achievement::where('id', $actualId)->first();
+        if(!$record) errCode(404, "Pencapaian tidak ditemukan");
+        $image = isFileUploaded("gambarTajuk") ? moveUploadedFile("gambarTajuk", Config::getUploadDirPath(), $record->headerImage ?? "") : $record->headerImage;
         Achievement::where('id', $actualId)->update([
             "title" => $name,
             "rank" => intval($rank),
@@ -56,16 +60,18 @@ class manage_achievements {
             "isTiered" => $isTiered == "t" ? true : false,
             "content" => $content,
             "year" => intval($year),
-            "month" => intval($month)
+            "month" => intval($month),
+            "headerImage" => $image
         ]);
-        session_flash('message', "Berhasil mengubah pencapaian!");
+        session_flash('message', "Berhasil memperbarui pencapaian!");
         redirect('/manage-achievements');
     }
 
     public function create_post() {
         ensureIsAdmin();
-        ensureInputFilled($_POST, ["nama", "rank", "tingkat", "berjenjang", "konten", "tahun", "bulan"]);
-        $name = sanitizeInput("nama");
+        ensureInputFilled($_POST, ["judul", "rank", "tingkat", "berjenjang", "konten", "tahun", "bulan"]);
+        if(isFileUploaded("gambarTajuk")) ensureAttachmentValid("gambarTajuk");
+        $name = sanitizeInput("judul");
         $rank = sanitizeInput("rank");
         $level = sanitizeInput("tingkat");
         $isTiered = sanitizeInput("berjenjang");
@@ -79,6 +85,7 @@ class manage_achievements {
         if(!ctype_digit($year) || intval($year) <= 0) redirectBackWithErrors(["tahun" => ["Tahun tidak valid"]]);
         if(!ctype_digit($month) || intval($month) <= 0) redirectBackWithErrors(["bulan" => ["Bulan tidak valid"]]);
         $userId = getAuthData()["id"];
+        $image = isFileUploaded("gambarTajuk") ? moveUploadedFile("gambarTajuk", Config::getUploadDirPath()) : null;
         Achievement::add([
             "userId" => $userId,
             "title" => $name,
@@ -87,7 +94,8 @@ class manage_achievements {
             "isTiered" => $isTiered == "t" ? true : false,
             "content" => $content,
             "year" => intval($year),
-            "month" => intval($month)
+            "month" => intval($month),
+            "headerImage" => $image
         ]);
         session_flash("message", "Pencapaian ditambahkan!");
         redirect('/manage-achievements');

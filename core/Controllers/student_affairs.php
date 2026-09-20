@@ -14,7 +14,7 @@ class student_affairs {
 
     public function achievements($id = "") {
         if(empty($id)) {
-            $achievements = Achievement::getAll();
+            $achievements = Achievement::orderBy('year')->orderBy('month')->getAll();
             view('achievements', ["title" => "Prestasi & Karya", "achievements" => $achievements]);
         } else {
             if(!ctype_digit($id) || intval($id) <= 0) redirectBack();

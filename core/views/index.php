@@ -10,11 +10,13 @@
         <div id="activities" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php foreach ($activities ?? [] as $i => $activity): ?>
-                    <a class="carousel-item <?= $i === 0 ? "active" : "" ?> text-decoration-none" href="/information/articles/<?= $activity->slug ?>">
+                    <a class="carousel-item <?= $i === 0 ? "active" : "" ?> text-decoration-none position-relative" href="/information/articles/<?= $activity->slug ?>">
                         <img src="<?= $activity->headerImage ? "/assets/uploads/" . $activity->headerImage : "/assets/images/no-img.webp" ?>" class="d-block w-100" alt="<?= $activity->title ?>">
+                        <div style="position: absolute; bottom: 0; left:0; width: 100%; height: 90%; background: linear-gradient(0deg, rgba(0,0,0,0.8), rgba(0,0,0,0));">
                         <div class="carousel-caption d-none d-md-block">
                             <h5><?= $activity->title ?></h5>
                             <p><?= getTextFromElement($activity->content) ?></p>
+                        </div>
                         </div>
                     </a>
                 <?php endforeach; ?>
@@ -31,7 +33,7 @@
     </div>
     <?php if (isset($announcement)): ?>
         <div class="container-lg my-4">
-            <a href="" class="text-decoration-none">
+            <a href="/information/announcements/<?= $announcement->slug ?>" class="text-decoration-none">
                 <div class="alert alert-info" role="alert">
                     <h4 class="alert-heading"><?= $announcement->title ?></h4>
                     <p><?= getTextFromElement($announcement->content) ?></p>
