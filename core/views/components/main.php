@@ -101,13 +101,13 @@ $clippedRoute = $GLOBALS["clippedRoute"];
             <div class="col">
                 <h3>Program Keahlian</h3>
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#tm">Teknik Mesin</a></li>
+                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#tp">Teknik Pemesinan</a></li>
                     <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#tkr">Teknik Kendaraan Ringan</a></li>
                     <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#tbsm">Teknik Bisnis Sepeda Motor</a></li>
                     <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#tav">Teknik Audio Video</a></li>
-                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#te">Teknik Eletronika</a></li>
-                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#tkl">Teknik Ketenagalistrikan</a></li>
-                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#pplg">Pengembangan Perangkat Lunak dan Gim</a></li>
+                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#tei">Teknik Eletronika Industri</a></li>
+                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#titl">Teknik Instalasi Tenaga Listrik</a></li>
+                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/profile#rpl">Rekayasa Perangkat Lunak</a></li>
                 </ul>
             </div>
             <div class="col">

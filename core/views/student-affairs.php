@@ -61,7 +61,7 @@
                     </div>
                 <?php endforeach; ?>
             </div>
-            <a href="/student-affairs/achievements" class="w-100 d-block text-center mt-3">Lihat Prestasi & Karya</a>
+            <a href="/student-affairs/achievements" class="w-100 d-block text-center mt-3">Lihat Lebih Banyak...</a>
         </div>
     </div>
 </x-main>

@@ -1,7 +1,7 @@
 <x-main>
     <div class="my-4 d-flex gap-2 align-items-center">
         <a href="/student-affairs"><i data-feather="arrow-left"></i></a>
-        <h1>Pencapaian yang Telah Diraih</h1>
+        <h1 class="mb-0">Pencapaian yang Telah Diraih</h1>
     </div>
     <div class="input-group mb-3">
         <form action="">

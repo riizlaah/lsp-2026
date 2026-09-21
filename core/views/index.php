@@ -1,9 +1,11 @@
 <x-main>
-    <div class="container p-4 my-3 mx-auto bg-primary bg-gradient rounded-4 row align-items-center text-white">
-        <img src="/assets/images/kepala-sekolah.webp" alt="Kepala Sekolah" class="col-auto w-25">
-        <div class="col me-6">
+    <div class="container p-4 my-4 mx-auto bg-primary bg-gradient rounded-4 row row-cols-1 row-cols-lg-2 g-2 align-items-center text-white">
+        <div class="col">
+            <img src="/assets/images/kepala-sekolah.webp" alt="Kepala Sekolah" class="d-block mx-auto w-50">
+        </div>
+        <div class="col text-center">
             <span class="fs-4 fw-bold d-block mb-2">Sambutan Kepala Sekolah</span>
-            <p class="">Berkat rahmat dan karunia Tuhan Yang Maha Esa, website SMK Negeri 1 Kandeman Kabupaten Batang akhirnya dapat dibangun. Tujuan pembangunan website sekolah ini adalah untuk memperkenalkan, memberikan kemudahan, dan memberikan wawasan kepada masyarakat tentang SMK Negeri 1 Kandeman.</p>
+            <p class="d-block">Berkat rahmat dan karunia Tuhan Yang Maha Esa, website SMK Negeri 1 Kandeman Kabupaten Batang akhirnya dapat dibangun. Tujuan pembangunan website sekolah ini adalah untuk memperkenalkan, memberikan kemudahan, dan memberikan wawasan kepada masyarakat tentang SMK Negeri 1 Kandeman.</p>
         </div>
     </div>
     <div class="container-lg my-3">

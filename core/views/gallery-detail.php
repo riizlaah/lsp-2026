@@ -24,7 +24,7 @@
         <div class="container-md my-3 mx-auto row">
             <div class="col" style="height: fit-content;">
                 <div class="position-relative rounded h-75">
-                    <img src="<?= $cover->mediaPath ? "/assets/uploads/" . $cover->mediaPath : "/assets/images/no-img.webp" ?>" class="card-img-top w-100 h-100 object-fit-contain" alt="<?= $cover?->description ?? "No Description" ?>">
+                    <img src="<?= $cover->mediaPath ? "/assets/uploads/" . $cover->mediaPath : "/assets/images/no-img.webp" ?>" class="card-img-top w-100 h-100 object-fit-contain bg-black" alt="<?= $cover?->description ?? "No Description" ?>">
                 </div>
             </div>
         </div>
@@ -32,15 +32,13 @@
             <?php foreach ($extras as $record): ?>
                 <div class="col">
                     <div class="h-100 position-relative rounded">
-                        <img src="<?= $record->mediaPath ? "/assets/uploads/" . $record->mediaPath : "/assets/images/no-img.webp" ?>" class="card-img-top w-100 h-100 object-fit-containx" alt="<?= $record?->description ?? "No Description" ?>">
+                        <img src="<?= $record->mediaPath ? "/assets/uploads/" . $record->mediaPath : "/assets/images/no-img.webp" ?>" class="w-100 h-100 object-fit-contain bg-black" alt="<?= $record?->description ?? "No Description" ?>">
                     </div>
                 </div>
             <?php endforeach; ?>
 
         </div>
         <hr>
-        <div class="d-flex justify-content-between align-content-center">
-            <a href="/student-affairs/galleries" class="btn btn-primary">Kembali</a>
-        </div>
+        <a href="/student-affairs/galleries" class="btn btn-primary">Kembali</a>
     </div>
 </x-main>

@@ -9,6 +9,5 @@ Proyek LSP 2026, sebuah web untuk profil sekolah.
 - [x] CRUD prestasi
 
 ## Known Bugs
-- Failed to bulk upload (multiple attachment uploads)
 - Failed to sync gallery
 

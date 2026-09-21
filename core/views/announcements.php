@@ -1,7 +1,7 @@
 <x-main>
     <div class="my-4 d-flex gap-2 align-items-center">
         <a href="/information"><i data-feather="arrow-left"></i></a>
-        <h1>Pengumuman Terbaru</h1>
+        <h1 class="mb-0">Pengumuman Terbaru</h1>
     </div>
     <div class="input-group mb-3">
         <form action="">

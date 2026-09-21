@@ -19,7 +19,7 @@
             <?php endif; ?>
         </div>
         <?php if($record->headerImage): ?>
-            <img src="/assets/uploads/<?= $record->headerImage ?>" alt="<?= $record->title ?>" class="w-100 object-fit-contain mb-2">
+            <img src="/assets/uploads/<?= $record->headerImage ?>" alt="<?= $record->title ?>" class="w-50 d-block mx-auto object-fit-contain mb-2">
         <?php endif; ?>
         <p><?= $record->content ?></p>
         <a href="/student-affairs/achievements" class="btn btn-primary mt-4">Kembali</a>

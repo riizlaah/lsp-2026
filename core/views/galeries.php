@@ -1,12 +1,7 @@
 <x-main>
     <div class="my-4 d-flex gap-2 align-items-center">
         <a href="/information"><i data-feather="arrow-left"></i></a>
-        <h1>Galeri Foto</h1>
-    </div>
-    <div class="input-group mb-3">
-        <form action="">
-            <input type="text" name="search" value="<?= htmlspecialchars($_GET["search"] ?? "") ?>" class="form-control" placeholder="Cari..." aria-label="Search">
-        </form>
+        <h1 class="mb-0">Galeri Foto</h1>
     </div>
     <div class="row row-cols-2 row-cols-lg-4 g-3">
         <?php
