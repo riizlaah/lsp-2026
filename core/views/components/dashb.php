@@ -16,6 +16,16 @@ $useTrix = $useTrix ?? false;
         <link rel="stylesheet" type="text/css" href="/assets/trix/dist/trix.css">
         <script type="text/javascript" src="/assets/trix/dist/trix.umd.min.js"></script>
     <?php endif; ?>
+    <style>
+        trix-toolbar {
+            position: sticky;
+            top: 0.5rem;
+            z-index: 999;
+        }
+        button.trix-button {
+            background-color: white;
+        }
+    </style>
 </head>
 
 <body>

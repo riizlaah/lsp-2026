@@ -127,7 +127,6 @@ class manage_announcements
         } catch (Exception $e) {
             redirectBackWithError("", ["Gagal membuat pengumuman: " . $e->getMessage()]);
             Model::rollback();
-            foreach ($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
         }
     }
 

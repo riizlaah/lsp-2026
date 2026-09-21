@@ -63,8 +63,10 @@ class Gallery extends Model
         if (!empty($data)) static::addMany($data);
         if(!static::byRef($refTable, $refId)->where('isCover', true)->any()) {
             $first = static::byRef($refTable, $refId)->where('mediaPath', $images[0])->orderBy('id', false)->first();
-            static::where('id', $first->id)->update(["isCover" => true]);
-            safeUnlink(Config::getUploadDirPath() . $first->mediaPath);
+            if($first) {
+                static::where('id', $first->id)->update(["isCover" => true]);
+                safeUnlink(Config::getUploadDirPath() . $first->mediaPath);
+            }
         }
     }
 

@@ -191,29 +191,29 @@ class Model
         static::$params[] = $value;
         return new static();
     }
-    public static function whereIn(string $column, array $value, $prefix = 'AND')
+    public static function whereIn(string $column, array $values, $prefix = 'AND')
     {
-        static::$whereConditions[] = [$column, 'IN', "(" . trim(str_repeat("?,", count($value)), ',') . ")", $prefix];
-        static::$params = array_merge($value, static::$params);
+        static::$whereConditions[] = [$column, 'IN', "(" . trim(str_repeat("?,", count($values)), ',') . ")", $prefix];
+        static::$params = array_merge(static::$params, $values);
         return new static();
     }
-    public static function whereNotIn(string $column, array $value, $prefix = 'AND')
+    public static function whereNotIn(string $column, array $values, $prefix = 'AND')
     {
-        static::$whereConditions[] = [$column, 'NOT IN', "(" . trim(str_repeat("?,", count($value)), ',') . ")", $prefix];
-        static::$params = array_merge($value, static::$params);
+        static::$whereConditions[] = [$column, 'NOT IN', "(" . trim(str_repeat("?,", count($values)), ',') . ")", $prefix];
+        static::$params = array_merge(static::$params, $values);
         return new static();
     }
     public static function orWhere(string $column, mixed $value, $operator = '=')
     {
         return static::where($column, $value, $operator, 'OR');
     }
-    public static function orWhereIn(string $column, array $value)
+    public static function orWhereIn(string $column, array $values)
     {
-        return static::whereIn($column, $value, 'OR');
+        return static::whereIn($column, $values, 'OR');
     }
-    public static function orWhereNotIn(string $column, array $value)
+    public static function orWhereNotIn(string $column, array $values)
     {
-        return static::whereNotIn($column, $value, 'OR');
+        return static::whereNotIn($column, $values, 'OR');
     }
     public static function orderBy(string $column, $descending = true)
     {
