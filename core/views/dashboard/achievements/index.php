@@ -10,7 +10,7 @@
         <div class="col-auto">
             <div class="input-group">
                 <form action="">
-                    <input type="text" name="search" class="form-control" placeholder="Cari..." aria-label="Search">
+                    <input type="text" name="search" class="form-control" placeholder="Cari..." value="<?= htmlspecialchars($_GET["search"] ?? "") ?>" aria-label="Search">
                 </form>
             </div>
         </div>
@@ -49,4 +49,9 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?php if (empty($records)): ?>
+        <div class="container-sm mx-auto text-center text-secondary">
+            <i>-- Kosong --</i>
+        </div>
+    <?php endif; ?>
 </x-dashb>

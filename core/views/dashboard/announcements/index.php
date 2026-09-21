@@ -14,7 +14,7 @@ use Carbon\Carbon;
         <div class="col-auto">
             <div class="input-group">
                 <form action="">
-                    <input type="text" name="search" class="form-control" value="@old('search')" placeholder="Cari..." aria-label="Search">
+                    <input type="text" name="search" class="form-control" value="<?= htmlspecialchars($_GET["search"] ?? "") ?>" placeholder="Cari..." aria-label="Search">
                 </form>
             </div>
         </div>
@@ -23,7 +23,7 @@ use Carbon\Carbon;
             <a tole="button" href="/manage-announcements/create" class="btn btn-primary">Tambahkan</a>
         </div>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered mb-3">
         <thead>
             <tr>
                 <th scope="col">No.</th>
@@ -53,4 +53,9 @@ use Carbon\Carbon;
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?php if (empty($records)): ?>
+        <div class="container-sm mx-auto text-center text-secondary">
+            <i>-- Kosong --</i>
+        </div>
+    <?php endif; ?>
 </x-dashb>

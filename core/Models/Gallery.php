@@ -8,11 +8,11 @@ use App\Model;
 class Gallery extends Model
 {
     protected static $guarded = ['id'];
-    protected static $tableName = "galeries";
+    protected static $tableName = "galleries";
     protected static $fillable = ['refTable', 'refId', 'isCover', 'mediaPath', 'description', 'createdAt'];
     protected static $relationships = [];
 
-    public static function generateGaleries(string $refTable, int $refId, array $images)
+    public static function generateGalleries(string $refTable, int $refId, array $images)
     {
         if (empty($images)) return;
         $first = true;
@@ -29,7 +29,7 @@ class Gallery extends Model
         static::addMany($data);
     }
 
-    public static function syncGaleries(string $refTable, int $refId, array $images)
+    public static function syncGalleries(string $refTable, int $refId, array $images)
     {
         $existingFiles = static::byRef($refTable, $refId)->pluck("mediaPath");
         if (empty($images)) {

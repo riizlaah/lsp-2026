@@ -1,5 +1,5 @@
 <x-main>
-    <div class="container p-4 my-4 mx-auto bg-primary bg-gradient rounded-4 row row-cols-1 row-cols-lg-2 g-2 align-items-center text-white">
+    <div class="container p-4 my-4 mx-auto bg-primary bg-gradient rounded-4 row row-cols-1 row-cols-lg-2 g-4 align-items-center text-white">
         <div class="col">
             <img src="/assets/images/kepala-sekolah.webp" alt="Kepala Sekolah" class="d-block mx-auto w-50">
         </div>
@@ -11,7 +11,11 @@
     <div class="container-lg my-3">
         <div id="activities" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <?php foreach ($activities ?? [] as $i => $activity): ?>
+                <?php
+
+use Carbon\Carbon;
+
+ foreach ($activities ?? [] as $i => $activity): ?>
                     <a class="carousel-item <?= $i === 0 ? "active" : "" ?> text-decoration-none position-relative" href="/information/articles/<?= $activity->slug ?>">
                         <img src="<?= $activity->headerImage ? "/assets/uploads/" . $activity->headerImage : "/assets/images/no-img.webp" ?>" class="d-block w-100" alt="<?= $activity->title ?>">
                         <div style="position: absolute; bottom: 0; left:0; width: 100%; height: 90%; background: linear-gradient(0deg, rgba(0,0,0,0.8), rgba(0,0,0,0));">
@@ -48,12 +52,16 @@
         <div class="row row-cols-1 row-cols-md-3 g-3">
             <?php foreach ($articles ?? [] as $article): ?>
                 <div class="col">
-                    <a class="card text-decoration-none" href="/information/articles/<?= $article->slug ?>">
+                    <a class="card text-decoration-none position-relative h-100" href="/information/articles/<?= $article->slug ?>">
                         <img src="<?= $article->headerImage ? "/assets/uploads/" . $article->headerImage : "/assets/images/no-img.webp" ?>" class="card-img-top" alt="<?= $article->title ?>">
                         <div class="card-body">
-                            <h5 class="card-title"><?= $article->title ?></h5>
+                            <h5 class="card-title fw-bold"><?= $article->title ?></h5>
                             <p class="card-text"><?= getTextFromElement($article->content) ?></p>
                         </div>
+                        <div class="card-footer">
+                            <div class="text-end text-secondary fst-italic"><?= Carbon::parse($article->createdAt)->format("d F Y") ?></div>
+                        </div>
+                        <div class="badge text-bg-primary position-absolute" style="top: 1rem; left: 1rem;"><?= $article->category->name ?></div>
                     </a>
                 </div>
             <?php endforeach; ?>

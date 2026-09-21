@@ -10,7 +10,7 @@
         <div class="col-auto">
             <div class="input-group">
                 <form action="">
-                    <input type="text" name="search" class="form-control" placeholder="Cari..." aria-label="Search">
+                    <input type="text" name="search" class="form-control" placeholder="Cari..." value="<?= htmlspecialchars($_GET["search"] ?? "") ?>" aria-label="Search">
                 </form>
             </div>
         </div>
@@ -19,7 +19,7 @@
             <a tole="button" href="/manage-articles/create" class="btn btn-primary">Tambahkan</a>
         </div>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered mb-3">
         <thead>
             <tr>
                 <th scope="col">No.</th>
@@ -49,4 +49,9 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?php if (empty($records)): ?>
+        <div class="container-sm mx-auto text-center text-secondary">
+            <i>-- Kosong --</i>
+        </div>
+    <?php endif; ?>
 </x-dashb>

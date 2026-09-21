@@ -64,7 +64,8 @@ class manage_articles
         if (!in_array($status, ["d", "r"])) redirectBackWithError("status", ["Opsi status invalid"]);
         try {
             Model::beginTransaction();
-            $imgPath = (isFileUploaded("gambarTajuk")) ? moveUploadedFile("gambarTajuk", Config::getUploadDirPath()) : $record->headerImage;
+            if(isFileUploaded("gambarTajuk")) moveUploadedFile("gambarTajuk", Config::getUploadDirPath(), $record->headerImage ?? "");
+            $imgPath = $record->headerImage;
             $images = TmpFile::freeTmpFilesFromContent($content);
             array_unshift($images, $imgPath);
             Article::where('id', $actualId)->update([
@@ -76,7 +77,7 @@ class manage_articles
                 "isReleased" => $status == "r"
             ]);
             // if ($actualId == 0) throw new Exception("Gagal mendapatkan ID dari artikel yang dibuat");
-            Gallery::syncGaleries("articles", $actualId, $images);
+            Gallery::syncGalleries("articles", $actualId, $images);
             Model::commit();
             session_flash("message", "Artikel berhasil diupdate!");
             redirect('/manage-articles');
@@ -118,7 +119,7 @@ class manage_articles
                 "isReleased" => $status == "r"
             ]);
             if ($articleId == 0) throw new Exception("Gagal mendapatkan ID dari artikel yang dibuat");
-            Gallery::generateGaleries("articles", $articleId, $images);
+            Gallery::generateGalleries("articles", $articleId, $images);
             Model::commit();
             session_flash("message", "Artikel ditambahkan!");
             redirect('/manage-articles');

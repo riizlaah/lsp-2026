@@ -8,6 +8,11 @@
             <input type="text" name="search" class="form-control" value="<?= htmlspecialchars($_GET["search"] ?? "") ?>" placeholder="Cari..." aria-label="Search">
         </form>
     </div>
+    <?php if (empty($records)): ?>
+        <div class="container-sm mx-auto text-center text-secondary">
+            <i>-- Kosong --</i>
+        </div>
+    <?php endif; ?>
     <div class="row row-cols-2 row-cols-lg-3">
         <?php foreach ($records ?? [] as $i => $record): ?>
             <div class="col">

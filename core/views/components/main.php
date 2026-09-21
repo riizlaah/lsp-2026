@@ -68,7 +68,7 @@ $clippedRoute = $GLOBALS["clippedRoute"];
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/student-affairs">Terbaru</a></li>
-                            <li><a class="dropdown-item" href="/student-affairs/galeries">Galeri</a></li>
+                            <li><a class="dropdown-item" href="/student-affairs/galleries">Galeri</a></li>
                             <li><a class="dropdown-item" href="/student-affairs/achievements">Pencapaian</a></li>
                         </ul>
                     </li>
@@ -114,7 +114,7 @@ $clippedRoute = $GLOBALS["clippedRoute"];
                 <h3>Informasi Lainnya</h3>
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/student-affairs/achievements">Pencapaian Siswa</a></li>
-                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/student-affairs/galeries">Galeri</a></li>
+                    <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/student-affairs/galleries">Galeri</a></li>
                     <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/information/articles">Artikel</a></li>
                     <li class="nav-item"><a class="nav-link p-0 text-light-emphasis" href="/contact">Kontak</a></li>
                 </ul>

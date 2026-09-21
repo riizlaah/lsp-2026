@@ -11,10 +11,10 @@ class student_affairs {
         view('student-affairs', ["title" => "Kesiswaan", "galleries" => $galleries, "achievements" => $achievements]);
     }
 
-    public function galeries($refTable = "", $refId = "") {
+    public function galleries($refTable = "", $refId = "") {
         if(empty($refTable) && empty($refId)) {
             $galleries = Gallery::where('isCover', true)->orderBy('createdAt')->getAll();
-            view('galeries', ["title" => "Galeri", "galleries" => $galleries]);
+            view('galleries', ["title" => "Galeri", "galleries" => $galleries]);
         } else {
             if(!ctype_alpha($refTable)) redirectBack();
             if(!ctype_digit($refId) || intval($refId) <= 0) redirectBack();

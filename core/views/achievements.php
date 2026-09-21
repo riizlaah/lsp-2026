@@ -8,12 +8,17 @@
             <input type="text" name="search" class="form-control" value="<?= htmlspecialchars($_GET["search"] ?? "") ?>" placeholder="Cari..." aria-label="Search">
         </form>
     </div>
+    <?php if (empty($achievements)): ?>
+        <div class="container-sm mx-auto text-center text-secondary">
+            <i>-- Kosong --</i>
+        </div>
+    <?php endif; ?>
     <div class="row row-cols-2 row-cols-lg-4 g-3">
         <?php foreach ($achievements ?? [] as $record): ?>
             <div class="col">
                 <a href="/student-affairs/achievements/<?= $record->id ?>" class="text-decoration-none d-block h-100">
                     <div class="card h-100">
-                        <img src="<?= $record->headerImage ? "/assets/uploads/".$record->headerImage : "/assets/images/no-img.webp" ?>" class="card-img-top" alt="<?= $record->title ?>">
+                        <img src="<?= $record->headerImage ? "/assets/uploads/" . $record->headerImage : "/assets/images/no-img.webp" ?>" class="card-img-top" alt="<?= $record->title ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?= $record->title ?></h5>
                         </div>
