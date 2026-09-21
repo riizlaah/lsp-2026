@@ -6,7 +6,9 @@ use App\Models\Gallery;
 
 class student_affairs {
     public function index() {
-        view('student-affairs', ["title" => "Kesiswaan"]);
+        $galleries = Gallery::where('isCover', true)->orderBy('createdAt')->limit(4)->getAll();
+        $achievements = Achievement::orderBy('year')->orderBy('month')->limit(4)->getAll();
+        view('student-affairs', ["title" => "Kesiswaan", "galleries" => $galleries, "achievements" => $achievements]);
     }
 
     public function galeries($refTable = "", $refId = "") {

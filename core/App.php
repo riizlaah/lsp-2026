@@ -67,15 +67,18 @@ class App {
         if(!isset($_SESSION['lastAction'])) $_SESSION['lastAction'] = $now->toDateTimeString();
         $lastAction = Carbon::parse($_SESSION['lastAction']);
         if($lastAction->diffInMinutes($now) > 59) {
-            $files = TmpFile::where('createdAt', $now->toDateTimeString(), '<')->getAll();;
+            $files = TmpFile::where('createdAt', $now->toDateTimeString(), '<')->getAll();
             if(!empty($files)) {
                 $ids = [];
                 foreach($files as $file) {
-                    $filepath = Config::getUploadDirPath() . $file->filename;
-                    if(file_exists($filepath)) unlink($filepath);
-                    $ids[] = $file->id;
+                    $hourDiff = Carbon::parse($file->createdAt)->diffInHours(Carbon::now());
+                    if($hourDiff > 0.9) {
+                        $filepath = Config::getUploadDirPath() . $file->filename;
+                        safeUnlink($filepath);
+                        $ids[] = $file->id;
+                    }
                 }
-                TmpFile::whereIn('id', $ids)->delete();
+                if(!empty($ids)) TmpFile::whereIn('id', $ids)->delete();
             }
             $_SESSION['lastAction'] = $now->toDateTimeString();
         }

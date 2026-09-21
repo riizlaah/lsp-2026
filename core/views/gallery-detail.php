@@ -32,7 +32,7 @@
             <?php foreach ($extras as $record): ?>
                 <div class="col">
                     <div class="h-100 position-relative rounded">
-                        <img src="<?= $record->mediaPath ? "/assets/uploads/" . $record->mediaPath : "/assets/images/no-img.webp" ?>" class="card-img-top w-100 h-100 object-fit-cover" alt="<?= $record?->description ?? "No Description" ?>">
+                        <img src="<?= $record->mediaPath ? "/assets/uploads/" . $record->mediaPath : "/assets/images/no-img.webp" ?>" class="card-img-top w-100 h-100 object-fit-containx" alt="<?= $record?->description ?? "No Description" ?>">
                     </div>
                 </div>
             <?php endforeach; ?>

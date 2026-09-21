@@ -1,4 +1,46 @@
 <x-main>
+    <div class="container-xl mx-auto mt-4 shadow p-4 rounded">
+        <div class="row row-cols-1 row-cols-lg-2 g-2">
+            <div class="col">
+                <img src="/assets/skansaka.webp" alt="Logo SMK Negeri 1 Kandeman" class="w-75 w-lg-100 h-auto mx-auto d-block">
+            </div>
+            <div class="col">
+                <h1 class="text-center text-primary">Sejarah Singkat</h1>
+                <p>Secara umur SMK Negeri 1 Kandeman merupakan sekolah yang telah berumur menengah bukan sekolah lama dan tidak terlalu baru. SMK Negeri 1 Kandeman berdiri pada Tahun 2003 dan pada tahun 2024 ini berarti telah berumur 21 tahun. Pada awalnya SMK Negeri 1 Kandeman dibuka dengan 3 (tiga) program keahlian yaitu Teknik Mekanik Otomotif (sekarang TKR), Teknik Mesin (sekarang Teknik Pemesinan), dan Teknik Audio Video. Kini SMK Negeri 1 Kandeman telah memiliki 7 (tujuh) paket keahlian yaitu, Teknik Kendaraan Ringan Otomotif (TKR)), Teknik Pemesinan (TP), Teknik Audio Video (TAV), Teknik Bisnis Sepeda Motor (TBSM), Teknik Elektronika Industri (TEI), Teknik Instalasi Tenaga Listrik (TITL), dan Rekayasa Perangkat Lunak (RPL)</p>
+            </div>
+        </div>
+    </div>
+    <div class="container-xl mx-auto mt-4">
+        <div class="row row-cols-1 row-cols-lg-2 g-2 mb-3">
+            <div class="col">
+                <div class="shadow p-4 rounded h-100">
+                    <h1 class="text-center text-primary">Visi</h1>
+                    <p class="fs-3 fst-italic">Terwujudnya tamatan yang berakhlak mulia, kompeten, kompetitif dan berwawasan lingkungan</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="shadow p-4 rounded h-100">
+                    <h1 class="text-center text-primary">Misi</h1>
+                    <ol>
+                        <li>Meningkatkan kualitas peserta didik yang agamis dan berbudaya dalam setiap aktifitas</li>
+                        <li>Melaksanakan proses pembelajaran secara optimal yang kondusif berdasarkan kurikulum yang berlaku</li>
+                        <li>Meningkatkan hubungan kerjasama antara sekolah dengan dunia usaha (DU) dan dunia industri (DI) secara berkeseimbangan tahun</li>
+                        <li>Membudayakan peserta didik peduli dalam pelestarian lingkungan</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="shadow p-4 rounded">
+            <h1 class="text-center text-primary">Tujuan</h1>
+            <ol>
+                <li>Mempersiapkan peserta didik agar secara aktif mengembangkan potensi dirinya untuk memiliki kekuatan spiritual keagamaan, pengendalian diri, kepribadian, kecerdasan, akhlak mulia, dalam kehidupan bermasyarakat, berbangsa dan bernegara.</li>
+                <li>Mempersiapkan peserta didik agar menjadi manusia produktif, mampu bekerja mandiri, mengisi lowongan pekerjaan yang ada di DU/DI sebagai tenaga kerja tingkat menengah, sesuai dengan kompetensi dalam program keahlian pilihannya.</li>
+                <li>Membekali peserta didik agar mampu memilih karier, ulet dan gigih dalam berkompetisi, beradaptasi di lingkungan kerja dan mengembangkan sikap profesional dalam bidang keahlian yang diminatinya.</li>
+                <li>Membekali peserta didik dengan ilmu pengetahuan, teknologi, dan seni agar mampu mengembangkan diri di kemudian hari baik secara mandiri maupun melalui jenjang pendidikan yang lebih tinggi.</li>
+                <li>Membekali peserta didik dengan wawasan lingkungan dan jiwa kemandirian dengan sikap dan tindakan yang mendorong dirinya untuk menghasilkan sesuatu yang berguna bagi masyarakat dan lingkungannya.</li>
+            </ol>
+        </div>
+    </div>
     <div class="container-xl mx-auto shadow p-4 mt-4 rounded">
         <h1 class="text-center text-primary">Struktur Organisasi</h1>
         <div class="w-100">
