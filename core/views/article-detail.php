@@ -24,7 +24,7 @@
         </div>
         <hr>
         <div class="d-flex justify-content-between align-content-center">
-            <a href="/student-affairs/achievements" class="btn btn-primary">Kembali</a>
+            <a href="/information/articles" class="btn btn-primary">Kembali</a>
             <i class="text-end text-secondary d-flex align-items-center">Terakhir update: <?= Carbon::parse($record->updatedAt)->locale('id')->diffForHumans(Carbon::now()) ?></i>
         </div>
     </div>

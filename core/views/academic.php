@@ -16,7 +16,6 @@
                             Lihat Lebih Detail...
                         </a>
                     </div>
-                    <a class="d-lg-none" href="https://docs.google.com/spreadsheets/d/1CB15WxNKar8yHuYV8JX9EBywVmGdKynXSYmyypkzcnA/edit?usp=sharing">Lihat Lebih Banyak</a>
                 </div>
             </div>
             <div class="col">
@@ -28,7 +27,6 @@
                             Lihat Lebih Detail...
                         </a>
                     </div>
-                    <a class="d-lg-none" href="https://drive.google.com/drive/folders/1p5eVzqOkxDzAi1RME6duQEje015wKrjZ?usp=drive_link">Lihat Lebih Banyak</a>
                 </div>
             </div>
         </div>
@@ -38,10 +36,10 @@
         $ekstrakurikuler = ["OSIS", "Pramuka", "PMR", "PKS", "Bola Basket", "Bola Voli", "Futsal", "Panahan", "Pencak Silat", "Taekwondo", "Kerohanian Islam", "Teater", "Pecinta Alam", "Jurnalistik"];
         ?>
         <h1 class="text-primary">Ekstrakurikuler</h1>
-        <div class="row row-cols-2 row-cols-lg-4">
+        <div class="row row-cols-2 row-cols-lg-4 g-3">
             <?php foreach ($ekstrakurikuler as $ekstra): ?>
                 <div class="col">
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert alert-info h-100" role="alert">
                         <span class="alert-heading"><?= $ekstra ?></span>
                     </div>
                 </div>

@@ -9,10 +9,22 @@ $clippedRoute = $GLOBALS["clippedRoute"];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/bootstrap5/css/bootstrap.min.css">
     <title><?= $title ?? "Document Title" ?></title>
     <script src="/assets/feather.min.js"></script>
     <style>
+        :root {
+            --bs-font-sans-serif: "PT Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            --bs-body-font-family: var(--bs-font-sans-serif);
+        }
+
+        body {
+            font-family: var(--bs-body-font-family);
+        }
+
         .hover-blur {
             width: 100%;
             height: 100%;
@@ -20,11 +32,13 @@ $clippedRoute = $GLOBALS["clippedRoute"];
             border-radius: 1rem;
             overflow: hidden;
         }
-        .hover-blur > img {
+
+        .hover-blur>img {
             width: 100%;
             height: 100%;
         }
-        .hover-blur > a:last-child {
+
+        .hover-blur>a:last-child {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -38,10 +52,13 @@ $clippedRoute = $GLOBALS["clippedRoute"];
             backdrop-filter: blur(5px);
             transition: all 0.3s;
         }
-        .hover-blur:hover > a:last-child, .hover-blur:focus > a:last-child {
+
+        .hover-blur:hover>a:last-child,
+        .hover-blur:focus>a:last-child {
             background-color: #ffffff38;
             backdrop-filter: blur(20px);
         }
+
         .wrap-imgs img {
             max-width: 100%;
             height: auto;
@@ -51,9 +68,12 @@ $clippedRoute = $GLOBALS["clippedRoute"];
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top px-2 px-md-5 shadow" style="background-color: #00b7ffb2; backdrop-filter: blur(6px); -webikt-backdrop-filter: blur(6px);">
+    <nav class="navbar navbar-expand-lg sticky-top px-2 px-md-5 shadow bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">SMKN 1 Kandeman</a>
+            <a class="navbar-brand" href="/">
+                <img src="/assets/images/skansaka.webp" alt="Logo" width="30" class="d-inline-top align-text-top">
+                <span>SMKN 1 Kandeman</span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -145,4 +165,5 @@ $clippedRoute = $GLOBALS["clippedRoute"];
         feather.replace();
     </script>
 </body>
+
 </html>

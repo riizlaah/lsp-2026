@@ -86,7 +86,7 @@ function getIDNMonthName(int $n)
 function getTextFromElement(string $str, $len = 100)
 {
     $str = html_entity_decode(strip_tags($str), ENT_QUOTES | ENT_HTML5);
-    $str = trim(preg_replace("/(([A-Z])[a-zA-Z0-9]+)/", " $1", $str));
+    $str = trim(preg_replace("/[a-z](([A-Z])[a-zA-Z0-9]+)/", " $1", $str));
     return mb_substr($str, 0, $len, 'UTF-8') . (strlen($str) > $len ? "..." : "");
 }
 

@@ -2,7 +2,7 @@
     <div class="container-xl mx-auto mt-4 shadow p-4 rounded">
         <div class="row row-cols-1 row-cols-lg-2 g-2">
             <div class="col">
-                <img src="/assets/skansaka.webp" alt="Logo SMK Negeri 1 Kandeman" class="w-50 w-lg-100 h-auto mx-auto d-block">
+                <img src="/assets/images/skansaka.webp" alt="Logo SMK Negeri 1 Kandeman" class="w-50 w-lg-100 h-auto mx-auto d-block">
             </div>
             <div class="col">
                 <h1 class="text-center text-primary fw-bold">Sejarah Singkat</h1>
@@ -60,7 +60,7 @@
             <?php foreach ($pengajar as $style => $data): ?>
                 <div class="col">
                     <div class="d-flex flex-column justify-content-evenly align-items-center border border-<?= $style ?> text-center p-2 h-100 rounded-top-3">
-                        <p class="fs-6 text-<?= $style ?>"><?= $data[0] ?></p>
+                        <p class="fs-6 text-<?= $style ?> text-break"><?= $data[0] ?></p>
                         <p class="fw-bold fs-2 my-3 text-<?= $style ?>"><?= $data[1] ?></p>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
             ];
             foreach ($majors as $major): ?>
                 <div class="col" id="<?= $major[1] ?>">
-                    <div class="shadow p-4 rounded d-flex flex-column align-items-center gap-1">
+                    <div class="shadow p-4 rounded d-flex flex-column align-items-center gap-1 h-100">
                         <img src="/assets/images/jurusan/<?=  $major[1] ?>.webp" alt="Logo <?= $major[0] ?>" class="w-50">
                         <h2 class="fw-bold"><?= strtoupper($major[1]) ?></h2>
                         <span class="fst-italic text-secondary text-center"><?= $major[0] ?></span>
@@ -93,7 +93,7 @@
     </div>
     <div class="container-xl mx-auto mt-4 p-4 shadow rounded">
         <h1 class="text-center text-primary fw-bold">Fasilitas</h1>
-        <div class="row row-cols-2 row-cols-lg-3">
+        <div class="row row-cols-2 row-cols-lg-3 g-3">
             <?php
             $facilities = [
                 "Aula" => ["Aula Graha Wastutama", "aula.webp"],
@@ -112,7 +112,7 @@
             ?>
             <?php foreach ($facilities as $facName => $data): ?>
                 <div class="col">
-                    <div class="alert alert-warning" role="alert">
+                    <div class="alert alert-warning h-100" role="alert">
                         <h4 class="alert-heading"><?= $facName ?></h4>
                         <p><?= $data[0] ?></p>
                     </div>

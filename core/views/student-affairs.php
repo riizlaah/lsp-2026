@@ -1,16 +1,18 @@
 <x-main>
-    <div class="container-sm mx-auto my-4 p-3 rounded shadow row row-cols-1 row-cols-lg-2 g-3">
-        <div class="col">
+    <div class="container-sm mx-auto my-4 p-4 rounded shadow row row-cols-1 row-cols-lg-2 g-4">
+        <div class="col d-flex flex-column justify-content-center">
             <h1>OSIS dan MPK</h1>
             <p>Wadah berorganisasi untuk melatih kepemimpinan, kolaborasi, dan tanggung jawab sosial siswa.</p>
         </div>
-        <div class="col">
-
+        <div class="col row row-cols-2 g-3 pb-4">
+            <div class="col">
+                <img src="/assets/images/osis.webp" alt="Logo OSIS" class="w-75 d-block mx-auto">
+            </div>
+            <div class="col">
+                <img src="/assets/images/mpk.webp" alt="Logo MPK" class="w-75 d-block mx-auto">
+            </div>
         </div>
     </div>
-    <!--
-    Informasi OSIS dan MPK
-    -->
     <div class="container-sm mx-auto mb-4 p-3 rounded shadow row row-cols-1 row-cols-lg-2 g-3">
         <div class="col order-1 order-lg-0">
             <div class="row row-cols-2 g-3">

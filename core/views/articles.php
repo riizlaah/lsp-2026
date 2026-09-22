@@ -13,7 +13,7 @@
             <i>-- Kosong --</i>
         </div>
     <?php endif; ?>
-    <div class="row row-cols-2 row-cols-lg-4 g-3">
+    <div class="row row-cols-1 row-cols-lg-4 g-3">
         <?php
 
         use Carbon\Carbon;

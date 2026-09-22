@@ -17,7 +17,7 @@
     </div>
     <div class="container-sm mx-auto rounded shadow mb-4 p-4">
         <h1 class="text-success fw-bold">Artikel</h1>
-        <div class="row row-cols-2 row-cols-lg-4 g-3">
+        <div class="row row-cols-1 row-cols-lg-4 g-3">
             <?php
 
             use Carbon\Carbon;
@@ -52,7 +52,6 @@
                     Lihat Lebih Detail...
                 </a>
             </div>
-            <a class="d-lg-none" href="https://docs.google.com/spreadsheets/d/1CB15WxNKar8yHuYV8JX9EBywVmGdKynXSYmyypkzcnA/edit?usp=sharing">Lihat Lebih Banyak</a>
         </div>
     </div>
     <!--

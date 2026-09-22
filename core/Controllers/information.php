@@ -12,7 +12,7 @@ class information
     {
         $now = Carbon::now()->toDateTimeString();
         $articles = Article::with(["category"])->where('isReleased', true)->orderBy('createdAt')->limit(4)->getAll();
-        $announcements = Announcement::where('publishedAt', $now, "<=")->where('expiredAt', $now, ">=")->orderBy('publishedAt')->getAll();
+        $announcements = Announcement::where('publishedAt', $now, "<=")->where('expiredAt', $now, ">=")->orderBy('publishedAt')->limit(4)->getAll();
         view("information", ["title" => "Informasi & Berita", "articles" => $articles, "announcements" => $announcements]);
     }
 

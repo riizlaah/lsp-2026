@@ -12,17 +12,15 @@
         <div id="activities" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-
-use Carbon\Carbon;
-
- foreach ($activities ?? [] as $i => $activity): ?>
+                use Carbon\Carbon;
+                foreach ($activities ?? [] as $i => $activity): ?>
                     <a class="carousel-item <?= $i === 0 ? "active" : "" ?> text-decoration-none position-relative" href="/information/articles/<?= $activity->slug ?>">
                         <img src="<?= $activity->headerImage ? "/assets/uploads/" . $activity->headerImage : "/assets/images/no-img.webp" ?>" class="d-block w-100" alt="<?= $activity->title ?>">
                         <div style="position: absolute; bottom: 0; left:0; width: 100%; height: 90%; background: linear-gradient(0deg, rgba(0,0,0,0.8), rgba(0,0,0,0));">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5><?= $activity->title ?></h5>
-                            <p><?= getTextFromElement($activity->content) ?></p>
-                        </div>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5><?= $activity->title ?></h5>
+                                <p><?= getTextFromElement($activity->content) ?></p>
+                            </div>
                         </div>
                     </a>
                 <?php endforeach; ?>
@@ -41,13 +39,13 @@ use Carbon\Carbon;
         <div class="container-lg my-4">
             <a href="/information/announcements/<?= $announcement->slug ?>" class="text-decoration-none">
                 <div class="alert alert-info" role="alert">
-                    <h4 class="alert-heading"><?= $announcement->title ?></h4>
-                    <p><?= getTextFromElement($announcement->content) ?></p>
+                    <span class="d-block mb-3">Pengumuman Terbaru</span>
+                    <span class="alert-heading fs-4"><i data-feather="arrow-up-right"></i><?= $announcement->title ?></span>
                 </div>
             </a>
         </div>
     <?php endif; ?>
-    <div class="container-lg my-3">
+    <div class="container-lg my-4">
         <h1>Artikel Terbaru</h1>
         <div class="row row-cols-1 row-cols-md-3 g-3">
             <?php foreach ($articles ?? [] as $article): ?>
@@ -68,7 +66,7 @@ use Carbon\Carbon;
         </div>
         <a href="/information/articles" class="my-3 d-block">Lihat lainnya...</a>
     </div>
-    <div class="container-lg">
+    <div class="container-lg my-4">
         <div class="mx-auto w-75 my-5">
             <h2 class="text-center">Belasan Rekanan Industri</h2>
             <p class="text-center">Meningkatkan kompetensi Peserta didik dengan menghadirkan pembelajaran berstandar industri. Lebih dari 50 perusahaan telah bekerja sama dengan SMK Negeri 1 Kandeman dalam berbagai macam program termasuk rekrutmen tenaga kerja</p>
