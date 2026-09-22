@@ -17,14 +17,11 @@ class manage_announcements
 {
     public function index()
     {
-        $search = trim($_GET["search"]) ?? "";
-        $records = [];
-        if (!empty($search)) {
-            $records = Announcement::where('title', "%$search%", "LIKE")->getAll();
-        } else {
-            $records = Announcement::getAll();
-        }
         ensureIsAdmin();
+        $search = trim($_GET["search"]) ?? "";
+        $query = Announcement::orderBy('createdAt');
+        if (!empty($search)) $query = $query->where('title', "%$search%", "LIKE");
+        $records = $query->getAll();
         view("dashboard.announcements.index", ["title" => "Kelola Pengumuman", "records" => $records]);
     }
 

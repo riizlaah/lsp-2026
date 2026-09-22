@@ -42,6 +42,7 @@ class User extends Model {
 ```
 > Jangan lupa tambahkan/edit `core/.env` supaya sesuai dengan koneksi databasemu.
 
+
 ## View
 View kurang lebih sama seperti PHP biasa, hanya saja ada fitur components yang berada di folder `views/components`, sementara views biasa berada di `views`<br>
 Untuk merender *view*, bisa seperti berikut:

@@ -20,11 +20,10 @@ class information
     {
         if (empty(trim($slug))) {
             $search = trim($_GET["search"] ?? "");
-            $records = [];
             $query = Article::with(["category"])->where('isReleased', true)->orderBy('createdAt');
-            if (!empty($search)) $records = $query->where('title', "%$search%", "LIKE")->getAll();
-            else $records = $query->getAll();
-            view('articles', ["title" => "Artikel", "records" => $records]);
+            if (!empty($search)) $query = $query->where('title', "%$search%", "LIKE")->getAll();
+            $records = $query->paginate(getValidPageArg());
+            view('articles', ["title" => "Artikel", "records" => $records["rows"], "page" => $records["page"], "maxPage" => $records["maxPage"], "items" => $records["items"]]);
         } else {
             $query = Article::with(["category"])->where('slug', $slug);
             if (!isLoggedIn()) $query = $query->where('isReleased', true);
@@ -42,8 +41,8 @@ class information
             $now = Carbon::now()->toDateTimeString();
             $query = Announcement::where('publishedAt', $now, "<=")->where('expiredAt', $now, ">=")->orderBy('publishedAt');
             if (!empty($search)) $records = $query->where('title', "%$search%", "LIKE")->getAll();
-            else $records = $query->getAll();
-            view('announcements', ["title" => "Pengumuman", "records" => $records]);
+            else $records = $query->paginate(getValidPageArg());
+            view('announcements', ["title" => "Pengumuman", "records" => $records["rows"], "page" => $records["page"], "maxPage" => $records["maxPage"], $records["items"]]);
         } else {
             $now = Carbon::now()->toDateTimeString();
             $query = Announcement::where('slug', $slug);

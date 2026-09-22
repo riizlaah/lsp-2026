@@ -6,14 +6,11 @@ use App\Models\Achievement;
 
 class manage_achievements {
     public function index() {
-        $search = trim($_GET["search"]) ?? "";
-        $records = [];
-        if(!empty($search)) {
-            $records = Achievement::where('title', "%$search%", "LIKE")->getAll();
-        } else {
-            $records = Achievement::getAll();
-        }
         ensureIsAdmin();
+        $search = trim($_GET["search"]) ?? "";
+        $query = Achievement::orderBy('year')->orderBy('month');
+        if(!empty($search)) $query->where('title', "%$search%", "LIKE");
+        $records = $query->getAll();
         view("dashboard.achievements.index", ["title" => "Kelola Pencapaian", "records" => $records]);
     }
 

@@ -123,6 +123,7 @@ class Model
         static::$whereConditions = [];
         static::$orderByStates = [];
         static::$updateArgs = [];
+        static::$limit = [];
         // var_dump($query);
         return $query;
     }
@@ -229,7 +230,7 @@ class Model
     {
         $query = static::constructQuery();
         $query = str_replace("*", "COUNT(*)", $query);
-        $res = self::execQueryWithParams($query);
+        $res = static::execQueryWithParams($query);
         $count = $res->fetchColumn();
         return $count;
     }
@@ -240,7 +241,7 @@ class Model
     public function first()
     {
         $query = static::constructQuery();
-        $res = self::execQueryWithParams($query);
+        $res = static::execQueryWithParams($query);
         $record = $res->fetch(PDO::FETCH_ASSOC);
         if (!$record) return null;
         if (!empty(static::$eagerLoads) && !empty(static::$relationships)) {
@@ -263,7 +264,7 @@ class Model
     public static function getAll(): array
     {
         $query = static::constructQuery();
-        $res = self::execQueryWithParams($query);
+        $res = static::execQueryWithParams($query);
         $records = $res->fetchAll(PDO::FETCH_ASSOC);
         $rows = [];
         foreach ($records as $rec) {
@@ -287,10 +288,47 @@ class Model
         }
         return $rows;
     }
+    public static function paginate(int $page, $size = 5): array
+    {
+        $oldParams = static::$params;
+        $oldWheres = static::$whereConditions;
+        $oldOrders = static::$orderByStates;
+        $query = static::constructQuery();
+        $countQuery = str_replace("*", "COUNT(*)", $query);
+        $countRes = static::execQueryWithParams($countQuery);
+        $count = $countRes->fetchColumn();
+        static::$params = $oldParams;
+        static::$whereConditions = $oldWheres;
+        static::$orderByStates = $oldOrders;
+        $selectQuery = static::limit($size, ($page - 1) * $size)->constructQuery();
+        $res = static::execQueryWithParams($selectQuery);
+        $records = $res->fetchAll(PDO::FETCH_ASSOC);
+        $rows = [];
+        foreach ($records as $rec) {
+            $row = new static();
+            foreach ($rec as $key => $val) {
+                $row->$key = $val;
+            }
+            $rows[] = $row;
+        }
+        if (empty($rows)) return $rows;
+        if (!empty(static::$eagerLoads) && !empty(static::$relationships)) {
+            $eagerLoads = static::$eagerLoads;
+            static::$eagerLoads = [];
+            foreach ($eagerLoads as $idx => $val) {
+                if (is_string($idx)) {
+                    static::eagerLoadRelation($rows, $idx, $val);
+                } else {
+                    static::eagerLoadRelation($rows, $val);
+                }
+            }
+        }
+        return ["rows" => $rows, "page" => $page, "maxPage" => (int)ceil(floatval($count) / $size), "items" => $count];
+    }
     public static function pluck(string $columnName): array
     {
         $query = static::constructQuery();
-        $res = self::execQueryWithParams($query);
+        $res = static::execQueryWithParams($query);
         $records = $res->fetchAll(PDO::FETCH_ASSOC);
         $rows = [];
         foreach ($records as $rec) {

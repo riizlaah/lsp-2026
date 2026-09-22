@@ -15,14 +15,11 @@ class manage_articles
 {
     public function index()
     {
-        $search = trim($_GET["search"]) ?? "";
-        $records = [];
-        if (!empty($search)) {
-            $records = Article::where('title', "%$search%", "LIKE")->getAll();
-        } else {
-            $records = Article::getAll();
-        }
         ensureIsAdmin();
+        $search = trim($_GET["search"]) ?? "";
+        $query = Article::orderBy('createdAt');
+        if (!empty($search)) $query = $query->where('title', "%$search%", "LIKE");
+        $records = $query->getAll();
         view("dashboard.articles.index", ["title" => "Kelola Artikel", "records" => $records]);
     }
 

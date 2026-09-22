@@ -26,4 +26,5 @@
             </div>
         <?php endforeach; ?>
     </div>
+    <x-pagination />
 </x-main>

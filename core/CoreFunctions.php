@@ -186,3 +186,11 @@ function dd(mixed ...$vars) {
     die;
 }
 
+function getValidPageArg() {
+    $page = trim($_GET["page"] ?? "1");
+    if(!ctype_digit($page)) redirectBack();
+    $page = intval($page);
+    if($page <= 0) redirectBack();
+    return $page;
+}
+

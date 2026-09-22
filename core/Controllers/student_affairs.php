@@ -13,8 +13,9 @@ class student_affairs {
 
     public function galleries($refTable = "", $refId = "") {
         if(empty($refTable) && empty($refId)) {
-            $galleries = Gallery::where('isCover', true)->orderBy('createdAt')->getAll();
-            view('galleries', ["title" => "Galeri", "galleries" => $galleries]);
+            $page = getValidPageArg();
+            $galleries = Gallery::where('isCover', true)->orderBy('createdAt')->paginate($page);
+            view('galleries', ["title" => "Galeri", "galleries" => $galleries["rows"], "page" => $galleries["page"], "maxPage" => $galleries["maxPage"], "items" => $galleries["items"]]);
         } else {
             if(!ctype_alpha($refTable)) redirectBack();
             if(!ctype_digit($refId) || intval($refId) <= 0) redirectBack();
@@ -30,8 +31,8 @@ class student_affairs {
             $search = trim($_GET["search"] ?? "");
             $query = Achievement::orderBy('year')->orderBy('month');
             if($search) $query = $query->where('title', "%$search%", 'LIKE');
-            $achievements = $query->getAll();
-            view('achievements', ["title" => "Prestasi & Karya", "achievements" => $achievements]);
+            $achievements = $query->paginate(getValidPageArg());
+            view('achievements', ["title" => "Prestasi & Karya", "achievements" => $achievements["rows"], "page" => $achievements["page"], "maxPage" => $achievements["maxPage"], "items" => $achievements["items"]]);
         } else {
             if(!ctype_digit($id) || intval($id) <= 0) redirectBack();
             $record = Achievement::where('id', intval($id))->first();

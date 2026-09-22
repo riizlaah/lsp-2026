@@ -4,7 +4,7 @@ namespace App;
 use App\Models\TmpFile;
 use Carbon\Carbon;
 
-require __DIR__ . "/RequiredFunctions.php";
+require __DIR__ . "/CoreFunctions.php";
 require __DIR__ . "/Helper.php";
 
 
