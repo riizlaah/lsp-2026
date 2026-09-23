@@ -136,7 +136,7 @@ class manage_announcements
         if (!$record) redirect('/manage-announcements');
         Announcement::where('id', $actualId)->delete();
         $files = getFilenamesFromHTMLContent($record->content);
-        foreach($files as $file) safeUnlink(Config::getUploadDirPath() . $file);
+        foreach($files as $file) safeUnlink(getUploadDirPath() . $file);
         redirect('/manage-announcements');
     }
 

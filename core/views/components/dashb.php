@@ -39,10 +39,11 @@ $useTrix = $useTrix ?? false;
             <div class="offcanvas-body d-lg-flex flex-column p-3">
                 <a href="#" class="d-none d-lg-block mb-3 link-body-emphasis text-decoration-none fs-5 fw-semibold"><i class="bi bi-hexagon-half me-2"></i>Menu</a>
                 <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item"><a class="nav-link <?= $clippedRoute == "/" ? "active" : "" ?>" aria-current="page" href="/dashboard"><i data-feather="monitor"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link <?= $clippedRoute == "/dashboard" ? "active" : "" ?>" aria-current="page" href="/dashboard"><i data-feather="monitor"></i> Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-articles") ? "active" : "" ?>" href="/manage-articles"><i data-feather="file-text"></i> Artikel</a></li>
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-announcements") ? "active" : "" ?>" href="/manage-announcements"><i data-feather="bell"></i> Pengumuman</a></li>
                     <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/manage-achievements") ? "active" : "" ?>" href="/manage-achievements"><i data-feather="award"></i> Pencapaian</a></li>
+                    <li class="nav-item"><a class="nav-link <?= str_starts_with($clippedRoute, "/dashboard/other") ? "active" : "" ?>" href="/dashboard/other"><i data-feather="info"></i> Lainnya</a></li>
                     <li class="nav-item">
                         <hr>
                     </li>

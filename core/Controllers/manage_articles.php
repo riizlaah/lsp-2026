@@ -61,7 +61,7 @@ class manage_articles
         if (!in_array($status, ["d", "r"])) redirectBackWithError("status", ["Opsi status invalid"]);
         try {
             Model::beginTransaction();
-            if(isFileUploaded("gambarTajuk")) moveUploadedFile("gambarTajuk", Config::getUploadDirPath(), $record->headerImage ?? "");
+            if(isFileUploaded("gambarTajuk")) moveUploadedFile("gambarTajuk", getUploadDirPath(), $record->headerImage ?? "");
             $imgPath = $record->headerImage;
             $images = TmpFile::freeTmpFilesFromContent($content);
             array_unshift($images, $imgPath);
@@ -81,7 +81,7 @@ class manage_articles
         } catch (Exception $e) {
             redirectBackWithError("", ["Gagal mengupdate artikel: " . $e->getMessage()]);
             Model::rollback();
-            foreach ($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
+            foreach ($images as $img) safeUnlink(getUploadDirPath() . $img);
         }
     }
 
@@ -102,7 +102,7 @@ class manage_articles
         if (!in_array($status, ["d", "r"])) redirectBackWithError("status", ["Opsi status invalid"]);
         try {
             Model::beginTransaction();
-            $imgPath = moveUploadedFile("gambarTajuk", Config::getUploadDirPath());
+            $imgPath = moveUploadedFile("gambarTajuk", getUploadDirPath());
             $images = TmpFile::freeTmpFilesFromContent($content);
             array_unshift($images, $imgPath);
             $userId = getAuthData()["id"];
@@ -123,7 +123,7 @@ class manage_articles
         } catch (Exception $e) {
             redirectBackWithError("", ["Gagal membuat artikel: " . $e->getTraceAsString()]);
             Model::rollback();
-            foreach ($images as $img) safeUnlink(Config::getUploadDirPath() . $img);
+            foreach ($images as $img) safeUnlink(getUploadDirPath() . $img);
         }
     }
 
@@ -139,7 +139,7 @@ class manage_articles
             $files = getFilenamesFromHTMLContent($record->content);
             Gallery::where('refTable', 'articles')->where('refId', $actualId)->delete();
             Article::where('id', $actualId)->delete();
-            foreach($files as $file) safeUnlink(Config::getUploadDirPath() . $file);
+            foreach($files as $file) safeUnlink(getUploadDirPath() . $file);
             Model::commit();
             session_flash('message', "Berhasil menghapus Artikel!");
         } catch (Exception $e) {

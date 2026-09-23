@@ -35,7 +35,7 @@ class Gallery extends Model
         if (empty($images)) {
             static::byRef($refTable, $refId)->delete();
             foreach ($existingFiles as $file) {
-                safeUnlink(Config::getUploadDirPath() . $file);
+                safeUnlink(getUploadDirPath() . $file);
             }
             return;
         }
@@ -48,7 +48,7 @@ class Gallery extends Model
         if (!empty($toRemove)) {
             static::byRef($refTable, $refId)->whereIn('mediaPath', $toRemove)->delete();
             foreach ($toRemove as $file) {
-                safeUnlink(Config::getUploadDirPath() . $file);
+                safeUnlink(getUploadDirPath() . $file);
             }
         }
         foreach ($images as $img) {
@@ -65,7 +65,7 @@ class Gallery extends Model
             $first = static::byRef($refTable, $refId)->where('mediaPath', $images[0])->orderBy('id', false)->first();
             if($first) {
                 static::where('id', $first->id)->update(["isCover" => true]);
-                safeUnlink(Config::getUploadDirPath() . $first->mediaPath);
+                safeUnlink(getUploadDirPath() . $first->mediaPath);
             }
         }
     }

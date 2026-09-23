@@ -28,11 +28,11 @@ class Model
 
     public static function initDB()
     {
-        $dbName = Config::get('db_name');
-        $dbPort = Config::get('db_port');
-        $dbHost = Config::get('db_host');
-        $dbUsername = Config::get('db_user');
-        $dbPassword = Config::get('db_password');
+        $dbName = env('db_name');
+        $dbPort = env('db_port');
+        $dbHost = env('db_host');
+        $dbUsername = env('db_user');
+        $dbPassword = env('db_password');
         $dsn = "mysql:host=$dbHost;port=$dbPort;dbname=$dbName;";
         try {
             self::$db = new PDO($dsn, $dbUsername, $dbPassword, [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);

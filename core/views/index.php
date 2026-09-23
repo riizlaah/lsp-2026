@@ -66,6 +66,31 @@
         </div>
         <a href="/information/articles" class="my-3 d-block">Lihat lainnya...</a>
     </div>
+    <div class="container-xl mx-auto my-4 p-4 shadow rounded">
+        <h1 class="text-center text-primary fw-bold">Jumlah Guru dan Siswa</h1>
+        <div class="row row-cols-2 row-cols-lg-5 g-4 my-3 justify-content-center">
+            <?php
+
+            use App\Config;
+
+            $data = [
+                "Jumlah Total Guru",
+                "Jumlah Tenaga Kependidikan",
+                "Jumlah Total Siswa",
+                "Jumlah Siswa Laki-Laki",
+                "Jumlah Siswa Perempuan",
+            ];
+            ?>
+            <?php foreach ($data as $datum): ?>
+                <div class="col">
+                    <div class="d-flex flex-column justify-content-evenly align-items-center border border-primary text-center p-2 h-100 rounded">
+                        <p class="fs-6 text-primary text-break"><?= $datum ?></p>
+                        <p class="fw-bold fs-2 my-3 text-primary"><?= Config::get(str_replace(' ', '', $datum)) ?></p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
     <div class="container-lg my-4">
         <div class="mx-auto w-75 my-5">
             <h2 class="text-center">Belasan Rekanan Industri</h2>

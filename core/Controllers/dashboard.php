@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Achievement;
+use App\Config;
 use App\Models\User;
 
 
@@ -16,6 +16,11 @@ class dashboard
         view("dashboard.index", ["title" => "Dashboard"]);
     }
 
+    public function other()
+    {
+        view("dashboard.other", ["title" => "Pengaturan Tambahan"]);
+    }
+
     public function _post()
     {
         ensureInputFilled($_POST, ["email", "password"]);
@@ -26,6 +31,36 @@ class dashboard
         if(!password_verify($password, $user->password)) redirectBackWithErrors(["" => ["Email atau password salah"]]);
         $_SESSION["auth"] = $user->asAssocArray();
         redirect("/dashboard");
+    }
+
+    public function change_pass_post() {
+        ensureIsAdmin();
+        ensureInputFilled($_POST, ["passwordBaru"]);
+        $newPassword = $_POST["passwordBaru"];
+        if(strlen($newPassword) < 8) redirectBackWithError('passwordBaru', ["Panjang password harus berjumlah 8 atau lebih karakter"]);
+        // more validation
+        $userId = getAuthData()["id"];
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+        User::where('id', $userId)->update([
+            "password" => $hashedPassword
+        ]);
+        session_flash('message', "Berhasil mengganti password!");
+        redirect('/dashboard');
+    }
+
+    public function update_settings_post() {
+        ensureIsAdmin();
+        $excluded = ["_csrf_token", "_method"];
+        $conf = [];
+        foreach($_POST as $key => $val) {
+            if(in_array($key, $excluded)) continue;
+            if(!is_string($val)) redirectBack();
+            $conf[$key] = htmlspecialchars($val);
+        }
+        Config::override($conf);
+        Config::save();
+        session_flash('message', "Berhasil mengubah pengaturan!");
+        redirect('/dashboard');
     }
 
     public function logout() {

@@ -2,6 +2,7 @@
 
 // namespace App;
 
+use App\Config;
 use App\ViewRenderer;
 
 function view(string $viewName, array $vars = []) {
@@ -192,5 +193,13 @@ function getValidPageArg() {
     $page = intval($page);
     if($page <= 0) redirectBack();
     return $page;
+}
+
+function env(string $name, $default = '') {
+    return Config::getEnv($name, $default);
+}
+
+function getUploadDirPath() {
+    return Config::getUploadDirPath();
 }
 

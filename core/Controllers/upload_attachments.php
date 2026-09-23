@@ -14,7 +14,7 @@ class upload_attachments {
         ensureIsAdmin();
         ensureAttachmentValidJSON('file', 10000000, ["image/png", "image/jpeg", "image/webp", "application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"]);
         try {
-            $filename = moveUploadedFile('file', Config::getUploadDirPath());
+            $filename = moveUploadedFile('file', getUploadDirPath());
             TmpFile::add([
                 "filename" => $filename
             ]);

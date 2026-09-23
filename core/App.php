@@ -11,7 +11,7 @@ require __DIR__ . "/Helper.php";
 
 class App {
     public function __construct() {
-        Config::loadEnv();
+        Config::init();
         Model::initDB();
     }
 
@@ -73,7 +73,7 @@ class App {
                 foreach($files as $file) {
                     $hourDiff = Carbon::parse($file->createdAt)->diffInHours(Carbon::now());
                     if($hourDiff > 0.9) {
-                        $filepath = Config::getUploadDirPath() . $file->filename;
+                        $filepath = getUploadDirPath() . $file->filename;
                         safeUnlink($filepath);
                         $ids[] = $file->id;
                     }

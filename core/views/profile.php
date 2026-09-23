@@ -49,19 +49,22 @@
     </div>
     <div class="container-xl mx-auto mt-4 p-4 shadow rounded">
         <h1 class="text-center text-primary fw-bold">Jumlah Pengajar dan Tenaga Kependidikan</h1>
-        <div class="row row-cols-3 g-4 my-3">
+        <div class="row row-cols-2 row-cols-lg-3 g-4 my-3 justify-content-center">
             <?php
-            $pengajar = [
-                "primary" => ["Jumlah Pengajar Kejuruan", "38"],
-                "success" => ["Jumlah Pengajar Mapel Umum & Pilihan", "56"],
-                "info" => ["Jumlah Tenaga Kependidikan", "19"],
+
+            use App\Config;
+
+            $data = [
+                "Jumlah Pengajar Kejuruan",
+                "Jumlah Pengajar Mapel",
+                "Jumlah Tenaga Kependidikan"
             ];
             ?>
-            <?php foreach ($pengajar as $style => $data): ?>
+            <?php foreach ($data as $datum): ?>
                 <div class="col">
-                    <div class="d-flex flex-column justify-content-evenly align-items-center border border-<?= $style ?> text-center p-2 h-100 rounded-top-3">
-                        <p class="fs-6 text-<?= $style ?> text-break"><?= $data[0] ?></p>
-                        <p class="fw-bold fs-2 my-3 text-<?= $style ?>"><?= $data[1] ?></p>
+                    <div class="d-flex flex-column justify-content-evenly align-items-center border border-primary text-center p-2 h-100 rounded">
+                        <p class="fs-6 text-primary text-break"><?= $datum ?></p>
+                        <p class="fw-bold fs-2 my-3 text-primary"><?= Config::get(str_replace(' ', '', $datum)) ?></p>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -83,7 +86,7 @@
             foreach ($majors as $major): ?>
                 <div class="col" id="<?= $major[1] ?>">
                     <div class="shadow p-4 rounded d-flex flex-column align-items-center gap-1 h-100">
-                        <img src="/assets/images/jurusan/<?=  $major[1] ?>.webp" alt="Logo <?= $major[0] ?>" class="w-50">
+                        <img src="/assets/images/jurusan/<?= $major[1] ?>.webp" alt="Logo <?= $major[0] ?>" class="w-50">
                         <h2 class="fw-bold"><?= strtoupper($major[1]) ?></h2>
                         <span class="fst-italic text-secondary text-center"><?= $major[0] ?></span>
                     </div>
@@ -129,7 +132,7 @@
             </div>
         </div>
         <div class="col">
-            <h1>Prestasi Terbaru</h1>
+            <h1 class="text-center text-primary fw-bold">Prestasi Terbaru</h1>
             <table class="table table-bordered mb-2">
                 <thead>
                     <tr>
@@ -150,6 +153,32 @@
             </table>
             <a href="/student-affairs/achievements" role="button" class="btn btn-primary">Lihat Prestasi Lainnya</a>
         </div>
+    </div>
+    <div class="container-xl mx-auto mt-4 p-4 shadow rounded">
+        <h1 class="text-center text-primary fw-bold">Ringkasan</h1>
+        <?php
+        $summary = [
+            "Nama Sekolah" => "SMK Negeri 1 Kandeman",
+            "Status" => "Negeri",
+            "Bentuk Pendidikan" => "SMK",
+            "Akreditasi" => "A",
+            "NPSN" => "20322711",
+            "Telepon" => "0285392274",
+            "Email" => "smkn1kandeman@yahoo.com",
+            "Alamat" => "Jl. Raya Kandeman No.KM. 04, Kaliongkek, Kandeman, Kec. Kandeman, Kabupaten Batang, Jawa Tengah 51261",
+            "Luas Tanah" => "49.000 m²",
+        ];
+        ?>
+        <table class="table table-bordered mb-2">
+            <tbody>
+                <?php foreach ($summary as $key => $value): ?>
+                    <tr>
+                        <td><?= $key ?></td>
+                        <td><?= $value ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
     <script src="/assets/svg-pan-zoom.min.js"></script>
     <script>

@@ -1,3 +1,7 @@
+<?php
+
+use App\Config;
+?>
 <x-main>
     <div class="container-xl shadow p-4 my-3 rounded">
         <h1 class="text-primary">Kurikulum yang Digunakan</h1>
@@ -12,7 +16,7 @@
                     <h1 class="text-primary">Kalender Akademik</h1>
                     <div class="hover-blur">
                         <img src="/assets/images/academic-calendar.webp" alt="Kalender Akademik">
-                        <a class="fs-3 text-white fw-bold text-decoration-none" href="https://docs.google.com/spreadsheets/d/1CB15WxNKar8yHuYV8JX9EBywVmGdKynXSYmyypkzcnA/edit?usp=sharing">
+                        <a class="fs-3 text-white fw-bold text-decoration-none" href="<?= Config::get('LinkKalenderAkademik') ?>">
                             Lihat Lebih Detail...
                         </a>
                     </div>
@@ -23,7 +27,7 @@
                     <h1 class="text-primary">Jadwal Pelajaran</h1>
                     <div class="hover-blur mx-auto">
                         <img src="/assets/images/lessons-schedule.webp" alt="Jadwal Pelajaran">
-                        <a class="fs-3 text-white fw-bold text-decoration-none" href="https://drive.google.com/drive/folders/1p5eVzqOkxDzAi1RME6duQEje015wKrjZ?usp=drive_link">
+                        <a class="fs-3 text-white fw-bold text-decoration-none" href="<?= Config::get('LinkJadwalPelajaran') ?>">
                             Lihat Lebih Detail...
                         </a>
                     </div>

@@ -49,7 +49,7 @@ class manage_achievements {
         if(!ctype_digit($month) || intval($month) <= 0) redirectBackWithErrors(["bulan" => ["Bulan tidak valid"]]);
         $record = Achievement::where('id', $actualId)->first();
         if(!$record) errCode(404, "Pencapaian tidak ditemukan");
-        $image = isFileUploaded("gambarTajuk") ? moveUploadedFile("gambarTajuk", Config::getUploadDirPath(), $record->headerImage ?? "") : $record->headerImage;
+        $image = isFileUploaded("gambarTajuk") ? moveUploadedFile("gambarTajuk", getUploadDirPath(), $record->headerImage ?? "") : $record->headerImage;
         Achievement::where('id', $actualId)->update([
             "title" => $name,
             "rank" => intval($rank),
@@ -82,7 +82,7 @@ class manage_achievements {
         if(!ctype_digit($year) || intval($year) <= 0) redirectBackWithErrors(["tahun" => ["Tahun tidak valid"]]);
         if(!ctype_digit($month) || intval($month) <= 0) redirectBackWithErrors(["bulan" => ["Bulan tidak valid"]]);
         $userId = getAuthData()["id"];
-        $image = isFileUploaded("gambarTajuk") ? moveUploadedFile("gambarTajuk", Config::getUploadDirPath()) : null;
+        $image = isFileUploaded("gambarTajuk") ? moveUploadedFile("gambarTajuk", getUploadDirPath()) : null;
         Achievement::add([
             "userId" => $userId,
             "title" => $name,

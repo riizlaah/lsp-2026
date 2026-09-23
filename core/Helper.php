@@ -82,11 +82,15 @@ function getIDNMonthName(int $n)
     return $opts[$n - 1] ?? "?";
 }
 
+function spacify(string $str) {
+    return trim(preg_replace("/(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/", "$1 $2", $str));
+}
+
 
 function getTextFromElement(string $str, $len = 100)
 {
     $str = html_entity_decode(strip_tags($str), ENT_QUOTES | ENT_HTML5);
-    $str = trim(preg_replace("/[a-z](([A-Z])[a-zA-Z0-9]+)/", " $1", $str));
+    $str = spacify($str);
     return mb_substr($str, 0, $len, 'UTF-8') . (strlen($str) > $len ? "..." : "");
 }
 
