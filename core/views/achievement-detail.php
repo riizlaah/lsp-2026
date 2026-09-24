@@ -10,7 +10,7 @@
             </ol>
         </nav>
         <h1 class="mb-1"><?= $record->title ?></h1>
-        <div class="d-flex gap-2 mb-3 d-flex align-items-center">
+        <div class="d-flex gap-2 mb-3 d-flex align-items-center overflow-x-auto">
             <span class="fs-6 badge text-bg-secondary"><?= getIDNMonthName($record->month) . " " . (string)$record->year ?></span>
             <span class="fs-6 badge text-bg-primary"><?= "Tingkat " . $record->level ?></span>
             <span class="fs-6 badge text-bg-primary"><?= $record->isTiered ? "Berjenjang" : "Tidak Berjenjang" ?></span>

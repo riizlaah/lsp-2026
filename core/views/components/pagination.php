@@ -3,7 +3,7 @@ $page = $page ?? 0;
 $maxPage = $maxPage ?? 0;
 $items = $items ?? 0;
 ?>
-<?php if ($items > 1): ?>
+<?php if ($maxPage > 1): ?>
     <div class="d-flex justify-content-center my-4">
         <div class="btn-group" role="group">
             <?php if($page > 1): ?>

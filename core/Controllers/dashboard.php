@@ -18,6 +18,7 @@ class dashboard
 
     public function other()
     {
+        ensureIsAdmin();
         view("dashboard.other", ["title" => "Pengaturan Tambahan"]);
     }
 
@@ -50,17 +51,17 @@ class dashboard
 
     public function update_settings_post() {
         ensureIsAdmin();
-        $excluded = ["_csrf_token", "_method"];
+        $included = array_keys(Config::getAll());
         $conf = [];
         foreach($_POST as $key => $val) {
-            if(in_array($key, $excluded)) continue;
+            if(!in_array($key, $included)) continue;
             if(!is_string($val)) redirectBack();
             $conf[$key] = htmlspecialchars($val);
         }
         Config::override($conf);
         Config::save();
         session_flash('message', "Berhasil mengubah pengaturan!");
-        redirect('/dashboard');
+        redirect('/dashboard/other');
     }
 
     public function logout() {

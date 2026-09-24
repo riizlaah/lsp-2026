@@ -4,8 +4,8 @@ require_once __DIR__."/vendor/autoload.php";
 
 use App\App;
 
-$uri = $_SERVER["REQUEST_URI"];
-$uri = strtok($uri, '?');
+$route = $_SERVER["REQUEST_URI"];
+$route = strtok($route, '?');
 
 $app = new App();
-$app->run($uri);
+$app->run($route);

@@ -26,7 +26,7 @@
                             <div class="h-100 position-relative rounded bg-black">
                                 <img src="<?= $record->mediaPath ? "/assets/uploads/" . $record->mediaPath : "/assets/images/no-img.webp" ?>" class="card-img-top w-100 h-100 object-fit-contain" alt="<?= $record?->description ?? "No Description" ?>">
                                 <span class="text-end p-3 text-white" style="position: absolute; right: 0px; bottom: 0px; width: 100%; background: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0))">
-                                    <?= Carbon::parse($record->createdAt)->locale('id')->format("F Y") ?>
+                                    <?= Carbon::parse($record->createdAt)->locale('id')->translatedFormat("F Y") ?>
                                 </span>
                             </div>
                         </a>

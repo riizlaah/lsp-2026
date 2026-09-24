@@ -22,12 +22,13 @@ class ViewRenderer
 
     public static function loadView(string $name, array $data)
     {
-        $viewFile = self::$viewPath . str_replace(".", "/", $name) . ".php";
+        $actualName = str_replace(".", "/", $name);
+        $viewFile = self::$viewPath . $actualName . ".php";
         if (!file_exists($viewFile)) {
             echo "view \"$name\" not found.";
             die;
         }
-        $cachedFile = self::$cachePath . md5($name) . ".php";
+        $cachedFile = self::$cachePath . md5($actualName) . ".php";
         if (self::needRebuild($viewFile, $cachedFile)) {
             $content = file_get_contents($viewFile);
             $content = self::renderView($content);

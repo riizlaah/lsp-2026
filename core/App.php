@@ -11,6 +11,7 @@ require __DIR__ . "/Helper.php";
 
 class App {
     public function __construct() {
+        Carbon::setLocale('id');
         Config::init();
         Model::initDB();
     }

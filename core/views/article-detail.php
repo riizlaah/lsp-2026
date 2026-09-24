@@ -16,7 +16,7 @@
         <h1 class="mb-1 fw-bold"><?= $record->title ?></h1>
         <div class="d-flex gap-2 mb-3 align-items-center">
             <span class="fs-6 badge text-bg-primary"><i data-feather="tag"></i> <?= $record->category->name ?></span>
-            <span class="fs-6 text-secondary"><?= Carbon::parse($record->updatedAt)->locale('id')->toDateTimeString() ?></span>
+            <span class="fs-6 text-secondary">Dibuat pada: <?= Carbon::parse($record->createdAt)->locale('id')->translatedFormat("Y-m-d H:i") ?></span>
         </div>
         <hr>
         <div class="container-fluid mb-4 wrap-imgs">

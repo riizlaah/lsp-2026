@@ -39,14 +39,14 @@ use Carbon\Carbon;
                     <td><?= $idx + 1 ?></td>
                     <td><?= $row->title ?></td>
                     <td><?= getTextFromElement($row->content) ?></td>
-                    <td><?= Carbon::parse($row->publishedAt)->locale('id')->format("j M Y, H:i") ?> - <?= Carbon::parse($row->expiredAt)->locale('id')->format("j M Y, H:i") ?></td>
+                    <td><?= Carbon::parse($row->publishedAt)->locale('id')->translatedFormat("j M Y, H:i") ?> - <?= Carbon::parse($row->expiredAt)->locale('id')->translatedFormat("j M Y, H:i") ?></td>
                     <td class="d-flex gap-2">
                         <a href="/information/announcements/<?= $row->slug ?>" class="btn btn-primary"><i data-feather="eye"></i></a>
                         <a href="/manage-announcements/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>
-                        <form action="/manage-announcements/delete/<?= $row->id ?>" method="post">
+                        <form action="/manage-announcements/delete/<?= $row->id ?>" method="post"  onsubmit="return confirm('Anda yakin ingin menghapus \'<?= $row->title ?>\'')">
                             <xm-delete />
                             <xcsrf />
-                            <button type="submit" class="btn btn-danger" onclick="confirm('Anda yakin ingin menghapus \'<?= $row->title ?>\'')"><i data-feather="trash-2"></i></button>
+                            <button type="submit" class="btn btn-danger"><i data-feather="trash-2"></i></button>
                         </form>
                     </td>
                 </tr>

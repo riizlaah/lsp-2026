@@ -39,10 +39,10 @@
                     <td class="d-flex gap-2">
                         <a href="/student-affairs/achievements/<?= $row->id ?>" class="btn btn-primary"><i data-feather="eye"></i></a>
                         <a href="/manage-achievements/edit/<?= $row->id ?>" class="btn btn-warning"><i data-feather="edit"></i></a>
-                        <form action="/manage-achievements/delete/<?= $row->id ?>" method="post">
+                        <form action="/manage-achievements/delete/<?= $row->id ?>" method="post" onsubmit="return confirm('Anda yakin ingin menghapus \'<?= $row->title ?>\'')">
                             <xm-delete />
                             <xcsrf />
-                            <button type="submit" class="btn btn-danger" onclick="confirm('Anda yakin ingin menghapus \'<?= $row->title ?>\'')"><i data-feather="trash-2"></i></button>
+                            <button type="submit" class="btn btn-danger" ><i data-feather="trash-2"></i></button>
                         </form>
                     </td>
                 </tr>

@@ -12,8 +12,8 @@
                         <i data-feather="phone"></i>
                     </div>
                     <div class="col">
-                        <span>(0285) 392274</span> <br>
-                        <span>085117363039</span>
+                        <span>0285392274</span>
+                        <!-- <span>085117363039</span> -->
                     </div>
                 </div>
                 <a href="mailto:smkn1kandeman@yahoo.com" class="text-decoration-none"><i data-feather="mail"></i> smkn1kandeman@yahoo.com</a>

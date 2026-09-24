@@ -57,7 +57,7 @@
                             <p class="card-text"><?= getTextFromElement($article->content) ?></p>
                         </div>
                         <div class="card-footer">
-                            <div class="text-end text-secondary fst-italic"><?= Carbon::parse($article->createdAt)->format("d F Y") ?></div>
+                            <div class="text-end text-secondary fst-italic"><?= Carbon::parse($article->createdAt)->translatedFormat("d F Y") ?></div>
                         </div>
                         <div class="badge text-bg-primary position-absolute" style="top: 1rem; left: 1rem;"><?= $article->category->name ?></div>
                     </a>
